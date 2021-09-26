@@ -1,0 +1,13 @@
+Box div {
+	margin: 20px;
+	font-size: 20px;
+}
+.unused-before {
+	height: 70px;
+}
+.unused {
+	height: 100px;
+}
+.heading {
+	color: aliceblue;
+}
