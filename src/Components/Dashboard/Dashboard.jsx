@@ -17,15 +17,20 @@ const Dashboard = () => {
 	const [users, setUsers] = React.useState([]);
 
 	const [isLoading, setIsLoading] = React.useState(false);
-	const { state, message } = useContext(provider);
+	const { state, message, adminPannel } = useContext(provider);
 	const [open, setOpen] = React.useState(false);
 	const getUsers = (id) => {
 		setIsLoading(true);
 		let url;
 		if (id) url = `https://server-khata.herokuapp.com/users/${id}`;
 		else url = `https://server-khata.herokuapp.com/users/`;
+		const headers = {
+			headers: {
+				Authorization: 'Bearer ' + adminPannel.token,
+			},
+		};
 		axios
-			.get(url)
+			.get(url, headers)
 			.then((res) => setUsers([...res.data]))
 			.catch((e) => console.log(e))
 			.finally(() => setIsLoading(false));
@@ -47,8 +52,6 @@ const Dashboard = () => {
 	};
 	return (
 		<div>
-			<Navbar />
-
 			<div className={isLoading ? 'unused-before' : 'unused'}></div>
 
 			{isLoading ? (

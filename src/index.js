@@ -6,11 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import ContextPovider from './Context/ContextPovider';
 
 ReactDOM.render(
-	<React.StrictMode>
-		<ContextPovider>
-			<App />
-		</ContextPovider>
-	</React.StrictMode>,
+	// <React.StrictMode>
+	<ContextPovider>
+		<App />
+	</ContextPovider>,
+	/* </React.StrictMode>, */
 	document.getElementById('root'),
 );
 

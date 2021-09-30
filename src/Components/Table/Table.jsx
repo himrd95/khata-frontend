@@ -15,12 +15,20 @@ import { provider } from '../../Context/ContextPovider';
 import { Button, DialogActions, DialogTitle } from '@mui/material';
 import UpdateUser from './UpdateUser';
 import DataTable from './EditAndUpdate';
+import Styled from 'styled-components';
+
+const Container = Styled.div`
+padding:10px 30px;
+text-align:center;
+width:fit-content
+margin:auto;
+`;
 
 export default function CollapsibleTable({ users }) {
 	const [newRows, setNewRows] = React.useState([]);
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [content, setContent] = React.useState('');
-	const { handleState } = useContext(provider);
+	const { handleState, adminPannel } = useContext(provider);
 
 	const setRows = () => {
 		const editButton = <i className='far fa-edit'></i>;
@@ -61,8 +69,13 @@ export default function CollapsibleTable({ users }) {
 			hystory: paid ? [{ actualPrice, paid, date }] : [],
 		};
 		const url = `https://server-khata.herokuapp.com/users/`;
+		const headers = {
+			headers: {
+				Authorization: 'Bearer ' + adminPannel.token,
+			},
+		};
 		axios
-			.post(url, newPayload)
+			.post(url, newPayload, headers)
 			.then((res) => handleState('User has been successfully added'))
 			.catch((e) => console.log(e))
 			.finally(() => handleClose());
@@ -71,8 +84,13 @@ export default function CollapsibleTable({ users }) {
 	const deleteConfirmation = (id) => {
 		handleClose();
 		const url = `https://server-khata.herokuapp.com/users/${id}`;
+		const headers = {
+			headers: {
+				Authorization: 'Bearer ' + adminPannel.token,
+			},
+		};
 		axios
-			.delete(url)
+			.delete(url, headers)
 			.then((res) =>
 				handleState('User has been successfully deleted'),
 			)
@@ -99,8 +117,13 @@ export default function CollapsibleTable({ users }) {
 	const updateRequest = (id, payload) => {
 		handleClose();
 		const url = `https://server-khata.herokuapp.com/users/${id}`;
+		const headers = {
+			headers: {
+				Authorization: 'Bearer ' + adminPannel.token,
+			},
+		};
 		axios
-			.patch(url, payload)
+			.patch(url, payload, headers)
 			.then((res) => {
 				handleState('User has been successfully updated');
 				console.log(res.data);
@@ -176,37 +199,38 @@ export default function CollapsibleTable({ users }) {
 	const updateUser = (row) => {
 		setIsOpen(true);
 		setContent(
-			<div>
-				<DialogTitle>
-					<Button
-						onClick={() => handleUpdateAdd(row)}
-						variant='contained'
-						color='primary'
-					>
-						ADD a new trasection?
-					</Button>
-				</DialogTitle>
-				<DialogTitle>
-					<Button
-						onClick={() => handleUpdateEdit(row)}
-						variant='contained'
-						color='secondary'
-					>
-						EDIT a trasection?
-					</Button>
-				</DialogTitle>
-				<DialogTitle>
-					<Button
-						onClick={() => handleUpdateRemove(row)}
-						variant='outlined'
-					>
-						Remove a trasection?
-					</Button>
-				</DialogTitle>
+			<Container>
+				<DialogTitle>Edit Hystory</DialogTitle>
+				<Button
+					onClick={() => handleUpdateAdd(row)}
+					variant='contained'
+					color='primary'
+				>
+					ADD a new trasection?
+				</Button>
+				<Button
+					sx={{ margin: '10px 10px' }}
+					onClick={() => handleUpdateEdit(row)}
+					variant='contained'
+					color='secondary'
+				>
+					EDIT a trasection?
+				</Button>
+				{/* <br /> */}
+				<Button
+					onClick={() => handleUpdateRemove(row)}
+					variant='outlined'
+				>
+					Remove a trasection?
+				</Button>
+				<br />
+				<br />
 				<DialogActions>
-					<Button onClick={handleClose}>Do nothing</Button>
+					<Button variant='outlined' onClick={handleClose}>
+						Do nothing
+					</Button>
 				</DialogActions>
-			</div>,
+			</Container>,
 		);
 	};
 	return (
@@ -226,7 +250,7 @@ export default function CollapsibleTable({ users }) {
 						<TableCell>
 							<span className='header'>Name</span>
 						</TableCell>
-						<TableCell align='right'>
+						<TableCell sx={{ padding: '10px' }} align='right'>
 							<span className='header' padding='none'>
 								Balance
 							</span>
@@ -234,7 +258,7 @@ export default function CollapsibleTable({ users }) {
 						<TableCell align='right'>
 							<span className='header'>Edit</span>
 						</TableCell>
-						<TableCell align='right'>
+						<TableCell sx={{ padding: '10px' }} align='right'>
 							<span className='header'>Clear</span>
 						</TableCell>
 						<TableCell onClick={() => addNewUser()} align='right'>

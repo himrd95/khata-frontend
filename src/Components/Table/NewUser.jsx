@@ -8,17 +8,18 @@ import Styled from 'styled-components';
 import React from 'react';
 
 const Container = Styled.div`
-padding:30px;
+padding:10px 30px;
 text-align:center;
 width:fit-content
 margin:auto;
 `;
 const NewUser = ({ handleClose, handleAddUser }) => {
-	const [payload, setPayLoad] = React.useState({});
+	const [payload, setPayload] = React.useState({});
 	const handlechange = (e) => {
 		const { name, value } = e.target;
-		setPayLoad({ ...payload, [name]: value });
+		setPayload({ ...payload, [name]: value });
 	};
+
 	return (
 		<Container>
 			<DialogTitle>Add a new User</DialogTitle>
@@ -67,12 +68,16 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 			</Paper>
 			<Button
 				onClick={handleClose}
-				style={{ marginRight: '10px' }}
+				sx={{ margin: '0 10px 10px 0' }}
 				variant='contained'
 			>
-				Cancle
+				Cancel
 			</Button>
-			<Button onClick={()=>handleAddUser(payload)} variant='contained' color='primary'>
+			<Button
+				onClick={() => handleAddUser(payload)}
+				variant='contained'
+				color='primary'
+			>
 				Add User
 			</Button>
 		</Container>

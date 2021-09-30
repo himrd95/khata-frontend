@@ -19,11 +19,14 @@ function Row({ row, deleteUser, updateUser }) {
 				<TableCell component='th' scope='row'>
 					<span className='name'>{row.name}</span>
 				</TableCell>
-				<TableCell align='right'>{row.balance}</TableCell>
+				<TableCell sx={{ padding: '10px' }} align='right'>
+					{row.balance}
+				</TableCell>
 				<TableCell onClick={() => updateUser(row)} align='right'>
 					{row.editButton}
 				</TableCell>
 				<TableCell
+					sx={{ padding: '10px' }}
 					onClick={() => deleteUser(row._id, row.name)}
 					align='right'
 				>

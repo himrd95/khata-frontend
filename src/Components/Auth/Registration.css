@@ -1,14 +1,14 @@
-body {
+.messages {
 	width: 100%;
 	height: 100vh;
-	background: #254a4e;
+	color: #d3e9fd;
 	background-repeat: no-repeat;
 	background-size: cover;
+	/* filter: sepia(0.2); */
 	background-image: url('https://image.freepik.com/free-vector/gradient-dark-dynamic-lines-background_23-2148995950.jpg');
 }
-.App {
-	text-align: center;
-}
-i {
-	cursor: pointer;
+.messages div {
+	width: 80%;
+	margin: auto;
+	/* color: #2bc3ff; */
 }
