@@ -24,16 +24,22 @@ const Registration = () => {
 		);
 	};
 	const handleAddUser = (payload) => {
+		const { name, age, email, password, profile } = payload;
+		const formData = new FormData();
+		formData.append('name', name);
+		formData.append('age', age);
+		formData.append('email', email);
+		formData.append('password', password);
+		formData.append('profile', profile);
 		setError({ message: '', open: false });
 		setIsLoading(true);
 		const url = `https://server-khata.herokuapp.com/register/`;
 		axios
-			.post(url, {
-				...payload,
-			})
+			.post(url, formData)
 			.then((res) => {
 				setIsLoading(false);
 				if (res.data.token) {
+					console.log(res.data);
 					successPopup();
 				} else
 					setError({

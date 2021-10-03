@@ -5,7 +5,12 @@ import {
 	TextField,
 } from '@material-ui/core';
 import Styled from 'styled-components';
-import React from 'react';
+import React, { useState } from 'react';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { DialogActions } from '@mui/material';
 
 const Container = Styled.div`
 padding:30px;
@@ -19,15 +24,18 @@ const UpdateUser = ({
 	handleUpdate,
 	edit,
 	index,
+	mode,
 }) => {
+	const [modeVal, setModeVal] = useState('');
 	const initState = edit
 		? {
-				actualPrice: row.hystory[index].actualPrice,
-				paid: row.hystory[index].paid,
+				actualPrice: row[mode][index].actualPrice,
+				paid: row[mode][index].paid,
 		  }
 		: { actualPrice: '', paid: '' };
 
 	const [payload, setPayLoad] = React.useState(initState);
+
 	const handlechange = (e) => {
 		const { name, value } = e.target;
 		setPayLoad({ ...payload, [name]: value });
@@ -40,7 +48,7 @@ const UpdateUser = ({
 				onChange={(e) => handlechange(e)}
 				type='number'
 				id='filled-required'
-				label={edit ? row.hystory[index].actualPrice : 'Actual amount'}
+				label={edit ? row[mode][index].actualPrice : 'Actual amount'}
 				variant='filled'
 				name='actualPrice'
 			/>
@@ -50,39 +58,75 @@ const UpdateUser = ({
 				onChange={(e) => handlechange(e)}
 				id='filled-required'
 				type='number'
-				label={edit ? row.hystory[index].paid : 'Paid Amount'}
+				label={edit ? row[mode][index].paid : 'Paid Amount'}
 				variant='filled'
 				name='paid'
 			/>
-			<Paper
-				style={{
-					width: '100px',
-					margin: '20px auto',
-					padding: '10px 20px',
-					background: '#eee',
-				}}
+			<br />
+			<br />
+			<FormControl
+				variant='filled'
+				sx={{ minWidth: 60, display: 'flex' }}
 			>
-				<span>Balance : </span>
-				<span>
-					{!payload.actualPrice
-						? 0
-						: payload.actualPrice - payload.paid}
-				</span>
-			</Paper>
-			<Button
-				onClick={handleClose}
-				style={{ marginRight: '10px' }}
-				variant='contained'
-			>
-				Cancle
-			</Button>
-			<Button
-				onClick={() => handleUpdate(payload, row, edit, index)}
-				variant='contained'
-				color='primary'
-			>
-				Update User
-			</Button>
+				{!edit && (
+					<InputLabel id='demo-simple-select-label'>Mode</InputLabel>
+				)}
+				{!edit && (
+					<Select
+						labelId='demo-simple-select-label'
+						id='demo-simple-select'
+						value={modeVal}
+						label='Mode'
+						name='mode'
+						placeholder='Mode'
+						onChange={(e) => setModeVal(e.target.value)}
+					>
+						<MenuItem value={'given'}>Given</MenuItem>
+						<br />
+						<MenuItem value={'taken'}>Taken</MenuItem>
+					</Select>
+				)}
+
+				<Paper
+					style={{
+						margin: '20px auto',
+						padding: '10px 20px',
+						background: '#eee',
+					}}
+				>
+					<span>Balance : </span>
+					<span>
+						{!payload.actualPrice
+							? 0
+							: payload.actualPrice - payload.paid}
+					</span>
+				</Paper>
+			</FormControl>
+			<DialogActions>
+				<Button
+					onClick={handleClose}
+					style={{ marginRight: '10px' }}
+					variant='contained'
+				>
+					Cancle
+				</Button>
+				<Button
+					onClick={() =>
+						handleUpdate(
+							payload,
+							row,
+							edit,
+							index,
+							false,
+							edit ? mode : modeVal,
+						)
+					}
+					variant='contained'
+					color='primary'
+				>
+					Update
+				</Button>
+			</DialogActions>
 		</Container>
 	);
 };

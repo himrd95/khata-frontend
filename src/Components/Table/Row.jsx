@@ -13,14 +13,38 @@ import Typography from '@mui/material/Typography';
 function Row({ row, deleteUser, updateUser }) {
 	const [open, setOpen] = React.useState(false);
 
+	let totalGiven = 0;
+	row.given?.map(
+		(a, e) => (totalGiven += Number(a.actualPrice) - Number(a.paid)),
+	);
+	let totalTaken = 0;
+	row.taken?.map(
+		(a, e) => (totalTaken += Number(a.actualPrice) - Number(a.paid)),
+	);
+
 	return (
 		<React.Fragment>
-			<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+			<TableRow sx={{ borderTop: '2px solid #eee' }}>
 				<TableCell component='th' scope='row'>
 					<span className='name'>{row.name}</span>
 				</TableCell>
-				<TableCell sx={{ padding: '10px' }} align='right'>
-					{row.balance}
+				<TableCell
+					sx={{ padding: '10px', fontWeight: '600' }}
+					style={
+						totalGiven > totalTaken
+							? { color: 'green' }
+							: { color: 'darkred' }
+					}
+					align='right'
+				>
+					{totalGiven > totalTaken ? (
+						totalGiven - totalTaken
+					) : (
+						<span>
+							<span>- </span>
+							{totalTaken - totalGiven}
+						</span>
+					)}
 				</TableCell>
 				<TableCell onClick={() => updateUser(row)} align='right'>
 					{row.editButton}
@@ -46,49 +70,122 @@ function Row({ row, deleteUser, updateUser }) {
 					</IconButton>
 				</TableCell>
 			</TableRow>
+			<TableRow
+				sx={{
+					height: '3px',
+				}}
+			></TableRow>
 			<TableRow>
 				<TableCell
 					style={{
 						paddingBottom: 0,
 						paddingTop: 0,
-						background: '#5E8B7E',
+						background:
+							'linear-gradient(90deg, rgba(94,139,126,1) 0%, rgba(99,158,140,1) 42%, rgba(125,187,134,1) 100%)',
 					}}
 					colSpan={6}
 				>
 					<Collapse in={open} timeout='auto' unmountOnExit>
 						<Box sx={{ margin: 1 }}>
-							<Typography variant='h6' gutterBottom component='div'>
-								History
-							</Typography>
-							<Table size='small' aria-label='hystory'>
-								<TableHead>
-									<TableRow>
-										<TableCell>Date</TableCell>
-										<TableCell padding='none'>Actual</TableCell>
-										<TableCell align='right'>Paid</TableCell>
-										<TableCell align='right'>Balance</TableCell>
-									</TableRow>
-								</TableHead>
+							{row.given.length !== 0 && (
+								<div>
+									<Typography
+										variant='h5'
+										sx={{
+											color: 'green',
+										}}
+										gutterBottom
+										component='div'
+									>
+										<span style={{ marginRight: '10px' }}>Given</span>
+										<i className='fas fa-arrow-alt-circle-up'></i>
+										<span style={{ marginLeft: '25%' }}>
+											Total : {totalGiven}
+										</span>
+									</Typography>
+									<Table size='small' aria-label='given'>
+										<TableHead>
+											<TableRow>
+												<TableCell>Date</TableCell>
+												<TableCell padding='none'>Actual</TableCell>
+												<TableCell align='right'>Paid</TableCell>
+												<TableCell align='right'>Balance</TableCell>
+											</TableRow>
+										</TableHead>
 
-								<TableBody>
-									{row.hystory?.map((historyRow, i) => (
-										<TableRow key={new Date().getMilliseconds() + i}>
-											<TableCell component='th' scope='row'>
-												{historyRow.date}
-											</TableCell>
-											<TableCell padding='none'>
-												{historyRow.actualPrice}
-											</TableCell>
-											<TableCell align='right'>
-												{historyRow.paid}
-											</TableCell>
-											<TableCell align='right'>
-												{historyRow.actualPrice - historyRow.paid}
-											</TableCell>
-										</TableRow>
-									))}
-								</TableBody>
-							</Table>
+										<TableBody>
+											{row.given?.map((historyRow, i) => (
+												<TableRow
+													key={new Date().getMilliseconds() + i}
+												>
+													<TableCell component='th' scope='row'>
+														{historyRow.date}
+													</TableCell>
+													<TableCell padding='none'>
+														{historyRow.actualPrice}
+													</TableCell>
+													<TableCell align='right'>
+														{historyRow.paid}
+													</TableCell>
+													<TableCell align='right'>
+														{historyRow.actualPrice - historyRow.paid}
+													</TableCell>
+												</TableRow>
+											))}
+										</TableBody>
+									</Table>
+								</div>
+							)}
+
+							{row.taken.length !== 0 && (
+								<div>
+									<Typography
+										variant='h5'
+										sx={{
+											marginTop: '15px',
+											color: 'darkred',
+										}}
+										component='div'
+									>
+										<span style={{ marginRight: '10px' }}>Taken</span>
+										<i className='fas fa-arrow-alt-circle-down'></i>
+										<span style={{ marginLeft: '25%' }}>
+											Total : {totalTaken}
+										</span>
+									</Typography>
+									<Table size='small' aria-label='taken'>
+										<TableHead>
+											<TableRow>
+												<TableCell>Date</TableCell>
+												<TableCell padding='none'>Actual</TableCell>
+												<TableCell align='right'>Paid</TableCell>
+												<TableCell align='right'>Balance</TableCell>
+											</TableRow>
+										</TableHead>
+
+										<TableBody>
+											{row.taken?.map((historyRow, i) => (
+												<TableRow
+													key={new Date().getMilliseconds() + i}
+												>
+													<TableCell component='th' scope='row'>
+														{historyRow.date}
+													</TableCell>
+													<TableCell padding='none'>
+														{historyRow.actualPrice}
+													</TableCell>
+													<TableCell align='right'>
+														{historyRow.paid}
+													</TableCell>
+													<TableCell align='right'>
+														{historyRow.actualPrice - historyRow.paid}
+													</TableCell>
+												</TableRow>
+											))}
+										</TableBody>
+									</Table>
+								</div>
+							)}
 						</Box>
 					</Collapse>
 				</TableCell>

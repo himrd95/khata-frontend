@@ -1,10 +1,10 @@
-import React, {
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
-import { Button, DialogTitle, TextField } from '@material-ui/core';
+import React, { useContext, useRef, useState } from 'react';
+import {
+	Button,
+	DialogTitle,
+	Input,
+	TextField,
+} from '@material-ui/core';
 import Styled from 'styled-components';
 import { provider } from '../../Context/ContextPovider';
 import { CircularProgress } from '@mui/material';
@@ -27,8 +27,11 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
 	const [e, setE] = useState(false);
 
 	const handlechange = (e) => {
-		const { name, value } = e.target;
-		setPayLoad({ ...payload, [name]: value });
+		const { name, value, files } = e.target;
+		setPayLoad({
+			...payload,
+			[name]: name === 'profile' ? files[0] : value,
+		});
 		if (name === 'email') {
 			setE(false);
 		}
@@ -66,7 +69,7 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
 		return true;
 	};
 
-	console.log(passwordRef.current, 'jhjhbjh');
+	console.log(payload, 'jhjhbjh');
 	return (
 		<Container>
 			<Error>{error.open ? error.message : ' '}</Error>
@@ -130,6 +133,18 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
 				label='Confirm Password'
 				variant='filled'
 				name='confirm'
+			/>
+			<br />
+			<br />
+			<Input
+				ref={passwordRef}
+				onChange={(e) => handlechange(e)}
+				type='file'
+				required
+				id='filled-required'
+				label='Profile'
+				variant='filled'
+				name='profile'
 			/>
 			<br />
 			<br />

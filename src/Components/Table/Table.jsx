@@ -28,7 +28,8 @@ export default function CollapsibleTable({ users }) {
 	const [newRows, setNewRows] = React.useState([]);
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [content, setContent] = React.useState('');
-	const { handleState, adminPannel } = useContext(provider);
+	const { handleState, adminPannel, setIsLoading } =
+		useContext(provider);
 
 	const setRows = () => {
 		const editButton = <i className='far fa-edit'></i>;
@@ -59,14 +60,15 @@ export default function CollapsibleTable({ users }) {
 	};
 
 	const handleAddUser = (payload) => {
-		const { name, actualPrice, paid } = payload;
+		setIsLoading(true);
+		const { name, actualPrice, paid, mode } = payload;
 		const d = new Date();
 		const date =
 			d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
 		const newPayload = {
 			name,
 			balance: paid ? actualPrice - paid : 0,
-			hystory: paid ? [{ actualPrice, paid, date }] : [],
+			[mode]: paid ? [{ actualPrice, paid, date }] : [],
 		};
 		const url = `https://server-khata.herokuapp.com/users/`;
 		const headers = {
@@ -76,7 +78,10 @@ export default function CollapsibleTable({ users }) {
 		};
 		axios
 			.post(url, newPayload, headers)
-			.then((res) => handleState('User has been successfully added'))
+			.then((res) => {
+				handleState('User has been successfully added');
+				setIsLoading(false);
+			})
 			.catch((e) => console.log(e))
 			.finally(() => handleClose());
 	};
@@ -114,6 +119,7 @@ export default function CollapsibleTable({ users }) {
 		);
 	};
 
+	// Update main axios Function =>>>---------------------------------------------------------
 	const updateRequest = (id, payload) => {
 		handleClose();
 		const url = `https://server-khata.herokuapp.com/users/${id}`;
@@ -126,31 +132,33 @@ export default function CollapsibleTable({ users }) {
 			.patch(url, payload, headers)
 			.then((res) => {
 				handleState('User has been successfully updated');
-				console.log(res.data);
 			})
 			.catch((e) => console.log(e));
 	};
 
-	const handleUpdate = (payload, row, edit, index, remove) => {
+	const handleUpdate = (payload, row, edit, index, remove, mode) => {
 		const d = new Date();
 		const date =
 			d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
 
 		if (remove) {
-			row.hystory.splice(index, 1);
+			row[mode].splice(index, 1);
 		} else {
 			if (!edit) {
-				row.hystory.push({ ...payload, date });
+				row[mode] = [...row[mode], { ...payload, date }];
 			} else {
-				row.hystory[index] = { ...payload, date };
+				row[mode][index] = { ...payload, date };
 			}
 		}
 
 		let sum = 0;
-		row.hystory?.forEach((item) => {
+		row.given?.forEach((item) => {
 			sum += Number(item.actualPrice) - Number(item.paid);
 		});
-		updateRequest(row._id, { balance: sum, hystory: row.hystory });
+		row.taken?.forEach((item) => {
+			sum += Number(item.actualPrice) - Number(item.paid);
+		});
+		updateRequest(row._id, { balance: sum, [mode]: row[mode] });
 	};
 
 	const handleUpdateAdd = (row) => {
@@ -162,9 +170,9 @@ export default function CollapsibleTable({ users }) {
 			/>,
 		);
 	};
-	const editAndUpdate = (row, index, remove) => {
+	const editAndUpdate = (row, index, remove, mode) => {
 		if (remove) {
-			handleUpdate('', row, false, index, remove);
+			handleUpdate('', row, false, index, remove, mode);
 			return;
 		}
 		setContent(
@@ -174,6 +182,7 @@ export default function CollapsibleTable({ users }) {
 				row={row}
 				edit={true}
 				index={index}
+				mode={mode}
 			/>,
 		);
 	};
@@ -216,7 +225,6 @@ export default function CollapsibleTable({ users }) {
 				>
 					EDIT a trasection?
 				</Button>
-				{/* <br /> */}
 				<Button
 					onClick={() => handleUpdateRemove(row)}
 					variant='outlined'
@@ -243,7 +251,8 @@ export default function CollapsibleTable({ users }) {
 				<TableHead
 					className='header'
 					style={{
-						background: '#DFEEEA',
+						background:
+							'linear-gradient(90deg, rgba(167,215,161,1) 0%, rgba(198,192,255,0.3981967787114846) 56%, rgba(183,196,250,1) 90%, rgba(205,162,255,1) 100%)',
 					}}
 				>
 					<TableRow>
@@ -266,7 +275,12 @@ export default function CollapsibleTable({ users }) {
 						</TableCell>
 					</TableRow>
 				</TableHead>
-				<TableBody style={{ background: '#A7C4BC' }}>
+				<TableBody
+					style={{
+						background:
+							'linear-gradient(90deg, rgba(215,212,255,1) 0%, rgba(228,225,255,1) 25%, rgba(229,235,252,1) 71%, rgba(220,255,216,1) 100%)',
+					}}
+				>
 					{newRows.map((row) => (
 						<Row
 							key={row.name}

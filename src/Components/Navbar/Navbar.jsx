@@ -37,7 +37,10 @@ const Navbar = () => {
 						LogIn
 					</Button>
 				) : (
-					<FadeMenu userName={adminPannel.admin.name.split(' ')[0]} />
+					<FadeMenu
+						userName={adminPannel.admin.name.split(' ')[0]}
+						pic={adminPannel.admin.profile}
+					/>
 				)}
 			</div>
 		</div>

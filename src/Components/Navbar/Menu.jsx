@@ -5,10 +5,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import { provider } from '../../Context/ContextPovider';
 
-export default function FadeMenu({ userName }) {
+export default function FadeMenu({ userName, pic }) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
-	const { adminPannel, setAdminPannel } = React.useContext(provider);
+	const { setAdminPannel } = React.useContext(provider);
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -26,18 +26,39 @@ export default function FadeMenu({ userName }) {
 	return (
 		<div>
 			<Button
-				sx={{ position: 'absolute', right: '5%', color: '#2bc3ff' }}
+				sx={{
+					position: 'absolute',
+					right: '5%',
+					color: '#2bc3ff',
+					display: 'flex',
+					alignItems: 'center',
+				}}
 				id='fade-button'
 				aria-controls='fade-menu'
 				aria-haspopup='true'
 				aria-expanded={open ? 'true' : undefined}
 				onClick={handleClick}
 			>
+				{!pic ? (
+					<i className='fas fa-user-circle'></i>
+				) : (
+					<img
+						style={{
+							width: '40px',
+							height: '40px',
+							borderRadius: '50%',
+						}}
+						src={`https://server-khata.herokuapp.com/${pic}`}
+						alt='pofile_picture'
+					/>
+				)}
 				<span style={{ marginLeft: '10px', color: 'whitesmoke' }}>
-					<i className='fas fa-chevron-down'></i>{' '}
 					<span style={{ margin: '0 5px' }}> Hi </span>
 				</span>
-				{userName} ...
+				{userName}
+				<span style={{ marginLeft: '10px', color: 'whitesmoke' }}>
+					<i className='fas fa-chevron-down'></i>{' '}
+				</span>
 			</Button>
 			<Menu
 				id='fade-menu'

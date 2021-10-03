@@ -38,7 +38,6 @@ const Dashboard = () => {
 	React.useEffect(() => {
 		getUsers();
 	}, [state]);
-	console.log(users);
 
 	React.useEffect(() => {
 		message !== '' && setOpen(true);

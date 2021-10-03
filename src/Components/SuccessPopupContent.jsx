@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-	Button,
-	DialogTitle,
-	Paper,
-	TextField,
-} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import Styled from 'styled-components';
 
 const Container = Styled.div`
