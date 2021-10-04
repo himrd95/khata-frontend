@@ -104,7 +104,7 @@ const Registration = () => {
 		<div className='messages'>
 			<div>
 				<div className='unused'></div>
-				<h1>Tired of managing your daily expences?</h1>
+				<h1>Tired of managing your daily expenses?</h1>
 				<h3>Here's the solution. So let's</h3>
 				<Button
 					onClick={() => handleRegistrationModal()}

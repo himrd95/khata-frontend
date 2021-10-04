@@ -53,7 +53,12 @@ export default function FadeMenu({ userName, pic }) {
 					/>
 				)}
 				<span style={{ marginLeft: '10px', color: 'whitesmoke' }}>
-					<span style={{ margin: '0 5px' }}> Hi </span>
+					<span
+						style={{ margin: '0 5px', textTransform: 'capitalize' }}
+					>
+						{' '}
+						Hi{' '}
+					</span>
 				</span>
 				{userName}
 				<span style={{ marginLeft: '10px', color: 'whitesmoke' }}>

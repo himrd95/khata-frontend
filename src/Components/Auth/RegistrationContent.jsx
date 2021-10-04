@@ -25,6 +25,12 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
 	const { isLoading, error, setError } = useContext(provider);
 	const passwordRef = useRef(false);
 	const [e, setE] = useState(false);
+	const inputRef = useRef();
+
+	const handleChoose = () => {
+		inputRef.current.click();
+		// buttonRef.current.style.background = '#fcfcfc';
+	};
 
 	const handlechange = (e) => {
 		const { name, value, files } = e.target;
@@ -69,7 +75,6 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
 		return true;
 	};
 
-	console.log(payload, 'jhjhbjh');
 	return (
 		<Container>
 			<Error>{error.open ? error.message : ' '}</Error>
@@ -137,15 +142,37 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
 			<br />
 			<br />
 			<Input
-				ref={passwordRef}
+				ref={inputRef}
+				accept='image/*'
+				id='raised-button-file'
 				onChange={(e) => handlechange(e)}
 				type='file'
 				required
-				id='filled-required'
 				label='Profile'
 				variant='filled'
 				name='profile'
+				multiple
+				style={{ display: 'none' }}
 			/>
+			<label htmlFor='raised-button-file'>
+				<Button
+					variant='contained'
+					component='span'
+					onClick={handleChoose}
+				>
+					Choose Profile Picture
+					{/* <Input
+						ref={inputRef}
+						onChange={(e) => handlechange(e)}
+						type='file'
+						required
+						label='Profile'
+						variant='filled'
+						name='profile'
+						style={{ display: 'none' }}
+					/> */}
+				</Button>
+			</label>
 			<br />
 			<br />
 			<Button
@@ -166,7 +193,7 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
 						size={16}
 					/>
 				)}
-				Add User
+				Sign up
 			</Button>
 		</Container>
 	);
