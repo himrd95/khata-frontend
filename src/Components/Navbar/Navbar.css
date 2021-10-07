@@ -10,11 +10,6 @@
 	justify-content: space-between !important;
 	align-items: center;
 }
-/* .nav-menu {
-	position: fixed;
-	right: 5%;
-} */
-
 @media screen and (max-width: 500px) {
 	.nav div {
 		width: 95%;
