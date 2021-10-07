@@ -55,11 +55,6 @@ const Dashboard = () => {
 	return (
 		<div>
 			<div className={isLoading ? 'unused' : 'unused'}></div>
-
-			{/* {isLoading ? (
-				<LinearProgress color='secondary' />
-			) : (
-			)} */}
 			<CollapsibleTable users={users} />
 			<Snackbar
 				open={open}
