@@ -25,10 +25,3 @@
 .editCol span {
 	width: 20%;
 }
-
-@media screen and (max-width: 500px) {
-	/* .header {
-		font-weight: 700;
-		font-size: 0.8rem;
-	} */
-}
