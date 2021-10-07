@@ -29,7 +29,6 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
 
 	const handleChoose = () => {
 		inputRef.current.click();
-		// buttonRef.current.style.background = '#fcfcfc';
 	};
 
 	const handlechange = (e) => {

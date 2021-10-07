@@ -81,9 +81,13 @@ const UpdateUser = ({
 						placeholder='Mode'
 						onChange={(e) => setModeVal(e.target.value)}
 					>
-						<MenuItem value={'given'}>Given</MenuItem>
+						<MenuItem value={'given'}>
+							<span style={{ margin: '5px 20px' }}>Given</span>{' '}
+						</MenuItem>
 						<br />
-						<MenuItem value={'taken'}>Taken</MenuItem>
+						<MenuItem value={'taken'}>
+							<span style={{ margin: '5px 20px' }}>Taken</span>
+						</MenuItem>
 					</Select>
 				)}
 

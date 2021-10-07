@@ -66,10 +66,14 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 			<br />
 			<FormControl
 				variant='filled'
-				sx={{ minWidth: 60, display: 'flex' }}
+				sx={{
+					minWidth: 60,
+					display: 'flex',
+				}}
 			>
 				<InputLabel id='demo-simple-select-label'>Mode</InputLabel>
 				<Select
+					required
 					labelId='demo-simple-select-label'
 					id='demo-simple-select'
 					value={payload.mode}
@@ -78,9 +82,14 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 					placeholder='Mode'
 					onChange={(e) => handlechange(e)}
 				>
-					<MenuItem value={'given'}>Given</MenuItem>
+					<MenuItem value={'given'}>
+						{' '}
+						<span style={{ margin: '5px 20px' }}>Given</span>{' '}
+					</MenuItem>
 					<br />
-					<MenuItem value={'taken'}>Taken</MenuItem>
+					<MenuItem value={'taken'}>
+						<span style={{ margin: '5px 20px' }}>Taken</span>
+					</MenuItem>
 				</Select>
 
 				<Paper

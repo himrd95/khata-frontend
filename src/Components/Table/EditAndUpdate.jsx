@@ -75,6 +75,7 @@ export default function DataTable({
 							<TableBody>
 								{row.given?.map((SingleRow, i) => (
 									<TableRow
+										sx={{ cursor: 'pointer' }}
 										key={SingleRow.date}
 										onClick={() =>
 											editAndUpdate(row, i, remove, 'given')

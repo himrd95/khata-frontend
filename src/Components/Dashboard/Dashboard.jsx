@@ -19,6 +19,7 @@ const Dashboard = () => {
 	const [isLoading, setIsLoading] = React.useState(false);
 	const { state, message, adminPannel } = useContext(provider);
 	const [open, setOpen] = React.useState(false);
+
 	const getUsers = (id) => {
 		setIsLoading(true);
 		let url;
@@ -35,6 +36,7 @@ const Dashboard = () => {
 			.catch((e) => console.log(e))
 			.finally(() => setIsLoading(false));
 	};
+
 	React.useEffect(() => {
 		getUsers();
 	}, [state]);
@@ -42,22 +44,23 @@ const Dashboard = () => {
 	React.useEffect(() => {
 		message !== '' && setOpen(true);
 	}, [message]);
+
 	const handleClose = (event, reason) => {
 		if (reason === 'clickaway') {
 			return;
 		}
-
 		setOpen(false);
 	};
+
 	return (
 		<div>
-			<div className={isLoading ? 'unused-before' : 'unused'}></div>
+			<div className={isLoading ? 'unused' : 'unused'}></div>
 
-			{isLoading ? (
+			{/* {isLoading ? (
 				<LinearProgress color='secondary' />
 			) : (
-				<CollapsibleTable users={users} />
-			)}
+			)} */}
+			<CollapsibleTable users={users} />
 			<Snackbar
 				open={open}
 				autoHideDuration={6000}

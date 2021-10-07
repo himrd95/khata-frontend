@@ -27,7 +27,7 @@ export default function FadeMenu({ userName, pic }) {
 		<div>
 			<Button
 				sx={{
-					position: 'absolute',
+					position: 'fixed',
 					right: '5%',
 					color: '#2bc3ff',
 					display: 'flex',
