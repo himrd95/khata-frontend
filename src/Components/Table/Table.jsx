@@ -205,6 +205,8 @@ export default function CollapsibleTable({ users }) {
 			/>,
 		);
 	};
+
+	// Buttons for updating users ====================>>>>>>>
 	const updateUser = (row) => {
 		setIsOpen(true);
 		setContent(
