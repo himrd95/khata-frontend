@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import './Dashboard.css';
 import axios from 'axios';
 import CollapsibleTable from '../Table/Table';
-import Navbar from '../Navbar/Navbar';
 import { provider } from '../../Context/ContextPovider';
-import { LinearProgress, Snackbar } from '@mui/material';
+import { Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
+import speak from '../../utils/spetch';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return (
@@ -20,8 +20,13 @@ const Dashboard = () => {
 	const { state, message, adminPannel } = useContext(provider);
 	const [open, setOpen] = React.useState(false);
 
+	React.useEffect(() => {
+		speak(`Welcome back, ${adminPannel.admin.name.split(' ')[0]}`);
+	}, []);
+
 	const getUsers = (id) => {
 		setIsLoading(true);
+
 		let url;
 		if (id) url = `https://server-khata.herokuapp.com/users/${id}`;
 		else url = `https://server-khata.herokuapp.com/users/`;

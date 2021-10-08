@@ -10,7 +10,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { useContext, useEffect } from 'react';
 import Styled from 'styled-components';
+import { provider } from '../../Context/ContextPovider';
+import speak from '../../utils/spetch';
 import './Table.css';
 
 const Container = Styled.div`
@@ -26,14 +29,21 @@ export default function DataTable({
 	editAndUpdate,
 	remove,
 }) {
+	const { adminPannel } = useContext(provider);
+	const action = remove ? 'Delete' : 'Edit';
+	useEffect(() => {
+		adminPannel.voice &&
+			speak(`Select the Transaction which you want to
+				${action}`);
+	}, []);
+
 	return (
 		<Container>
 			<DialogTitle>
-				Select the Transaction which you want to{' '}
-				{remove ? 'Delete' : 'Edit'}
+				Select the Transaction which you want to {action}
 			</DialogTitle>
 			<TableContainer>
-				{row.given && (
+				{row.given.length > 0 && (
 					<div>
 						<Typography
 							variant='h6'
@@ -76,7 +86,7 @@ export default function DataTable({
 								{row.given?.map((SingleRow, i) => (
 									<TableRow
 										sx={{ cursor: 'pointer' }}
-										key={SingleRow.date}
+										key={SingleRow.actualPrice + SingleRow.paid}
 										onClick={() =>
 											editAndUpdate(row, i, remove, 'given')
 										}
@@ -106,7 +116,7 @@ export default function DataTable({
 					</div>
 				)}
 
-				{row.taken && (
+				{row.taken.length > 0 && (
 					<div>
 						<Typography
 							variant='h6'
@@ -148,7 +158,11 @@ export default function DataTable({
 							<TableBody>
 								{row.taken?.map((SingleRow, i) => (
 									<TableRow
-										key={SingleRow.date}
+										key={
+											SingleRow.date +
+											SingleRow.actualPrice +
+											SingleRow.paid
+										}
 										onClick={() =>
 											editAndUpdate(row, i, remove, 'taken')
 										}

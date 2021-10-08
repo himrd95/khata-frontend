@@ -5,7 +5,7 @@ import {
 	TextField,
 } from '@material-ui/core';
 import Styled from 'styled-components';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { provider } from '../../Context/ContextPovider';
 import { CircularProgress, DialogActions } from '@mui/material';
 
@@ -13,6 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import speak from '../../utils/spetch';
 
 const Container = Styled.div`
 padding:10px 30px;
@@ -23,12 +24,16 @@ margin:auto;
 const NewUser = ({ handleClose, handleAddUser }) => {
 	const [payload, setPayload] = useState({ mode: '' });
 
-	const { isLoading } = useContext(provider);
+	const { isLoading, adminPannel } = useContext(provider);
 
 	const handlechange = (e) => {
 		const { name, value } = e.target;
 		setPayload({ ...payload, [name]: value });
 	};
+
+	useEffect(() => {
+		adminPannel.voice && speak('Add a new User');
+	}, []);
 
 	return (
 		<Container>

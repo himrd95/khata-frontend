@@ -5,6 +5,7 @@ export const provider = createContext();
 const preToken = JSON.parse(localStorage.getItem('khata')) || {
 	token: '',
 	admin: {},
+	voice: false,
 };
 const ContextPovider = ({ children }) => {
 	const [state, setState] = useState(false);

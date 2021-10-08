@@ -8,7 +8,7 @@ import { provider } from '../../Context/ContextPovider';
 export default function FadeMenu({ userName, pic }) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
-	const { setAdminPannel } = React.useContext(provider);
+	const { adminPannel, setAdminPannel } = React.useContext(provider);
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -23,15 +23,22 @@ export default function FadeMenu({ userName, pic }) {
 			admin: {},
 		});
 	};
+	const handleVoice = () => {
+		handleClose();
+		setAdminPannel({ ...adminPannel, voice: !adminPannel.voice });
+	};
+	const action = adminPannel.voice ? 'off' : 'on';
 	return (
 		<div>
 			<Button
 				sx={{
 					position: 'fixed',
-					right: '5%',
+					right: '5% !important',
+					left: '82%',
 					color: '#2bc3ff',
 					display: 'flex',
 					alignItems: 'center',
+					zIndex: 10,
 				}}
 				id='fade-button'
 				aria-controls='fade-menu'
@@ -75,7 +82,7 @@ export default function FadeMenu({ userName, pic }) {
 				onClose={handleClose}
 				TransitionComponent={Fade}
 			>
-				<MenuItem onClick={handleClose}>Profile</MenuItem>
+				<MenuItem onClick={handleVoice}>Turn {action} voice</MenuItem>
 				<MenuItem onClick={handleClose}>My account</MenuItem>
 				<MenuItem onClick={handleLogOut}>Logout</MenuItem>
 			</Menu>

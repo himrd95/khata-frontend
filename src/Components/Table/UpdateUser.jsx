@@ -5,12 +5,13 @@ import {
 	TextField,
 } from '@material-ui/core';
 import Styled from 'styled-components';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { DialogActions } from '@mui/material';
+import speak from '../../utils/spetch';
+import { provider } from '../../Context/ContextPovider';
 
 const Container = Styled.div`
 padding:30px;
@@ -35,11 +36,16 @@ const UpdateUser = ({
 		: { actualPrice: '', paid: '' };
 
 	const [payload, setPayLoad] = React.useState(initState);
+	const { adminPannel } = useContext(provider);
 
 	const handlechange = (e) => {
 		const { name, value } = e.target;
 		setPayLoad({ ...payload, [name]: value });
 	};
+
+	useEffect(() => {
+		adminPannel.voice && speak(`Update ${row.name}'s account`);
+	}, []);
 	return (
 		<Container>
 			<DialogTitle>Update {row.name}'s account</DialogTitle>
@@ -106,7 +112,7 @@ const UpdateUser = ({
 					</span>
 				</Paper>
 			</FormControl>
-			<DialogActions>
+			<div>
 				<Button
 					onClick={handleClose}
 					style={{ marginRight: '10px' }}
@@ -130,7 +136,7 @@ const UpdateUser = ({
 				>
 					Update
 				</Button>
-			</DialogActions>
+			</div>
 		</Container>
 	);
 };
