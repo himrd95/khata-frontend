@@ -34,7 +34,6 @@ export default function FadeMenu({ userName, pic }) {
 				sx={{
 					position: 'fixed',
 					right: '5% !important',
-					left: '82%',
 					color: '#2bc3ff',
 					display: 'flex',
 					alignItems: 'center',

@@ -59,8 +59,9 @@ const Dashboard = () => {
 
 	return (
 		<div>
-			<div className={isLoading ? 'unused' : 'unused'}></div>
+			<div className='unused'></div>
 			<CollapsibleTable users={users} />
+			<div className='unused'></div>
 			<Snackbar
 				open={open}
 				autoHideDuration={6000}
