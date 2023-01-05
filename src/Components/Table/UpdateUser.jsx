@@ -10,7 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import speak from '../../utils/spetch';
+import speak from '../../utils/speech';
 import { provider } from '../../Context/ContextPovider';
 
 const Container = Styled.div`
@@ -52,39 +52,39 @@ const UpdateUser = ({
 
 			<TextField
 				onChange={(e) => handlechange(e)}
-				type='number'
-				id='filled-required'
+				type="number"
+				id="filled-required"
 				label={edit ? row[mode][index].actualPrice : 'Actual amount'}
-				variant='filled'
-				name='actualPrice'
+				variant="filled"
+				name="actualPrice"
 			/>
 			<br />
 			<br />
 			<TextField
 				onChange={(e) => handlechange(e)}
-				id='filled-required'
-				type='number'
+				id="filled-required"
+				type="number"
 				label={edit ? row[mode][index].paid : 'Paid Amount'}
-				variant='filled'
-				name='paid'
+				variant="filled"
+				name="paid"
 			/>
 			<br />
 			<br />
 			<FormControl
-				variant='filled'
+				variant="filled"
 				sx={{ minWidth: 60, display: 'flex' }}
 			>
 				{!edit && (
-					<InputLabel id='demo-simple-select-label'>Mode</InputLabel>
+					<InputLabel id="demo-simple-select-label">Mode</InputLabel>
 				)}
 				{!edit && (
 					<Select
-						labelId='demo-simple-select-label'
-						id='demo-simple-select'
+						labelId="demo-simple-select-label"
+						id="demo-simple-select"
 						value={modeVal}
-						label='Mode'
-						name='mode'
-						placeholder='Mode'
+						label="Mode"
+						name="mode"
+						placeholder="Mode"
 						onChange={(e) => setModeVal(e.target.value)}
 					>
 						<MenuItem value={'given'}>
@@ -116,7 +116,7 @@ const UpdateUser = ({
 				<Button
 					onClick={handleClose}
 					style={{ marginRight: '10px' }}
-					variant='contained'
+					variant="contained"
 				>
 					Cancle
 				</Button>
@@ -131,8 +131,8 @@ const UpdateUser = ({
 							edit ? mode : modeVal,
 						)
 					}
-					variant='contained'
-					color='primary'
+					variant="contained"
+					color="primary"
 				>
 					Update
 				</Button>

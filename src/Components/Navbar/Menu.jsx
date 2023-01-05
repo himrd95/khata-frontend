@@ -4,6 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import { provider } from '../../Context/ContextPovider';
+import { BASE_URL } from '../../constants';
 
 export default function FadeMenu({ userName, pic }) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -39,14 +40,14 @@ export default function FadeMenu({ userName, pic }) {
 					alignItems: 'center',
 					zIndex: 10,
 				}}
-				id='fade-button'
-				aria-controls='fade-menu'
-				aria-haspopup='true'
+				id="fade-button"
+				aria-controls="fade-menu"
+				aria-haspopup="true"
 				aria-expanded={open ? 'true' : undefined}
 				onClick={handleClick}
 			>
 				{!pic ? (
-					<i className='fas fa-user-circle'></i>
+					<i className="fas fa-user-circle"></i>
 				) : (
 					<img
 						style={{
@@ -54,8 +55,8 @@ export default function FadeMenu({ userName, pic }) {
 							height: '40px',
 							borderRadius: '50%',
 						}}
-						src={`https://server-khata.herokuapp.com/${pic}`}
-						alt='pofile_picture'
+						src={`${BASE_URL}/${pic}`}
+						alt="pofile_picture"
 					/>
 				)}
 				<span style={{ marginLeft: '10px', color: 'whitesmoke' }}>
@@ -68,11 +69,11 @@ export default function FadeMenu({ userName, pic }) {
 				</span>
 				{userName}
 				<span style={{ marginLeft: '10px', color: 'whitesmoke' }}>
-					<i className='fas fa-chevron-down'></i>{' '}
+					<i className="fas fa-chevron-down"></i>{' '}
 				</span>
 			</Button>
 			<Menu
-				id='fade-menu'
+				id="fade-menu"
 				MenuListProps={{
 					'aria-labelledby': 'fade-button',
 				}}

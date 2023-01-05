@@ -5,11 +5,12 @@ import CollapsibleTable from '../Table/Table';
 import { provider } from '../../Context/ContextPovider';
 import { Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
-import speak from '../../utils/spetch';
+import speak from '../../utils/speech';
+import { BASE_URL } from '../../constants';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return (
-		<MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
+		<MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 	);
 });
 
@@ -28,8 +29,8 @@ const Dashboard = () => {
 		setIsLoading(true);
 
 		let url;
-		if (id) url = `https://server-khata.herokuapp.com/users/${id}`;
-		else url = `https://server-khata.herokuapp.com/users/`;
+		if (id) url = `${BASE_URL}/users/${id}`;
+		else url = `${BASE_URL}/users/`;
 		const headers = {
 			headers: {
 				Authorization: 'Bearer ' + adminPannel.token,
@@ -59,9 +60,9 @@ const Dashboard = () => {
 
 	return (
 		<div>
-			<div className='unused'></div>
+			<div className="unused"></div>
 			<CollapsibleTable users={users} />
-			<div className='unused'></div>
+			<div className="unused"></div>
 			<Snackbar
 				open={open}
 				autoHideDuration={6000}
@@ -69,7 +70,7 @@ const Dashboard = () => {
 			>
 				<Alert
 					onClose={handleClose}
-					severity='success'
+					severity="success"
 					sx={{ width: '100%' }}
 				>
 					{message}!

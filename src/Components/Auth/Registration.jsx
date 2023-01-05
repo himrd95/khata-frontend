@@ -1,18 +1,21 @@
 import { Button } from '@mui/material';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
+import { BASE_URL } from '../../constants';
 import { provider } from '../../Context/ContextPovider';
 import SimpleDialog from '../Modal';
 import { SuccessPopupContent } from '../SuccessPopupContent';
 import LoginContent from './LoginContent';
 import './Registration.css';
 import RegistrationContent from './RegistrationContent';
+import dotenv from 'dotenv';
 
 const Registration = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [content, setContent] = useState('');
 	const { loginPopup, setAdminPannel, setIsLoading, setError } =
 		useContext(provider);
+	dotenv.config();
 
 	const handleClose = () => {
 		setIsOpen(false);
@@ -33,7 +36,7 @@ const Registration = () => {
 		formData.append('profile', profile);
 		setError({ message: '', open: false });
 		setIsLoading(true);
-		const url = `https://server-khata.herokuapp.com/register/`;
+		const url = `${BASE_URL}/register/`;
 		axios
 			.post(url, formData)
 			.then((res) => {
@@ -67,9 +70,10 @@ const Registration = () => {
 	};
 
 	const handleLogin = (payload) => {
+		console.log(BASE_URL, '+++++');
 		setError({ message: '', open: false });
 		setIsLoading(true);
-		const url = `https://server-khata.herokuapp.com/login/`;
+		const url = `${BASE_URL}/login/`;
 		axios
 			.post(url, { ...payload })
 			.then((res) => {
@@ -101,16 +105,16 @@ const Registration = () => {
 		}
 	}, [loginPopup]);
 	return (
-		<div className='messages'>
+		<div className="messages">
 			<div>
-				<div className='unused'></div>
+				<div className="unused"></div>
 				<h1>Tired of managing your daily expenses?</h1>
 				<h3>Here's the solution. So let's</h3>
 				<Button
 					onClick={() => handleRegistrationModal()}
 					sx={{ padding: '10px 25px' }}
-					variant='contained'
-					color='primary'
+					variant="contained"
+					color="primary"
 				>
 					Get Started
 				</Button>

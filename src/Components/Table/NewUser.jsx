@@ -13,7 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import speak from '../../utils/spetch';
+import speak from '../../utils/speech';
 
 const Container = Styled.div`
 padding:10px 30px;
@@ -42,49 +42,49 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 			<TextField
 				onChange={(e) => handlechange(e)}
 				required
-				id='filled-required'
-				label='Name'
-				variant='filled'
-				name='name'
+				id="filled-required"
+				label="Name"
+				variant="filled"
+				name="name"
 			/>
 			<br />
 			<br />
 			<TextField
 				onChange={(e) => handlechange(e)}
-				type='number'
-				id='filled-required'
-				label='Actual amount'
-				variant='filled'
-				name='actualPrice'
+				type="number"
+				id="filled-required"
+				label="Actual amount"
+				variant="filled"
+				name="actualPrice"
 			/>
 			<br />
 			<br />
 			<TextField
 				onChange={(e) => handlechange(e)}
-				id='filled-required'
-				type='number'
-				label='Paid Amount'
-				variant='filled'
-				name='paid'
+				id="filled-required"
+				type="number"
+				label="Paid Amount"
+				variant="filled"
+				name="paid"
 			/>
 			<br />
 			<br />
 			<FormControl
-				variant='filled'
+				variant="filled"
 				sx={{
 					minWidth: 60,
 					display: 'flex',
 				}}
 			>
-				<InputLabel id='demo-simple-select-label'>Mode</InputLabel>
+				<InputLabel id="demo-simple-select-label">Mode</InputLabel>
 				<Select
 					required
-					labelId='demo-simple-select-label'
-					id='demo-simple-select'
+					labelId="demo-simple-select-label"
+					id="demo-simple-select"
 					value={payload.mode}
-					label='Mode'
-					name='mode'
-					placeholder='Mode'
+					label="Mode"
+					name="mode"
+					placeholder="Mode"
 					onChange={(e) => handlechange(e)}
 				>
 					<MenuItem value={'given'}>
@@ -116,14 +116,14 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 				<Button
 					onClick={handleClose}
 					sx={{ margin: '0 10px 10px 0' }}
-					variant='contained'
+					variant="contained"
 				>
 					Cancel
 				</Button>
 				<Button
 					onClick={() => handleAddUser(payload)}
-					variant='contained'
-					color='primary'
+					variant="contained"
+					color="primary"
 				>
 					{isLoading && (
 						<CircularProgress

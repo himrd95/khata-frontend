@@ -13,7 +13,7 @@ import TableRow from '@mui/material/TableRow';
 import { useContext, useEffect } from 'react';
 import Styled from 'styled-components';
 import { provider } from '../../Context/ContextPovider';
-import speak from '../../utils/spetch';
+import speak from '../../utils/speech';
 import './Table.css';
 
 const Container = Styled.div`
@@ -46,19 +46,19 @@ export default function DataTable({
 				{row.given.length > 0 && (
 					<div>
 						<Typography
-							variant='h6'
+							variant="h6"
 							sx={{
 								marginTop: '15px',
 								color: 'green',
 							}}
-							component='div'
+							component="div"
 						>
 							<span style={{ marginRight: '10px' }}>Given</span>
-							<i className='fas fa-arrow-alt-circle-up'></i>
+							<i className="fas fa-arrow-alt-circle-up"></i>
 						</Typography>
 						<Table
 							sx={{ padding: '20px' }}
-							aria-label='customized table'
+							aria-label="customized table"
 						>
 							<TableHead>
 								<TableRow>
@@ -70,13 +70,13 @@ export default function DataTable({
 									</TableCell>
 									<TableCell
 										sx={{ padding: '10px 5px' }}
-										align='right'
+										align="right"
 									>
 										Paid
 									</TableCell>
 									<TableCell
 										sx={{ padding: '10px 5px' }}
-										align='right'
+										align="right"
 									>
 										Balance
 									</TableCell>
@@ -99,13 +99,13 @@ export default function DataTable({
 										</TableCell>
 										<TableCell
 											sx={{ padding: '10px 5px' }}
-											align='right'
+											align="right"
 										>
 											{SingleRow.paid}
 										</TableCell>
 										<TableCell
 											sx={{ padding: '10px 5px' }}
-											align='right'
+											align="right"
 										>
 											{SingleRow.actualPrice - SingleRow.paid}
 										</TableCell>
@@ -119,19 +119,19 @@ export default function DataTable({
 				{row.taken.length > 0 && (
 					<div>
 						<Typography
-							variant='h6'
+							variant="h6"
 							sx={{
 								marginTop: '15px',
 								color: 'darkred',
 							}}
-							component='div'
+							component="div"
 						>
 							<span style={{ marginRight: '10px' }}>Taken</span>
-							<i className='fas fa-arrow-alt-circle-down'></i>
+							<i className="fas fa-arrow-alt-circle-down"></i>
 						</Typography>
 						<Table
 							sx={{ padding: '20px' }}
-							aria-label='customized table'
+							aria-label="customized table"
 						>
 							<TableHead>
 								<TableRow>
@@ -143,13 +143,13 @@ export default function DataTable({
 									</TableCell>
 									<TableCell
 										sx={{ padding: '10px 5px' }}
-										align='right'
+										align="right"
 									>
 										Paid
 									</TableCell>
 									<TableCell
 										sx={{ padding: '10px 5px' }}
-										align='right'
+										align="right"
 									>
 										Balance
 									</TableCell>
@@ -175,13 +175,13 @@ export default function DataTable({
 										</TableCell>
 										<TableCell
 											sx={{ padding: '10px 5px' }}
-											align='right'
+											align="right"
 										>
 											{SingleRow.paid}
 										</TableCell>
 										<TableCell
 											sx={{ padding: '10px 5px' }}
-											align='right'
+											align="right"
 										>
 											{SingleRow.actualPrice - SingleRow.paid}
 										</TableCell>
@@ -197,7 +197,7 @@ export default function DataTable({
 			<br />
 
 			<DialogActions>
-				<Button variant='outlined' onClick={handleClose}>
+				<Button variant="outlined" onClick={handleClose}>
 					Close
 				</Button>
 			</DialogActions>

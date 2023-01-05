@@ -16,6 +16,7 @@ import { Button, DialogActions, DialogTitle } from '@mui/material';
 import UpdateUser from './UpdateUser';
 import DataTable from './EditAndUpdate';
 import Styled from 'styled-components';
+import { BASE_URL } from '../../constants';
 
 const Container = Styled.div`
 padding:10px 30px;
@@ -32,8 +33,8 @@ export default function CollapsibleTable({ users }) {
 		useContext(provider);
 
 	const setRows = () => {
-		const editButton = <i className='far fa-edit'></i>;
-		const deleteButton = <i className='far fa-trash-alt'></i>;
+		const editButton = <i className="far fa-edit"></i>;
+		const deleteButton = <i className="far fa-trash-alt"></i>;
 		const rows = users.map((row) => ({
 			...row,
 			editButton,
@@ -70,7 +71,7 @@ export default function CollapsibleTable({ users }) {
 			balance: paid ? actualPrice - paid : 0,
 			[mode]: paid ? [{ actualPrice, paid, date }] : [],
 		};
-		const url = `https://server-khata.herokuapp.com/users/`;
+		const url = `${BASE_URL}/users/`;
 		const headers = {
 			headers: {
 				Authorization: 'Bearer ' + adminPannel.token,
@@ -88,7 +89,7 @@ export default function CollapsibleTable({ users }) {
 
 	const deleteConfirmation = (id) => {
 		handleClose();
-		const url = `https://server-khata.herokuapp.com/users/${id}`;
+		const url = `${BASE_URL}/users/${id}`;
 		const headers = {
 			headers: {
 				Authorization: 'Bearer ' + adminPannel.token,
@@ -122,7 +123,7 @@ export default function CollapsibleTable({ users }) {
 	// Update main axios Function =>>>---------------------------------------------------------
 	const updateRequest = (id, payload) => {
 		handleClose();
-		const url = `https://server-khata.herokuapp.com/users/${id}`;
+		const url = `${BASE_URL}/users/${id}`;
 		const headers = {
 			headers: {
 				Authorization: 'Bearer ' + adminPannel.token,
@@ -214,29 +215,29 @@ export default function CollapsibleTable({ users }) {
 				<DialogTitle>Edit Hystory</DialogTitle>
 				<Button
 					onClick={() => handleUpdateAdd(row)}
-					variant='contained'
-					color='primary'
+					variant="contained"
+					color="primary"
 				>
 					ADD a new trasection?
 				</Button>
 				<Button
 					sx={{ margin: '10px 10px' }}
 					onClick={() => handleUpdateEdit(row)}
-					variant='contained'
-					color='secondary'
+					variant="contained"
+					color="secondary"
 				>
 					EDIT a trasection?
 				</Button>
 				<Button
 					onClick={() => handleUpdateRemove(row)}
-					variant='outlined'
+					variant="outlined"
 				>
 					Remove a trasection?
 				</Button>
 				<br />
 				<br />
 				<DialogActions>
-					<Button variant='outlined' onClick={handleClose}>
+					<Button variant="outlined" onClick={handleClose}>
 						Do nothing
 					</Button>
 				</DialogActions>
@@ -246,12 +247,12 @@ export default function CollapsibleTable({ users }) {
 	return (
 		<TableContainer
 			style={{ width: '95%', margin: 'auto' }}
-			className='mainTable'
+			className="mainTable"
 			component={Paper}
 		>
-			<Table aria-label='collapsible table'>
+			<Table aria-label="collapsible table">
 				<TableHead
-					className='header'
+					className="header"
 					style={{
 						background:
 							'linear-gradient(90deg, rgba(167,215,161,1) 0%, rgba(198,192,255,0.3981967787114846) 56%, rgba(183,196,250,1) 90%, rgba(205,162,255,1) 100%)',
@@ -259,21 +260,21 @@ export default function CollapsibleTable({ users }) {
 				>
 					<TableRow>
 						<TableCell>
-							<span className='header'>Name</span>
+							<span className="header">Name</span>
 						</TableCell>
-						<TableCell sx={{ padding: '10px' }} align='right'>
-							<span className='header' padding='none'>
+						<TableCell sx={{ padding: '10px' }} align="right">
+							<span className="header" padding="none">
 								Balance
 							</span>
 						</TableCell>
-						<TableCell align='right'>
-							<span className='header'>Edit</span>
+						<TableCell align="right">
+							<span className="header">Edit</span>
 						</TableCell>
-						<TableCell sx={{ padding: '10px' }} align='right'>
-							<span className='header'>Clear</span>
+						<TableCell sx={{ padding: '10px' }} align="right">
+							<span className="header">Clear</span>
 						</TableCell>
-						<TableCell onClick={() => addNewUser()} align='right'>
-							<i className='fas fa-plus-square'></i>
+						<TableCell onClick={() => addNewUser()} align="right">
+							<i className="fas fa-plus-square"></i>
 						</TableCell>
 					</TableRow>
 				</TableHead>
