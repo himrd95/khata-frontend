@@ -1,6 +1,7 @@
 import {
 	Button,
 	DialogTitle,
+	Input,
 	Paper,
 	TextField,
 } from '@material-ui/core';
@@ -14,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import speak from '../../utils/speech';
+import { useRef } from 'react';
 
 const Container = Styled.div`
 padding:10px 30px;
@@ -23,17 +25,25 @@ margin:auto;
 `;
 const NewUser = ({ handleClose, handleAddUser }) => {
 	const [payload, setPayload] = useState({ mode: '' });
+	const inputRef = useRef();
 
 	const { isLoading, adminPannel } = useContext(provider);
 
 	const handlechange = (e) => {
-		const { name, value } = e.target;
-		setPayload({ ...payload, [name]: value });
+		const { name, value, files } = e.target;
+		setPayload({
+			...payload,
+			[name]: name === 'profile' ? files[0] : value,
+		});
+	};
+
+	const handleChoose = () => {
+		inputRef.current.click();
 	};
 
 	useEffect(() => {
 		adminPannel.voice && speak('Add a new User');
-	}, []);
+	}, [adminPannel.voice]);
 
 	return (
 		<Container>
@@ -47,6 +57,31 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 				variant="filled"
 				name="name"
 			/>
+			<br />
+			<br />
+			<Input
+				ref={inputRef}
+				accept="image/*"
+				id="raised-button-file"
+				onChange={(e) => handlechange(e)}
+				type="file"
+				required
+				label="Profile"
+				variant="filled"
+				name="profile"
+				multiple
+				style={{ display: 'none' }}
+			/>
+
+			<label htmlFor="raised-button-file">
+				<Button
+					variant="contained"
+					component="span"
+					onClick={handleChoose}
+				>
+					Choose User's pic
+				</Button>
+			</label>
 			<br />
 			<br />
 			<TextField
@@ -134,6 +169,7 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 					Add User
 				</Button>
 			</DialogActions>
+			<br />
 		</Container>
 	);
 };

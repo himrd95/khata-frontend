@@ -1,4 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
+import { EVENTS } from '../constants';
+import eventBus from '../utils/eventBus';
 
 export const provider = createContext();
 
@@ -14,6 +16,7 @@ const ContextPovider = ({ children }) => {
 	const [loginPopup, setLoginPopup] = useState(false);
 	const [adminPannel, setAdminPannel] = useState(preToken);
 	const [isLoading, setIsLoading] = React.useState(false);
+	const [currentUser, setCurrentUser] = useState({});
 
 	useEffect(() => {
 		localStorage.setItem('khata', JSON.stringify(adminPannel));
@@ -42,6 +45,8 @@ const ContextPovider = ({ children }) => {
 		setIsLoading,
 		error,
 		setError,
+		currentUser,
+		setCurrentUser,
 	};
 	return (
 		<provider.Provider value={value}>{children}</provider.Provider>

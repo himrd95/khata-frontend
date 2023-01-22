@@ -1,0 +1,35 @@
+.user {
+	width: 50%;
+	text-align: left;
+	display: flex;
+	align-items: center;
+}
+
+.profilePicture {
+	font-size: 25px;
+}
+.profilePicture i {
+	font-size: 50px;
+	color: #39354b;
+}
+
+.userName {
+	font-size: 18px;
+	text-transform: capitalize;
+	font-weight: 500;
+	margin-left: 20px;
+
+	color: #000061;
+}
+
+.card_balance {
+	font-size: 20px;
+	font-weight: 600;
+	width: 20%;
+	text-align: right;
+}
+
+.fa-chevron-right {
+	font-size: 20px;
+	color: gray;
+}

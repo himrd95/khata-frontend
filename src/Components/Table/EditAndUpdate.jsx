@@ -43,7 +43,7 @@ export default function DataTable({
 				Select the Transaction which you want to {action}
 			</DialogTitle>
 			<TableContainer>
-				{row.given.length > 0 && (
+				{row?.given?.length > 0 && (
 					<div>
 						<Typography
 							variant="h6"

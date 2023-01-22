@@ -21,55 +21,52 @@ margin:auto;
 `;
 const UpdateUser = ({
 	handleClose,
-	row,
 	handleUpdate,
 	edit,
 	index,
 	mode,
+	data,
+	name,
 }) => {
 	const [modeVal, setModeVal] = useState('');
 	const initState = edit
 		? {
-				actualPrice: row[mode][index].actualPrice,
-				paid: row[mode][index].paid,
+				actualPrice: data[index].actualPrice,
+				paid: data[index].paid,
 		  }
 		: { actualPrice: '', paid: '' };
 
 	const [payload, setPayLoad] = React.useState(initState);
-	const { adminPannel } = useContext(provider);
 
 	const handlechange = (e) => {
 		const { name, value } = e.target;
 		setPayLoad({ ...payload, [name]: value });
 	};
 
-	useEffect(() => {
-		adminPannel.voice && speak(`Update ${row.name}'s account`);
-	}, []);
 	return (
 		<Container>
-			<DialogTitle>Update {row.name}'s account</DialogTitle>
+			<DialogTitle>Update {name}'s account</DialogTitle>
 
 			<TextField
 				onChange={(e) => handlechange(e)}
 				type="number"
 				id="filled-required"
-				label={edit ? row[mode][index].actualPrice : 'Actual amount'}
+				label={edit ? data[index].actualPrice : 'Actual amount'}
 				variant="filled"
 				name="actualPrice"
 			/>
 			<br />
 			<br />
-			<TextField
+			{/* <TextField
 				onChange={(e) => handlechange(e)}
 				id="filled-required"
 				type="number"
-				label={edit ? row[mode][index].paid : 'Paid Amount'}
+				label={edit ? data[index].paid : 'Paid Amount'}
 				variant="filled"
 				name="paid"
-			/>
+			/> 
 			<br />
-			<br />
+			<br />*/}
 			<FormControl
 				variant="filled"
 				sx={{ minWidth: 60, display: 'flex' }}
@@ -88,11 +85,15 @@ const UpdateUser = ({
 						onChange={(e) => setModeVal(e.target.value)}
 					>
 						<MenuItem value={'given'}>
-							<span style={{ margin: '5px 20px' }}>Given</span>{' '}
+							<span style={{ margin: '5px 20px' }}>
+								Given to them
+							</span>{' '}
 						</MenuItem>
 						<br />
 						<MenuItem value={'taken'}>
-							<span style={{ margin: '5px 20px' }}>Taken</span>
+							<span style={{ margin: '5px 20px' }}>
+								Taken from them
+							</span>
 						</MenuItem>
 					</Select>
 				)}
@@ -124,7 +125,7 @@ const UpdateUser = ({
 					onClick={() =>
 						handleUpdate(
 							payload,
-							row,
+							data,
 							edit,
 							index,
 							false,

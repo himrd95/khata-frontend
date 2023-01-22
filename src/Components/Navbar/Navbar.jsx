@@ -10,18 +10,17 @@ const Navbar = () => {
 
 	return (
 		<div className="nav">
-			<div>
-				<lottie-player
-					src="https://assets3.lottiefiles.com/packages/lf20_ta0fa7bj.json"
-					background="transparent"
-					speed="1"
-					loop
-					count={1}
-					style={{ width: '70px', height: '70px' }}
-					autoplay
-				></lottie-player>
-
-				{adminPannel.token === '' ? (
+			{adminPannel.token === '' && (
+				<>
+					<lottie-player
+						src="https://assets3.lottiefiles.com/packages/lf20_ta0fa7bj.json"
+						background="transparent"
+						speed="1"
+						loop
+						count={1}
+						style={{ width: '70px', height: '70px' }}
+						autoplay
+					></lottie-player>
 					<Button
 						onClick={() => {
 							setLoginPopup(true);
@@ -31,13 +30,8 @@ const Navbar = () => {
 					>
 						LogIn
 					</Button>
-				) : (
-					<FadeMenu
-						userName={adminPannel.admin.name.split(' ')[0]}
-						pic={adminPannel.admin.profile}
-					/>
-				)}
-			</div>
+				</>
+			)}
 		</div>
 	);
 };

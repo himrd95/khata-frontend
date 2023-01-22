@@ -244,6 +244,7 @@ export default function CollapsibleTable({ users }) {
 			</Container>,
 		);
 	};
+
 	return (
 		<TableContainer
 			style={{ width: '95%', margin: 'auto' }}
@@ -254,8 +255,7 @@ export default function CollapsibleTable({ users }) {
 				<TableHead
 					className="header"
 					style={{
-						background:
-							'linear-gradient(90deg, rgba(167,215,161,1) 0%, rgba(198,192,255,0.3981967787114846) 56%, rgba(183,196,250,1) 90%, rgba(205,162,255,1) 100%)',
+						background: 'skyblue',
 					}}
 				>
 					<TableRow>
@@ -280,8 +280,7 @@ export default function CollapsibleTable({ users }) {
 				</TableHead>
 				<TableBody
 					style={{
-						background:
-							'linear-gradient(90deg, rgba(215,212,255,1) 0%, rgba(228,225,255,1) 25%, rgba(229,235,252,1) 71%, rgba(220,255,216,1) 100%)',
+						background: 'white',
 					}}
 				>
 					{newRows.map((row) => (

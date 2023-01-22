@@ -3,13 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
 import ContextPovider from './Context/ContextPovider';
 
 ReactDOM.render(
 	// <React.StrictMode>
-	<ContextPovider>
-		<App />
-	</ContextPovider>,
+	<BrowserRouter>
+		<ContextPovider>
+			<App />
+		</ContextPovider>
+	</BrowserRouter>,
 	/* </React.StrictMode>, */
 	document.getElementById('root'),
 );

@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import { provider } from '../../Context/ContextPovider';
 import { BASE_URL } from '../../constants';
+import DetailsCard from '../DetailsCard/DetailsCard';
 
 export default function FadeMenu({ userName, pic }) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -29,9 +30,15 @@ export default function FadeMenu({ userName, pic }) {
 		setAdminPannel({ ...adminPannel, voice: !adminPannel.voice });
 	};
 	const action = adminPannel.voice ? 'off' : 'on';
+
 	return (
 		<div>
-			<Button
+			<DetailsCard
+				profilePic={pic}
+				profileName={userName}
+				userName="him"
+			/>
+			{/* <Button
 				sx={{
 					position: 'fixed',
 					right: '5% !important',
@@ -71,7 +78,7 @@ export default function FadeMenu({ userName, pic }) {
 				<span style={{ marginLeft: '10px', color: 'whitesmoke' }}>
 					<i className="fas fa-chevron-down"></i>{' '}
 				</span>
-			</Button>
+			</Button> */}
 			<Menu
 				id="fade-menu"
 				MenuListProps={{

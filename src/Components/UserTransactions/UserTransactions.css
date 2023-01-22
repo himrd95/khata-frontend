@@ -1,0 +1,95 @@
+.transaction {
+	padding-top: 0;
+	flex-direction: column;
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin: auto;
+	padding: 20px;
+	border-radius: 16px 16px 0 0;
+}
+
+.title {
+	text-align: left;
+	font-size: 22px;
+	font-weight: 500;
+}
+
+.allTransaction {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 100%;
+	margin: auto;
+	padding: 20px;
+}
+
+.row {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin: auto;
+	padding: 10px;
+	border-bottom: 1px solid #dcdcdc;
+}
+
+.date,
+.purpose {
+	width: 27%;
+	text-align: left;
+}
+
+.actualPrice i:last-child {
+	margin-left: 10px;
+	font-size: 15px;
+	color: #373791;
+}
+
+.editModal {
+	width: 250px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #eee;
+}
+
+.main {
+	animation: slideLeft 0.5s forwards;
+}
+
+@keyframes slideLeft {
+	0% {
+		transform: translateX(300px);
+		/* opacity: 0; */
+	}
+	100% {
+		transform: translateX(0px);
+		opacity: 1;
+	}
+}
+
+.actions {
+	justify-content: space-around;
+	padding: 0;
+	background-image: linear-gradient(to right, #bdecff, #ffa8a8);
+}
+
+.actions span {
+	width: 50%;
+	padding: 15px 0;
+	font-size: 20px;
+}
+
+.actions span:first-child {
+	/* background-color: #bdecff; */
+	border-radius: 16px 0 0 16px;
+}
+
+.actions span:last-child {
+	/* background-color: #ffa8a8; */
+	border-radius: 0 16px 16px 0;
+}
