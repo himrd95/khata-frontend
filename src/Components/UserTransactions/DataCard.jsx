@@ -7,17 +7,20 @@ import {
 	Alert,
 	Button,
 	DialogActions,
+	DialogTitle,
 	Snackbar,
 } from '@mui/material';
 import UpdateUser from '../Table/UpdateUser';
 import { provider } from '../../Context/ContextPovider';
-import { BASE_URL, EVENTS } from '../../constants';
+import { BASE_URL, EVENTS, moneyFormate } from '../../constants';
 import ButtonComponent from '../Button/Button';
+import { useState } from 'react';
 
 const DataCard = ({ data, title, total, bgColor, id, name }) => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [open, setOpen] = React.useState(false);
 	const [content, setContent] = React.useState('');
+	const [details, setDetails] = useState(data);
 	const { setCurrentUser, handleState, adminPannel, message } =
 		useContext(provider);
 
@@ -43,7 +46,7 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 					handleState('User has been successfully updated');
 				})
 				.catch((e) => console.log(e))
-				.finally(() => eventBus.dispatch(EVENTS.REFRESH_USER, true));
+				.finally(() => handleClose());
 		},
 		[adminPannel.token, handleState, id],
 	);
@@ -76,6 +79,7 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 
 			mode = mode || title.split(' ')[0]?.toLowerCase();
 
+			setDetails(data);
 			updateRequest({
 				balance: sum,
 				[mode]: data,
@@ -86,14 +90,33 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 
 	const editAndUpdate = (row, index, remove, _mode) => {
 		if (remove) {
-			handleUpdate(
-				'',
-				row,
-				false,
-				index,
-				remove,
-				title.split(' ')[0]?.toLowerCase(),
+			setIsOpen(true);
+			setContent(
+				<div className="deletePopup">
+					<DialogTitle>
+						{`Do you really want to remove the transaction of ₹${data[index].actualPrice}?`}
+					</DialogTitle>
+					<DialogActions>
+						<Button onClick={handleClose}>Cancle</Button>
+						<Button
+							onClick={() =>
+								handleUpdate(
+									'',
+									row,
+									false,
+									index,
+									remove,
+									title.split(' ')[0]?.toLowerCase(),
+								)
+							}
+							autoFocus
+						>
+							Yes
+						</Button>
+					</DialogActions>
+				</div>,
 			);
+
 			return;
 		}
 		setContent(
@@ -162,29 +185,37 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 		});
 	}, [data, handleUpdateAdd]);
 
-	return data?.length !== 0 ? (
-		<div className="basicCard transaction">
-			<div style={{ backgroundColor: bgColor }} className="header">
-				<span className="title">{title}</span>
-				<span className="title">{total}</span>
-			</div>
-
-			<div className="allTransaction">
-				{data?.map((data, i) => (
-					<div className="row">
-						<span className="date">{data.date}</span>
-						<span className="purpose">{data.purpose}</span>
-						<span
-							className="actualPrice"
-							onClick={() => updateUser({ row: data }, i)}
-						>
-							<span>{data.actualPrice}</span>
-							<i class="fa-solid fa-chevron-right"></i>
-						</span>
+	return (
+		<>
+			{data?.length !== 0 ? (
+				<div className="basicCard transaction">
+					<div
+						style={{ backgroundColor: bgColor }}
+						className="header"
+					>
+						<span className="title">{title}</span>
+						<span className="title">{moneyFormate(total)}</span>
 					</div>
-				))}
-			</div>
 
+					<div className="allTransaction">
+						{details?.map((data, i) => (
+							<div className="row">
+								<div className="dateAndPurpose">
+									<span className="date">{data.date}</span>
+									<span className="purpose">{data.purpose}</span>
+								</div>
+								<span
+									className="actualPrice"
+									onClick={() => updateUser({ row: data }, i)}
+								>
+									<span>{moneyFormate(data.actualPrice)}</span>
+									<i class="fa-solid fa-chevron-right"></i>
+								</span>
+							</div>
+						))}
+					</div>
+				</div>
+			) : null}
 			<Snackbar
 				open={open}
 				autoHideDuration={5000}
@@ -204,8 +235,8 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 				handleClose={handleClose}
 				content={content}
 			/>
-		</div>
-	) : null;
+		</>
+	);
 };
 
 export default DataCard;

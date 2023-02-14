@@ -94,7 +94,7 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 			/>
 			<br />
 			<br />
-			<TextField
+			{/* <TextField
 				onChange={(e) => handlechange(e)}
 				id="filled-required"
 				type="number"
@@ -103,7 +103,7 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 				name="paid"
 			/>
 			<br />
-			<br />
+			<br /> */}
 			<FormControl
 				variant="filled"
 				sx={{
@@ -124,11 +124,15 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 				>
 					<MenuItem value={'given'}>
 						{' '}
-						<span style={{ margin: '5px 20px' }}>Given</span>{' '}
+						<span
+							style={{ margin: '5px 20px' }}
+						>{`Given to them(Debit)`}</span>{' '}
 					</MenuItem>
 					<br />
 					<MenuItem value={'taken'}>
-						<span style={{ margin: '5px 20px' }}>Taken</span>
+						<span
+							style={{ margin: '5px 20px' }}
+						>{`Taken from them(Credit)`}</span>
 					</MenuItem>
 				</Select>
 

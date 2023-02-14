@@ -7,3 +7,10 @@ export const EVENTS = {
 	REFRESH_USER: 'refresh-user',
 	DELETE_USER: 'delete-user',
 };
+
+export const moneyFormate = (amount) => {
+	return new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: 'INR',
+	}).format(amount);
+};

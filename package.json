@@ -27,7 +27,7 @@
 		"predeploy": "npm run build",
 		"deploy": "netlify deploy --prod",
 		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"build": "react-scripts build && echo '/* /index.html  200'",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},

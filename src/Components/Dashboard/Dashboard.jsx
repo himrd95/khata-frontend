@@ -23,12 +23,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const Dashboard = () => {
 	const [users, setUsers] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(false);
-	const { state, message, adminPannel, handleState } =
+	const { state, setMessage, message, adminPannel, handleState } =
 		useContext(provider);
 	const [open, setOpen] = React.useState(false);
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [content, setContent] = React.useState('');
-	useContext(provider);
 
 	React.useEffect(() => {
 		// speak(`Welcome back, ${adminPannel.admin.name.split(' ')[0]}`);
@@ -71,6 +70,7 @@ const Dashboard = () => {
 			setOpen(false);
 			setIsOpen(false);
 			handleState('');
+			setMessage('');
 		},
 		[handleState],
 	);
@@ -91,7 +91,6 @@ const Dashboard = () => {
 			formData.append('name', name);
 
 			formData.append('userImage', profile);
-			console.log(formData, ')))))))))', profile);
 			const url = `${BASE_URL}/users/`;
 			const headers = {
 				headers: {

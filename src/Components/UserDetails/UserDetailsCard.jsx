@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../../constants';
+import { BASE_URL, moneyFormate } from '../../constants';
 import { provider } from '../../Context/ContextPovider';
 import './UserDetailsCard.css';
 
@@ -14,11 +14,12 @@ const UserDetailsCard = (props) => {
 	const [content, setContent] = React.useState('');
 	const { setCurrentUser, message } = useContext(provider);
 	const navigate = useNavigate();
-	let totalGiven = 0;
 
+	let totalGiven = 0;
 	given?.map(
 		(a) => (totalGiven += Number(a.actualPrice) - Number(a.paid)),
 	);
+
 	let totalTaken = 0;
 	taken?.map(
 		(a) => (totalTaken += Number(a.actualPrice) - Number(a.paid)),
@@ -38,7 +39,6 @@ const UserDetailsCard = (props) => {
 		setOpen(false);
 	};
 
-	console.log(`${BASE_URL}/${userImage}`, 'from dash');
 	return (
 		<div className="basicCard" onClick={() => handleChangeRoute()}>
 			<div className="user">
@@ -57,13 +57,15 @@ const UserDetailsCard = (props) => {
 			</div>
 			<div
 				style={
-					totalGiven > totalTaken
+					totalGiven - totalTaken === 0
+						? { color: 'black' }
+						: totalGiven > totalTaken
 						? { color: '#006300' }
 						: { color: 'darkred' }
 				}
 				className="card_balance"
 			>
-				{totalGiven - totalTaken}
+				{moneyFormate(totalGiven - totalTaken)}
 			</div>
 
 			<i class="fa-solid fa-chevron-right"></i>

@@ -1,6 +1,13 @@
-import { Button, DialogActions, DialogTitle } from '@mui/material';
+import {
+	Alert,
+	Button,
+	DialogActions,
+	DialogTitle,
+	Snackbar,
+} from '@mui/material';
 import axios from 'axios';
 import React, { useContext, useEffect } from 'react';
+import { useRef } from 'react';
 import { useCallback } from 'react';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -15,10 +22,11 @@ import DataCard from './DataCard';
 import './UserTransactions.css';
 
 const UserTransactions = () => {
-	const { currentUser, adminPannel, handleState } =
+	const { currentUser, adminPannel, handleState, message } =
 		useContext(provider);
 	const [user, setUser] = useState(currentUser);
 	const [isLoading, setIsLoading] = React.useState(false);
+	const [open, setOpen] = React.useState(false);
 	const params = useParams();
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [content, setContent] = React.useState('');
@@ -33,6 +41,9 @@ const UserTransactions = () => {
 		totalTaken,
 		_id,
 	} = user;
+
+	const givenRef = useRef(totalGiven);
+	const takenRef = useRef(totalTaken);
 
 	const getUsers = useCallback(
 		(id) => {
@@ -56,6 +67,18 @@ const UserTransactions = () => {
 	);
 
 	useEffect(() => {
+		let sum1 = 0;
+		given?.map(
+			(a) => (sum1 += Number(a.actualPrice) - Number(a.paid)),
+		);
+		givenRef.current = sum1;
+
+		let sum2 = 0;
+		taken?.map(
+			(a) => (sum2 += Number(a.actualPrice) - Number(a.paid)),
+		);
+		takenRef.current = sum2;
+
 		if (!name) {
 			getUsers(params.id);
 		}
@@ -63,10 +86,20 @@ const UserTransactions = () => {
 		eventBus.on(EVENTS.REFRESH_USER, () => {
 			getUsers(params.id);
 		});
-	}, [getUsers, name, params.id]);
+	}, [
+		user,
+		getUsers,
+		given,
+		name,
+		params.id,
+		taken,
+		totalGiven,
+		totalTaken,
+	]);
 
 	const handleClose = useCallback(() => {
 		setIsOpen(false);
+		setOpen(false);
 		handleState('');
 	}, [handleState]);
 
@@ -93,14 +126,14 @@ const UserTransactions = () => {
 			console.log('delete');
 			setIsOpen(true);
 			setContent(
-				<div>
+				<div className="deletePopup">
 					<DialogTitle>
 						Do you really want to close account with {name}?
 					</DialogTitle>
 					<DialogActions>
-						<Button onClick={handleClose}>Disagree</Button>
+						<Button onClick={handleClose}>Cancle</Button>
 						<Button onClick={() => deleteConfirmation(id)} autoFocus>
-							Agree
+							Yes
 						</Button>
 					</DialogActions>
 				</div>,
@@ -108,6 +141,10 @@ const UserTransactions = () => {
 		},
 		[deleteConfirmation, handleClose],
 	);
+
+	useEffect(() => {
+		message !== '' && setOpen(true);
+	}, [message]);
 
 	return isLoading ? (
 		<lottie-player
@@ -132,7 +169,7 @@ const UserTransactions = () => {
 				<DataCard
 					data={given?.sort((a, b) => compareDate(a.date, b.date))}
 					title="Given (Debit)"
-					total={totalGiven}
+					total={givenRef.current}
 					bgColor="#c5e1a5"
 					id={_id}
 					name={name}
@@ -140,13 +177,27 @@ const UserTransactions = () => {
 				<DataCard
 					data={taken?.sort((a, b) => compareDate(a.date, b.date))}
 					title="Taken (Credit)"
-					total={totalTaken}
+					total={takenRef.current}
 					bgColor="#ffcdd2"
 					id={_id}
 					name={name}
 				/>
 
 				<div style={{ height: '100px' }}></div>
+
+				<Snackbar
+					open={open}
+					autoHideDuration={5000}
+					onClose={handleClose}
+				>
+					<Alert
+						onClose={handleClose}
+						severity="success"
+						sx={{ width: '100%' }}
+					>
+						{message}!
+					</Alert>
+				</Snackbar>
 
 				<SimpleDialog
 					isOpen={isOpen}

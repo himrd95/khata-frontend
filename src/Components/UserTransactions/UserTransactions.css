@@ -36,9 +36,17 @@
 	border-bottom: 1px solid #dcdcdc;
 }
 
+.dateAndPurpose {
+	display: flex;
+}
+
+.date {
+	display: block;
+	width: 90px;
+}
+
 .date,
 .purpose {
-	width: 27%;
 	text-align: left;
 }
 
@@ -82,6 +90,7 @@
 	width: 50%;
 	padding: 15px 0;
 	font-size: 20px;
+	cursor: pointer;
 }
 
 .actions span:first-child {
@@ -92,4 +101,8 @@
 .actions span:last-child {
 	/* background-color: #ffa8a8; */
 	border-radius: 0 16px 16px 0;
+}
+
+.deletePopup {
+	padding: 20px;
 }

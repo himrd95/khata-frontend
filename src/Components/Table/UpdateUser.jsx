@@ -34,7 +34,7 @@ const UpdateUser = ({
 				actualPrice: data[index].actualPrice,
 				paid: data[index].paid,
 		  }
-		: { actualPrice: '', paid: '' };
+		: { actualPrice: '', paid: 0 };
 
 	const [payload, setPayLoad] = React.useState(initState);
 
@@ -49,6 +49,17 @@ const UpdateUser = ({
 
 			<TextField
 				onChange={(e) => handlechange(e)}
+				id="filled-required"
+				type="text"
+				label={'Purpose'}
+				variant="filled"
+				name="purpose"
+			/>
+			<br />
+			<br />
+
+			<TextField
+				onChange={(e) => handlechange(e)}
 				type="number"
 				id="filled-required"
 				label={edit ? data[index].actualPrice : 'Actual amount'}
@@ -57,16 +68,7 @@ const UpdateUser = ({
 			/>
 			<br />
 			<br />
-			{/* <TextField
-				onChange={(e) => handlechange(e)}
-				id="filled-required"
-				type="number"
-				label={edit ? data[index].paid : 'Paid Amount'}
-				variant="filled"
-				name="paid"
-			/> 
-			<br />
-			<br />*/}
+
 			<FormControl
 				variant="filled"
 				sx={{ minWidth: 60, display: 'flex' }}

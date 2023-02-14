@@ -37,6 +37,7 @@ const ContextPovider = ({ children }) => {
 		state,
 		handleState,
 		message,
+		setMessage,
 		adminPannel,
 		setAdminPannel,
 		loginPopup,
