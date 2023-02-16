@@ -21,19 +21,17 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 	const [open, setOpen] = React.useState(false);
 	const [content, setContent] = React.useState('');
 	const [details, setDetails] = useState(data);
-	const { setCurrentUser, handleState, adminPannel, message } =
-		useContext(provider);
+	const { handleState, adminPannel, message } = useContext(provider);
 
-	console.log(data);
-
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		setIsOpen(false);
-	};
+		console.log('called');
+	}, []);
 
 	// Update main axios Function =>>>---------------------------------------------------------
 	const updateRequest = useCallback(
 		(payload) => {
-			handleClose();
+			setIsOpen(false);
 			const url = `${BASE_URL}/users/${id}`;
 			const headers = {
 				headers: {
@@ -45,8 +43,7 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 				.then((_res) => {
 					handleState('User has been successfully updated');
 				})
-				.catch((e) => console.log(e))
-				.finally(() => handleClose());
+				.catch((e) => console.log(e));
 		},
 		[adminPannel.token, handleState, id],
 	);
@@ -61,7 +58,6 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 				'/' +
 				d.getFullYear();
 
-			console.log(data, 'data');
 			if (remove) {
 				data?.splice(index, 1);
 			} else {
@@ -79,7 +75,7 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 
 			mode = mode || title.split(' ')[0]?.toLowerCase();
 
-			setDetails(data);
+			setDetails([...data]);
 			updateRequest({
 				balance: sum,
 				[mode]: data,
@@ -88,9 +84,9 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 		[title, updateRequest],
 	);
 
-	const editAndUpdate = (row, index, remove, _mode) => {
+	const editAndUpdate = useCallback((row, index, remove, _mode) => {
+		console.log('editAndUpdate');
 		if (remove) {
-			setIsOpen(true);
 			setContent(
 				<div className="deletePopup">
 					<DialogTitle>
@@ -130,10 +126,14 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 				data={data}
 			/>,
 		);
-	};
+	}, []);
 
 	const handleUpdateAdd = useCallback(
 		(row) => {
+			if (isOpen) {
+				return;
+			}
+			console.log('handleUpdateAdd');
 			setContent(
 				<UpdateUser
 					handleClose={handleClose}
@@ -143,11 +143,13 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 					name={name}
 				/>,
 			);
+			setIsOpen(true);
 		},
-		[data, handleUpdate, name],
+		[data, handleClose, handleUpdate, isOpen, name],
 	);
 
-	const updateUser = (row, i) => {
+	const userActioons = (row, i) => {
+		console.log('userAction');
 		setIsOpen(true);
 		setContent(
 			<div className="editModal">
@@ -179,12 +181,14 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 	};
 
 	useEffect(() => {
-		eventBus.on(EVENTS.ADD_NEW_TRANSACTION, (_payload) => {
-			setIsOpen(true);
+		eventBus.on(EVENTS.ADD_NEW_TRANSACTION, (payload) => {
 			handleUpdateAdd({ row: data });
+			console.log('triggered');
 		});
-	}, [data, handleUpdateAdd]);
 
+		return () => eventBus.remove(EVENTS.ADD_NEW_TRANSACTION);
+	}, [data, handleUpdateAdd]);
+	console.log(isOpen, '++++++++++++++++++++++');
 	return (
 		<>
 			{data?.length !== 0 ? (
@@ -206,7 +210,7 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 								</div>
 								<span
 									className="actualPrice"
-									onClick={() => updateUser({ row: data }, i)}
+									onClick={() => userActioons({ row: data }, i)}
 								>
 									<span>{moneyFormate(data.actualPrice)}</span>
 									<i class="fa-solid fa-chevron-right"></i>
@@ -239,4 +243,4 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 	);
 };
 
-export default DataCard;
+export default React.memo(DataCard);

@@ -210,4 +210,4 @@ const UserTransactions = () => {
 	);
 };
 
-export default UserTransactions;
+export default React.memo(UserTransactions);

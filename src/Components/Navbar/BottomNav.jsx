@@ -1,23 +1,18 @@
-import React from 'react';
-import {
-	Link,
-	useLocation,
-	useNavigate,
-	useParams,
-} from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { EVENTS } from '../../constants';
 import eventBus from '../../utils/eventBus';
 
 const BottomNav = () => {
 	const path = useLocation();
 
-	const handleRoute = () => {
+	const handleRoute = useCallback(() => {
 		if (path.pathname === '/') {
-			eventBus.dispatch(EVENTS.ADD_NEW_USER, true);
+			return eventBus.dispatch(EVENTS.ADD_NEW_USER, true);
 		} else {
-			eventBus.dispatch(EVENTS.ADD_NEW_TRANSACTION, true);
+			return eventBus.dispatch(EVENTS.ADD_NEW_TRANSACTION, true);
 		}
-	};
+	}, [path.pathname]);
 	return (
 		<div className="bottomNav">
 			<Link to="/">
@@ -33,4 +28,4 @@ const BottomNav = () => {
 	);
 };
 
-export default BottomNav;
+export default React.memo(BottomNav);

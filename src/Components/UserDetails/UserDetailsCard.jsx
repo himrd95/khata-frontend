@@ -66,9 +66,8 @@ const UserDetailsCard = (props) => {
 				className="card_balance"
 			>
 				{moneyFormate(totalGiven - totalTaken)}
+				<i class="fa-solid fa-chevron-right"></i>
 			</div>
-
-			<i class="fa-solid fa-chevron-right"></i>
 
 			<Snackbar
 				open={open}
@@ -93,4 +92,4 @@ const UserDetailsCard = (props) => {
 	);
 };
 
-export default UserDetailsCard;
+export default React.memo(UserDetailsCard);

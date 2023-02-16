@@ -1,5 +1,5 @@
 .user {
-	width: 50%;
+	width: 42%;
 	text-align: left;
 	display: flex;
 	align-items: center;
@@ -23,13 +23,17 @@
 }
 
 .card_balance {
-	font-size: 20px;
+	font-size: 17px;
 	font-weight: 600;
-	width: 20%;
+	width: 45%;
 	text-align: right;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
 }
 
 .fa-chevron-right {
-	font-size: 20px;
+	font-size: 18px;
 	color: gray;
+	margin-left: 10px;
 }
