@@ -88,9 +88,10 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 				onChange={(e) => handlechange(e)}
 				type="number"
 				id="filled-required"
-				label="Actual amount"
+				label="Aamount"
 				variant="filled"
 				name="actualPrice"
+				pattern="\d*"
 			/>
 			<br />
 			<br />
@@ -106,10 +107,7 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 			<br /> */}
 			<FormControl
 				variant="filled"
-				sx={{
-					minWidth: 60,
-					display: 'flex',
-				}}
+				sx={{ width: '220px', display: 'flex' }}
 			>
 				<InputLabel id="demo-simple-select-label">Mode</InputLabel>
 				<Select
@@ -124,15 +122,15 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 				>
 					<MenuItem value={'given'}>
 						{' '}
-						<span
-							style={{ margin: '5px 20px' }}
-						>{`Given to them(Debit)`}</span>{' '}
+						<span style={{ margin: '5px 20px' }}>{`Given to ${
+							payload.name ?? 'them'
+						} (Debit)`}</span>{' '}
 					</MenuItem>
 					<br />
 					<MenuItem value={'taken'}>
-						<span
-							style={{ margin: '5px 20px' }}
-						>{`Taken from them(Credit)`}</span>
+						<span style={{ margin: '5px 20px' }}>{`Taken from ${
+							payload.name ?? 'them'
+						} (Credit)`}</span>
 					</MenuItem>
 				</Select>
 

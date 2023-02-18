@@ -65,13 +65,14 @@ const UpdateUser = ({
 				label={edit ? data[index].actualPrice : 'Actual amount'}
 				variant="filled"
 				name="actualPrice"
+				pattern="\d*"
 			/>
 			<br />
 			<br />
 
 			<FormControl
 				variant="filled"
-				sx={{ minWidth: 60, display: 'flex' }}
+				sx={{ width: '220px', display: 'flex' }}
 			>
 				{!edit && (
 					<InputLabel id="demo-simple-select-label">Mode</InputLabel>
@@ -101,10 +102,11 @@ const UpdateUser = ({
 				)}
 			</FormControl>
 			<br />
+			<br />
 			<div>
 				<Button
 					onClick={handleClose}
-					style={{ marginRight: '20px' }}
+					style={{ marginRight: '30px' }}
 					variant="contained"
 				>
 					Cancle

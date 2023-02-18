@@ -1,0 +1,19 @@
+.profile {
+	width: 100%;
+	height: 90vh;
+}
+
+.actionButtonsHeading {
+	padding: 30px;
+	width: 100%;
+	text-align: center;
+	background-color: #e0f7fa;
+	font-size: 25px;
+}
+
+.actionButtons {
+	margin-top: 10px;
+	padding-bottom: 10px;
+	font-size: 20px;
+	border-bottom: 1px solid #b0bec5;
+}

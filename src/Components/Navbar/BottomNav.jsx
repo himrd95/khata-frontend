@@ -21,7 +21,7 @@ const BottomNav = () => {
 			<div onClick={() => handleRoute()}>
 				<i className="fa-solid fa-circle-plus"></i>
 			</div>
-			<Link to="profile">
+			<Link to="/profile">
 				<i className="fa-solid fa-user"></i>
 			</Link>
 		</div>

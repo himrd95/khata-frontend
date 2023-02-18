@@ -1,4 +1,9 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+} from 'react';
 import eventBus from '../../utils/eventBus';
 
 import SimpleDialog from '../Modal';
@@ -7,7 +12,6 @@ import {
 	Alert,
 	Button,
 	DialogActions,
-	DialogTitle,
 	Snackbar,
 } from '@mui/material';
 import UpdateUser from '../Table/UpdateUser';
@@ -15,20 +19,30 @@ import { provider } from '../../Context/ContextPovider';
 import { BASE_URL, EVENTS, moneyFormate } from '../../constants';
 import ButtonComponent from '../Button/Button';
 import { useState } from 'react';
+import DeleteConfirmation from '../Contents/DeleteConfirmation';
 
-const DataCard = ({ data, title, total, bgColor, id, name }) => {
+const DataCard = ({
+	data,
+	title,
+	total,
+	bgColor,
+	id,
+	name,
+	updateRequest,
+	modalStatus,
+}) => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [open, setOpen] = React.useState(false);
 
 	const [content, setContent] = React.useState('');
-	const [details, setDetails] = useState(data);
-	const {
-		handleState,
-		adminPannel,
-		message,
-		addTransaction,
-		setAddTransaction,
-	} = useContext(provider);
+	const [details, setDetails] = useState([]);
+	const { message, addTransaction, setAddTransaction, setIsLoading } =
+		useContext(provider);
+
+	const mode = useMemo(
+		() => title.split(' ')[0]?.toLowerCase(),
+		[title],
+	);
 
 	const handleClose = useCallback(() => {
 		setIsOpen(false);
@@ -37,29 +51,10 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 	}, [setAddTransaction]);
 
 	// Update main axios Function =>>>---------------------------------------------------------
-	const updateRequest = useCallback(
-		(payload) => {
-			setIsOpen(false);
-			const url = `${BASE_URL}/users/${id}`;
-			const headers = {
-				headers: {
-					Authorization: 'Bearer ' + adminPannel.token,
-				},
-			};
-			axios
-				.patch(url, payload, headers)
-				.then((_res) => {
-					handleState('User has been successfully updated');
-				})
-				.catch((e) => console.log(e))
-				.finally(() => handleClose());
-		},
-		[adminPannel.token, handleClose, handleState, id],
-	);
 
 	const handleUpdate = useCallback(
-		(payload, _, edit, index, remove, mode) => {
-			let updatedData = [...details];
+		(payload, _, edit, index, remove, _mode) => {
+			let updatedData = [...data];
 			const d = new Date();
 			const date =
 				d.getDate() +
@@ -83,45 +78,50 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 				sum += Number(item.actualPrice) - Number(item.paid);
 			});
 
-			mode = mode || title.split(' ')[0]?.toLowerCase();
-
-			setDetails([...updatedData]);
 			updateRequest({
 				balance: sum,
-				[mode]: updatedData,
+				[_mode ?? mode]: updatedData,
 			});
+			setIsLoading(true);
+			handleClose();
 		},
-		[details, title, updateRequest],
+		[data, mode],
+	);
+	console.log(details, 'deatils', mode, title);
+
+	const deleteConfirmation = useCallback(
+		({ row, index, remove, title }) => {
+			handleUpdate(
+				'',
+				row,
+				false,
+				index,
+				remove,
+				title.split(' ')[0]?.toLowerCase(),
+			);
+		},
+		[],
 	);
 
 	const editAndUpdate = useCallback(
 		(row, index, remove, _mode) => {
 			console.log('editAndUpdate');
 			if (remove) {
+				const props = {
+					row,
+					index,
+					remove,
+					title: title.split(' ')[0]?.toLowerCase(),
+				};
 				setContent(
-					<div className="deletePopup">
-						<DialogTitle>
-							{`Do you really want to remove the transaction of ₹${data[index].actualPrice}?`}
-						</DialogTitle>
-						<DialogActions>
-							<Button onClick={handleClose}>Cancle</Button>
-							<Button
-								onClick={() =>
-									handleUpdate(
-										'',
-										row,
-										false,
-										index,
-										remove,
-										title.split(' ')[0]?.toLowerCase(),
-									)
-								}
-								autoFocus
-							>
-								Yes
-							</Button>
-						</DialogActions>
-					</div>,
+					<DeleteConfirmation
+						lable={`Do you really want to remove the transaction of ${moneyFormate(
+							data[index].actualPrice,
+						)}?`}
+						handleClose={handleClose}
+						deleteConfirmation={deleteConfirmation}
+						props={props}
+					/>,
 				);
 				return;
 			}
@@ -137,7 +137,7 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 				/>,
 			);
 		},
-		[data, handleClose, handleUpdate, title],
+		[data],
 	);
 
 	const handleUpdateAdd = useCallback(
@@ -157,14 +157,7 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 			);
 			setAddTransaction(true);
 		},
-		[
-			data,
-			handleClose,
-			handleUpdate,
-			isOpen,
-			name,
-			setAddTransaction,
-		],
+		[data, isOpen, name],
 	);
 
 	const userActioons = (row, i) => {
@@ -205,7 +198,8 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 		});
 
 		return () => eventBus.remove(EVENTS.ADD_NEW_TRANSACTION);
-	}, [data, handleUpdateAdd]);
+	}, []);
+
 	return (
 		<>
 			{data?.length !== 0 ? (
@@ -219,7 +213,7 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 					</div>
 
 					<div className="allTransaction">
-						{details?.map((data, i) => (
+						{data?.map((data, i) => (
 							<div className="row">
 								<div className="dateAndPurpose">
 									<span className="date">{data.date}</span>

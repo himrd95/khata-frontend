@@ -6,15 +6,18 @@ import {
 	Snackbar,
 } from '@mui/material';
 import axios from 'axios';
-import React, { useContext, useEffect } from 'react';
-import { useRef } from 'react';
-import { useCallback } from 'react';
-import { useState } from 'react';
+import React, {
+	useContext,
+	useEffect,
+	useCallback,
+	useRef,
+} from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { BASE_URL, EVENTS } from '../../constants';
 import { provider } from '../../Context/ContextPovider';
 import eventBus from '../../utils/eventBus';
 import { compareDate } from '../../utils/helpers';
+import DeleteConfirmation from '../Contents/DeleteConfirmation';
 import DetailsCard from '../DetailsCard/DetailsCard';
 import SimpleDialog from '../Modal';
 import BottomNav from '../Navbar/BottomNav';
@@ -22,10 +25,14 @@ import DataCard from './DataCard';
 import './UserTransactions.css';
 
 const UserTransactions = () => {
-	const { currentUser, adminPannel, handleState, message } =
-		useContext(provider);
-	const [user, setUser] = useState(currentUser);
-	const [isLoading, setIsLoading] = React.useState(false);
+	const {
+		adminPannel,
+		handleState,
+		message,
+		getUsers,
+		isLoading,
+		currentUser,
+	} = useContext(provider);
 	const [open, setOpen] = React.useState(false);
 	const params = useParams();
 	const [isOpen, setIsOpen] = React.useState(false);
@@ -40,31 +47,10 @@ const UserTransactions = () => {
 		totalGiven,
 		totalTaken,
 		_id,
-	} = user;
+	} = currentUser;
 
 	const givenRef = useRef(totalGiven);
 	const takenRef = useRef(totalTaken);
-
-	const getUsers = useCallback(
-		(id) => {
-			setIsLoading(true);
-
-			let url;
-			if (id) url = `${BASE_URL}/users/${id}`;
-			else url = `${BASE_URL}/users/`;
-			const headers = {
-				headers: {
-					Authorization: 'Bearer ' + adminPannel?.token,
-				},
-			};
-			axios
-				.get(url, headers)
-				.then((res) => setUser(res.data))
-				.catch((e) => console.log(e))
-				.finally(() => setIsLoading(false));
-		},
-		[adminPannel?.token],
-	);
 
 	useEffect(() => {
 		let sum1 = 0;
@@ -87,7 +73,7 @@ const UserTransactions = () => {
 			getUsers(params.id);
 		});
 	}, [
-		user,
+		currentUser,
 		getUsers,
 		given,
 		name,
@@ -126,17 +112,12 @@ const UserTransactions = () => {
 			console.log('delete');
 			setIsOpen(true);
 			setContent(
-				<div className="deletePopup">
-					<DialogTitle>
-						Do you really want to close account with {name}?
-					</DialogTitle>
-					<DialogActions>
-						<Button onClick={handleClose}>Cancle</Button>
-						<Button onClick={() => deleteConfirmation(id)} autoFocus>
-							Yes
-						</Button>
-					</DialogActions>
-				</div>,
+				<DeleteConfirmation
+					lable={`Do you really want to close account with ${name}`}
+					handleClose={handleClose}
+					deleteConfirmation={deleteConfirmation}
+					id={id}
+				/>,
 			);
 		},
 		[deleteConfirmation, handleClose],
@@ -146,16 +127,39 @@ const UserTransactions = () => {
 		message !== '' && setOpen(true);
 	}, [message]);
 
+	const updateRequest = useCallback(
+		(payload) => {
+			setIsOpen(false);
+			const url = `${BASE_URL}/users/${_id}`;
+			const headers = {
+				headers: {
+					Authorization: 'Bearer ' + adminPannel.token,
+				},
+			};
+			axios
+				.patch(url, payload, headers)
+				.then((res) => {
+					handleState('User has been successfully updated');
+				})
+				.catch((e) => console.log(e))
+				.finally(() => {
+					getUsers(_id);
+				});
+		},
+		[_id, adminPannel.token, handleState, getUsers],
+	);
+
 	return isLoading ? (
-		<lottie-player
-			src="https://assets4.lottiefiles.com/packages/lf20_cj0prrgw.json"
-			background="transparent"
-			speed="1"
-			// style="width: 300px; height: 300px;"
-			style={{ transform: 'translateY(150px)' }}
-			loop
-			autoplay
-		></lottie-player>
+		<div className="loadingAnimation">
+			<lottie-player
+				src="https://assets4.lottiefiles.com/packages/lf20_cj0prrgw.json"
+				background="transparent"
+				speed="1"
+				style={{ width: '50%' }}
+				loop
+				autoplay
+			></lottie-player>
+		</div>
 	) : (
 		<>
 			<div className="main">
@@ -173,6 +177,8 @@ const UserTransactions = () => {
 					bgColor="#c5e1a5"
 					id={_id}
 					name={name}
+					updateRequest={updateRequest}
+					modalStatus={isOpen}
 				/>
 				<DataCard
 					data={taken?.sort((a, b) => compareDate(a.date, b.date))}
@@ -181,6 +187,8 @@ const UserTransactions = () => {
 					bgColor="#ffcdd2"
 					id={_id}
 					name={name}
+					updateRequest={updateRequest}
+					modalStatus={isOpen}
 				/>
 
 				<div style={{ height: '100px' }}></div>

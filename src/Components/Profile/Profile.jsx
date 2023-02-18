@@ -1,6 +1,7 @@
 import React from 'react';
 import { provider } from '../../Context/ContextPovider';
 import BottomNav from '../Navbar/BottomNav';
+import './Profile.css';
 
 const Profile = () => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -27,10 +28,17 @@ const Profile = () => {
 	const action = adminPannel.voice ? 'off' : 'on';
 
 	return (
-		<div>
-			<div onClick={handleVoice}>Turn {action} voice</div>
-			<div onClick={handleClose}>My account</div>
-			<div onClick={handleLogOut}>Logout</div>
+		<div className="profile">
+			<div className="actionButtonsHeading">Action Buttons</div>
+			<div className="actionButtons" onClick={handleVoice}>
+				Turn {action} voice
+			</div>
+			<div className="actionButtons" onClick={handleClose}>
+				My account
+			</div>
+			<div className="actionButtons" onClick={handleLogOut}>
+				Logout
+			</div>
 
 			<BottomNav />
 		</div>

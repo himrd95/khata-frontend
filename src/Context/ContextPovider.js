@@ -1,5 +1,12 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { EVENTS } from '../constants';
+import axios from 'axios';
+import React, {
+	createContext,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react';
+import { redirect, useNavigate } from 'react-router';
+import { BASE_URL, EVENTS } from '../constants';
 import eventBus from '../utils/eventBus';
 
 export const provider = createContext();
@@ -11,6 +18,7 @@ const preToken = JSON.parse(localStorage.getItem('khata')) || {
 };
 const ContextPovider = ({ children }) => {
 	const [state, setState] = useState(false);
+	const [users, setUsers] = React.useState([]);
 	const [message, setMessage] = useState('');
 	const [error, setError] = useState({ message: '', open: false });
 	const [loginPopup, setLoginPopup] = useState(false);
@@ -18,6 +26,37 @@ const ContextPovider = ({ children }) => {
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [currentUser, setCurrentUser] = useState({});
 	const [addTransaction, setAddTransaction] = useState(false);
+
+	const navigate = useNavigate();
+
+	const getUsers = useCallback(
+		(id) => {
+			setIsLoading(true);
+
+			let url;
+			if (id) url = `${BASE_URL}/users/${id}`;
+			else url = `${BASE_URL}/users/`;
+			const headers = {
+				headers: {
+					Authorization: 'Bearer ' + adminPannel.token,
+				},
+			};
+			axios
+				.get(url, headers)
+				.then((res) => {
+					console.log(res.data);
+					if (id) {
+						!res.data && navigate('/error404');
+						setCurrentUser({ ...res.data });
+					} else {
+						setUsers([...res.data]);
+					}
+				})
+				.catch((e) => navigate('/error404'))
+				.finally(() => setIsLoading(false));
+		},
+		[adminPannel.token, navigate],
+	);
 
 	useEffect(() => {
 		localStorage.setItem('khata', JSON.stringify(adminPannel));
@@ -51,6 +90,9 @@ const ContextPovider = ({ children }) => {
 		setCurrentUser,
 		addTransaction,
 		setAddTransaction,
+		users,
+		setUsers,
+		getUsers,
 	};
 	return (
 		<provider.Provider value={value}>{children}</provider.Provider>

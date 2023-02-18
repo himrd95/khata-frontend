@@ -126,15 +126,16 @@ const Dashboard = () => {
 	}, [addNewUser]);
 
 	return isLoading ? (
-		<lottie-player
-			src="https://assets4.lottiefiles.com/packages/lf20_cj0prrgw.json"
-			background="transparent"
-			speed="1"
-			// style="width: 300px; height: 300px;"
-			style={{ transform: 'translateY(150px)' }}
-			loop
-			autoplay
-		></lottie-player>
+		<div className="loadingAnimation">
+			<lottie-player
+				src="https://assets4.lottiefiles.com/packages/lf20_cj0prrgw.json"
+				background="transparent"
+				speed="1"
+				style={{ width: '50%' }}
+				loop
+				autoplay
+			></lottie-player>
+		</div>
 	) : (
 		<div>
 			<DetailsCard />
