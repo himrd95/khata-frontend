@@ -19,14 +19,22 @@ import { useState } from 'react';
 const DataCard = ({ data, title, total, bgColor, id, name }) => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [open, setOpen] = React.useState(false);
+
 	const [content, setContent] = React.useState('');
 	const [details, setDetails] = useState(data);
-	const { handleState, adminPannel, message } = useContext(provider);
+	const {
+		handleState,
+		adminPannel,
+		message,
+		addTransaction,
+		setAddTransaction,
+	} = useContext(provider);
 
 	const handleClose = useCallback(() => {
 		setIsOpen(false);
+		setAddTransaction(false);
 		console.log('called');
-	}, []);
+	}, [setAddTransaction]);
 
 	// Update main axios Function =>>>---------------------------------------------------------
 	const updateRequest = useCallback(
@@ -43,13 +51,15 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 				.then((_res) => {
 					handleState('User has been successfully updated');
 				})
-				.catch((e) => console.log(e));
+				.catch((e) => console.log(e))
+				.finally(() => handleClose());
 		},
-		[adminPannel.token, handleState, id],
+		[adminPannel.token, handleClose, handleState, id],
 	);
 
 	const handleUpdate = useCallback(
 		(payload, _, edit, index, remove, mode) => {
+			let updatedData = [...details];
 			const d = new Date();
 			const date =
 				d.getDate() +
@@ -59,74 +69,76 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 				d.getFullYear();
 
 			if (remove) {
-				data?.splice(index, 1);
+				updatedData?.splice(index, 1);
 			} else {
 				if (!edit) {
-					data = [...data, { ...payload, date }];
+					updatedData = [...updatedData, { ...payload, date }];
 				} else {
-					data[index] = { ...payload, date };
+					updatedData[index] = { ...payload, date };
 				}
 			}
 
 			let sum = 0;
-			data?.forEach((item) => {
+			updatedData?.forEach((item) => {
 				sum += Number(item.actualPrice) - Number(item.paid);
 			});
 
 			mode = mode || title.split(' ')[0]?.toLowerCase();
 
-			setDetails([...data]);
+			setDetails([...updatedData]);
 			updateRequest({
 				balance: sum,
-				[mode]: data,
+				[mode]: updatedData,
 			});
 		},
-		[title, updateRequest],
+		[details, title, updateRequest],
 	);
 
-	const editAndUpdate = useCallback((row, index, remove, _mode) => {
-		console.log('editAndUpdate');
-		if (remove) {
+	const editAndUpdate = useCallback(
+		(row, index, remove, _mode) => {
+			console.log('editAndUpdate');
+			if (remove) {
+				setContent(
+					<div className="deletePopup">
+						<DialogTitle>
+							{`Do you really want to remove the transaction of ₹${data[index].actualPrice}?`}
+						</DialogTitle>
+						<DialogActions>
+							<Button onClick={handleClose}>Cancle</Button>
+							<Button
+								onClick={() =>
+									handleUpdate(
+										'',
+										row,
+										false,
+										index,
+										remove,
+										title.split(' ')[0]?.toLowerCase(),
+									)
+								}
+								autoFocus
+							>
+								Yes
+							</Button>
+						</DialogActions>
+					</div>,
+				);
+				return;
+			}
 			setContent(
-				<div className="deletePopup">
-					<DialogTitle>
-						{`Do you really want to remove the transaction of ₹${data[index].actualPrice}?`}
-					</DialogTitle>
-					<DialogActions>
-						<Button onClick={handleClose}>Cancle</Button>
-						<Button
-							onClick={() =>
-								handleUpdate(
-									'',
-									row,
-									false,
-									index,
-									remove,
-									title.split(' ')[0]?.toLowerCase(),
-								)
-							}
-							autoFocus
-						>
-							Yes
-						</Button>
-					</DialogActions>
-				</div>,
+				<UpdateUser
+					handleClose={handleClose}
+					handleUpdate={handleUpdate}
+					row={row}
+					edit={true}
+					index={index}
+					mode={title.split(' ')[0]?.toLowerCase()}
+					data={data}
+				/>,
 			);
-
-			return;
-		}
-		setContent(
-			<UpdateUser
-				handleClose={handleClose}
-				handleUpdate={handleUpdate}
-				row={row}
-				edit={true}
-				index={index}
-				mode={title.split(' ')[0]?.toLowerCase()}
-				data={data}
-			/>,
-		);
-	}, []);
+		},
+		[data, handleClose, handleUpdate, title],
+	);
 
 	const handleUpdateAdd = useCallback(
 		(row) => {
@@ -143,9 +155,16 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 					name={name}
 				/>,
 			);
-			setIsOpen(true);
+			setAddTransaction(true);
 		},
-		[data, handleClose, handleUpdate, isOpen, name],
+		[
+			data,
+			handleClose,
+			handleUpdate,
+			isOpen,
+			name,
+			setAddTransaction,
+		],
 	);
 
 	const userActioons = (row, i) => {
@@ -183,12 +202,10 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 	useEffect(() => {
 		eventBus.on(EVENTS.ADD_NEW_TRANSACTION, (payload) => {
 			handleUpdateAdd({ row: data });
-			console.log('triggered');
 		});
 
 		return () => eventBus.remove(EVENTS.ADD_NEW_TRANSACTION);
 	}, [data, handleUpdateAdd]);
-	console.log(isOpen, '++++++++++++++++++++++');
 	return (
 		<>
 			{data?.length !== 0 ? (
@@ -223,10 +240,10 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 			<Snackbar
 				open={open}
 				autoHideDuration={5000}
-				onClose={handleClose}
+				onClose={() => setOpen(false)}
 			>
 				<Alert
-					onClose={handleClose}
+					onClose={() => setOpen(false)}
 					severity="success"
 					sx={{ width: '100%' }}
 				>
@@ -234,11 +251,21 @@ const DataCard = ({ data, title, total, bgColor, id, name }) => {
 				</Alert>
 			</Snackbar>
 
-			<SimpleDialog
-				isOpen={isOpen}
-				handleClose={handleClose}
-				content={content}
-			/>
+			{isOpen ? (
+				<SimpleDialog
+					isOpen={isOpen}
+					handleClose={handleClose}
+					content={content}
+				/>
+			) : null}
+
+			{addTransaction ? (
+				<SimpleDialog
+					isOpen={addTransaction}
+					handleClose={handleClose}
+					content={content}
+				/>
+			) : null}
 		</>
 	);
 };

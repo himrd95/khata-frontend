@@ -88,37 +88,23 @@ const UpdateUser = ({
 					>
 						<MenuItem value={'given'}>
 							<span style={{ margin: '5px 20px' }}>
-								Given to them
+								{`Given to ${name}`}
 							</span>{' '}
 						</MenuItem>
 						<br />
 						<MenuItem value={'taken'}>
 							<span style={{ margin: '5px 20px' }}>
-								Taken from them
+								{`Taken from ${name}`}
 							</span>
 						</MenuItem>
 					</Select>
 				)}
-
-				<Paper
-					style={{
-						margin: '20px auto',
-						padding: '10px 20px',
-						background: '#eee',
-					}}
-				>
-					<span>Balance : </span>
-					<span>
-						{!payload.actualPrice
-							? 0
-							: payload.actualPrice - payload.paid}
-					</span>
-				</Paper>
 			</FormControl>
+			<br />
 			<div>
 				<Button
 					onClick={handleClose}
-					style={{ marginRight: '10px' }}
+					style={{ marginRight: '20px' }}
 					variant="contained"
 				>
 					Cancle

@@ -17,6 +17,7 @@ const ContextPovider = ({ children }) => {
 	const [adminPannel, setAdminPannel] = useState(preToken);
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [currentUser, setCurrentUser] = useState({});
+	const [addTransaction, setAddTransaction] = useState(false);
 
 	useEffect(() => {
 		localStorage.setItem('khata', JSON.stringify(adminPannel));
@@ -48,6 +49,8 @@ const ContextPovider = ({ children }) => {
 		setError,
 		currentUser,
 		setCurrentUser,
+		addTransaction,
+		setAddTransaction,
 	};
 	return (
 		<provider.Provider value={value}>{children}</provider.Provider>
