@@ -91,7 +91,8 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 				label="Aamount"
 				variant="filled"
 				name="actualPrice"
-				pattern="\d*"
+				pattern="[0-9]*"
+				inputMode="numeric"
 			/>
 			<br />
 			<br />
@@ -107,7 +108,7 @@ const NewUser = ({ handleClose, handleAddUser }) => {
 			<br /> */}
 			<FormControl
 				variant="filled"
-				sx={{ width: '220px', display: 'flex' }}
+				sx={{ width: '75%', display: 'flex' }}
 			>
 				<InputLabel id="demo-simple-select-label">Mode</InputLabel>
 				<Select

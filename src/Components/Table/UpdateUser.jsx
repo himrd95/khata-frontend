@@ -51,7 +51,7 @@ const UpdateUser = ({
 				onChange={(e) => handlechange(e)}
 				id="filled-required"
 				type="text"
-				label={'Purpose'}
+				label={edit ? data[index].purpose : 'Purpose'}
 				variant="filled"
 				name="purpose"
 			/>
@@ -65,14 +65,15 @@ const UpdateUser = ({
 				label={edit ? data[index].actualPrice : 'Actual amount'}
 				variant="filled"
 				name="actualPrice"
-				pattern="\d*"
+				pattern="[0-9]*"
+				inputMode="numeric"
 			/>
 			<br />
 			<br />
 
 			<FormControl
 				variant="filled"
-				sx={{ width: '220px', display: 'flex' }}
+				sx={{ width: '75%', display: 'flex' }}
 			>
 				{!edit && (
 					<InputLabel id="demo-simple-select-label">Mode</InputLabel>
