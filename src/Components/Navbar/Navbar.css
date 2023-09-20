@@ -28,3 +28,13 @@
 .active {
 	color: rgb(0, 0, 162);
 }
+
+.nav_bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: transparent;
+	position: fixed;
+	width: 90%;
+	left: 5%;
+}
