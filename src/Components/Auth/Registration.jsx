@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { BASE_URL } from "../../constants";
 import { provider } from "../../Context/ContextPovider";
 import SimpleDialog from "../Modal";
@@ -65,37 +65,42 @@ const Registration = () => {
         );
     };
 
-    const handleLogin = (payload) => {
-        console.log(BASE_URL, "+++++");
-        setError({ message: "", open: false });
-        setIsLoading(true);
-        const url = `${BASE_URL}/login/`;
-        axios
-            .post(url, { ...payload })
-            .then((res) => {
-                setIsLoading(false);
-                if (res.data.token) {
-                    setAdminPannel(res.data);
-                    handleClose();
-                } else setError({ message: "Wrong credentials!", open: true });
-            })
-            .catch((e) =>
-                setError({ message: "Wrong credentials!", open: true })
-            )
-            .finally(() => setIsLoading(false));
-    };
-    const handleLoginModal = () => {
+    const handleLogin = useCallback(
+        (payload) => {
+            setError({ message: "", open: false });
+            setIsLoading(true);
+            const url = `${BASE_URL}/login/`;
+            axios
+                .post(url, { ...payload })
+                .then((res) => {
+                    setIsLoading(false);
+                    if (res.data.token) {
+                        setAdminPannel(res.data);
+                        handleClose();
+                    } else
+                        setError({ message: "Wrong credentials!", open: true });
+                })
+                .catch((e) =>
+                    setError({ message: "Wrong credentials!", open: true })
+                )
+                .finally(() => setIsLoading(false));
+        },
+        [setAdminPannel, setError, setIsLoading]
+    );
+
+    const handleLoginModal = useCallback(() => {
         setError({ message: "", open: false });
         setIsOpen(true);
         setContent(
             <LoginContent handleClose={handleClose} handleLogin={handleLogin} />
         );
-    };
+    }, [handleLogin, setError]);
+
     React.useEffect(() => {
         if (loginPopup) {
             handleLoginModal();
         }
-    }, [loginPopup]);
+    }, [handleLoginModal, loginPopup]);
     return (
         <div
             className="messages"
