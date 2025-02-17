@@ -8,14 +8,12 @@ import { SuccessPopupContent } from "../SuccessPopupContent";
 import LoginContent from "./LoginContent";
 import "./Registration.css";
 import RegistrationContent from "./RegistrationContent";
-import dotenv from "dotenv";
 
 const Registration = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [content, setContent] = useState("");
     const { loginPopup, setAdminPannel, setIsLoading, setError } =
         useContext(provider);
-    dotenv.config();
 
     const handleClose = () => {
         setIsOpen(false);
