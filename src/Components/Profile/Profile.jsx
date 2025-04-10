@@ -1,6 +1,5 @@
 import React from "react";
 import { provider } from "../../Context/ContextPovider";
-import BottomNav from "../Navbar/BottomNav";
 import "./Profile.css";
 
 const Profile = () => {
@@ -35,8 +34,6 @@ const Profile = () => {
             <div className="actionButtons" onClick={handleLogOut}>
                 Logout
             </div>
-
-            <BottomNav />
         </div>
     );
 };

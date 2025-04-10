@@ -44,7 +44,9 @@ export default function FadeMenu({ userName, pic }) {
                 onClose={handleClose}
                 TransitionComponent={Fade}
             >
-                <MenuItem onClick={handleVoice}>Turn {action} voice</MenuItem>
+                <MenuItem onClick={handleVoice}>
+                    {`Turn ${action} voice`}
+                </MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleLogOut}>Logout</MenuItem>
             </Menu>

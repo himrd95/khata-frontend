@@ -1,129 +1,129 @@
-import { Button, DialogTitle, TextField } from "@material-ui/core";
-import Styled from "styled-components";
-import React, { useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import React, { memo, useContext, useState } from "react";
+import "./UpdateUser.css";
+import CustomSelect from "./CustomSelectBox";
+import { provider } from "../../Context/ContextPovider";
+import useMakeApiCalls from "../../hooks/useMakeApiCalls";
+import { calculateTotal } from "../../utils/helpers";
 
-const Container = Styled.div`
-padding:30px;
-text-align:center;
-width:fit-content
-margin:auto;
-`;
-const UpdateUser = ({
-    handleClose,
-    handleUpdate,
-    edit,
-    index,
-    mode,
-    data,
-    name,
-}) => {
-    const [modeVal, setModeVal] = useState("");
+const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
+    const { currentUser, setCurrentUser, setTotalAmount } =
+        useContext(provider);
+    const { name, _id: id } = currentUser;
+    const { putRequest } = useMakeApiCalls();
+
+    const [selectedMode, setSelectedMode] = useState(mode);
+
     const initState = edit
         ? {
-              actualPrice: data[index].actualPrice,
-              paid: data[index].paid,
+              purpose: data[index]?.purpose || "",
+              actualPrice: data[index]?.actualPrice || "",
+              paid: data[index]?.paid || 0,
           }
-        : { actualPrice: "", paid: 0 };
+        : {
+              purpose: "",
+              actualPrice: "",
+              paid: 0,
+          };
 
-    const [payload, setPayLoad] = React.useState(initState);
+    const [payload, setPayLoad] = useState(initState);
 
-    const handlechange = (e) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setPayLoad({ ...payload, [name]: value });
+        setPayLoad((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const onSelect = (value) => {
+        setSelectedMode(value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const date = new Date();
+        const formattedDate = `${date.getDate()}/${
+            date.getMonth() + 1
+        }/${date.getFullYear()}`;
+
+        const newData = { ...payload, date: formattedDate };
+
+        const updatedUser = { ...currentUser };
+
+        // Remove from previous mode if mode changed
+        if (edit && selectedMode !== mode) {
+            updatedUser[mode].splice(index, 1);
+            updatedUser[selectedMode].push(newData);
+        } else if (edit) {
+            updatedUser[mode][index] = newData;
+        } else {
+            updatedUser[selectedMode].push(newData);
+        }
+
+        // Recalculate totals
+        const totalGiven = calculateTotal(updatedUser.given);
+        const totalTaken = calculateTotal(updatedUser.taken);
+        const balance = totalGiven - totalTaken;
+
+        const finalData = { ...updatedUser, balance };
+        setCurrentUser(finalData);
+        setTotalAmount({ given: totalGiven, taken: totalTaken });
+
+        putRequest(id, finalData);
+        handleClose();
     };
 
     return (
-        <Container>
-            <DialogTitle>Update {name}'s account</DialogTitle>
+        <div className="apple-form-container">
+            <form onSubmit={handleSubmit} className="apple-form">
+                <h2>Update {name}'s account</h2>
 
-            <TextField
-                onChange={(e) => handlechange(e)}
-                id="filled-required"
-                type="text"
-                label={edit ? data[index].purpose : "Purpose"}
-                variant="filled"
-                name="purpose"
-            />
-            <br />
-            <br />
+                <div className="apple-form-group">
+                    <label>Purpose</label>
+                    <input
+                        type="text"
+                        name="purpose"
+                        value={payload.purpose}
+                        onChange={handleChange}
+                        placeholder="Ex: Rent, Salary"
+                        required
+                    />
+                </div>
 
-            <TextField
-                onChange={(e) => handlechange(e)}
-                type="number"
-                id="filled-required"
-                label={edit ? data[index].actualPrice : "Actual amount"}
-                variant="filled"
-                name="actualPrice"
-                pattern="[0-9]*"
-                inputMode="numeric"
-            />
-            <br />
-            <br />
+                <div className="apple-form-group">
+                    <label>Amount</label>
+                    <input
+                        type="number"
+                        name="actualPrice"
+                        value={payload.actualPrice}
+                        onChange={handleChange}
+                        placeholder="Enter amount"
+                        required
+                    />
+                </div>
 
-            <FormControl
-                variant="filled"
-                sx={{ width: "75%", display: "flex" }}
-            >
-                {!edit && (
-                    <InputLabel id="demo-simple-select-label">Mode</InputLabel>
-                )}
-                {!edit && (
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={modeVal}
-                        label="Mode"
-                        name="mode"
-                        placeholder="Mode"
-                        onChange={(e) => setModeVal(e.target.value)}
+                <CustomSelect
+                    options={[
+                        { label: `Given to ${name}`, value: "given" },
+                        { label: `Taken from ${name}`, value: "taken" },
+                    ]}
+                    onChange={onSelect}
+                    selected={selectedMode}
+                />
+
+                <div className="apple-buttons">
+                    <button
+                        type="button"
+                        className="cancel"
+                        onClick={handleClose}
                     >
-                        <MenuItem value={"given"}>
-                            <span style={{ margin: "5px 20px" }}>
-                                {`Given to ${name}`}
-                            </span>{" "}
-                        </MenuItem>
-                        <br />
-                        <MenuItem value={"taken"}>
-                            <span style={{ margin: "5px 20px" }}>
-                                {`Taken from ${name}`}
-                            </span>
-                        </MenuItem>
-                    </Select>
-                )}
-            </FormControl>
-            <br />
-            <br />
-            <div>
-                <Button
-                    onClick={handleClose}
-                    style={{ marginRight: "30px" }}
-                    variant="contained"
-                >
-                    Cancle
-                </Button>
-                <Button
-                    onClick={() =>
-                        handleUpdate(
-                            payload,
-                            data,
-                            edit,
-                            index,
-                            false,
-                            edit ? mode : modeVal
-                        )
-                    }
-                    variant="contained"
-                    color="primary"
-                >
-                    Update
-                </Button>
-            </div>
-        </Container>
+                        Cancel
+                    </button>
+                    <button type="submit" className="update">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 };
 
-export default UpdateUser;
+export default memo(UpdateUser);

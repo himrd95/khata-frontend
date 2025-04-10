@@ -7,6 +7,7 @@ import Routing from "./Route/Routes";
 
 function App() {
     const { adminPannel } = useContext(provider);
+
     return (
         <div className="App">
             <Navbar />

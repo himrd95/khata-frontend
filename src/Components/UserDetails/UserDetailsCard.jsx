@@ -1,71 +1,90 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, moneyFormate } from "../../constants";
+import { Snackbar, Alert } from "@mui/material";
 import { provider } from "../../Context/ContextPovider";
+import { BASE_URL, moneyFormate } from "../../constants";
 import "./UserDetailsCard.css";
+import { calculateTotal, getBalanceColor } from "../../utils/helpers";
 
-import SimpleDialog from "../Modal";
-import { Alert, Snackbar } from "@mui/material";
-
-const UserDetailsCard = (props) => {
-    const { name, given, taken, userImage, _id } = props;
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [open, setOpen] = React.useState(false);
-    const [content] = React.useState("");
+const UserDetailsCard = ({
+    name,
+    given = [],
+    taken = [],
+    userImage,
+    _id,
+    ...rest
+}) => {
     const { setCurrentUser, message } = useContext(provider);
+    const [showSnackbar, setShowSnackbar] = useState(false);
     const navigate = useNavigate();
 
-    let totalGiven = 0;
-    given?.map((a) => (totalGiven += Number(a.actualPrice) - Number(a.paid)));
-
-    let totalTaken = 0;
-    taken?.map((a) => (totalTaken += Number(a.actualPrice) - Number(a.paid)));
+    // Memoized calculations
+    const totalGiven = useMemo(() => calculateTotal(given), [given]);
+    const totalTaken = useMemo(() => calculateTotal(taken), [taken]);
+    const totalBalance = useMemo(
+        () => totalGiven - totalTaken,
+        [totalGiven, totalTaken]
+    );
+    const balanceColor = useMemo(
+        () => getBalanceColor(totalBalance),
+        [totalBalance]
+    );
 
     useEffect(() => {
-        message !== "" && setOpen(true);
+        if (message) setShowSnackbar(true);
     }, [message]);
 
-    const handleChangeRoute = () => {
-        navigate(`${_id}`);
-        setCurrentUser({ ...props, totalGiven, totalTaken });
-    };
+    const handleClose = () => setShowSnackbar(false);
 
-    const handleClose = () => {
-        setIsOpen(false);
-        setOpen(false);
+    const handleNavigate = () => {
+        setCurrentUser({
+            name,
+            given,
+            taken,
+            userImage,
+            _id,
+            totalGiven,
+            totalTaken,
+            ...rest,
+        });
+        navigate(`${_id}`);
     };
 
     return (
-        <div className="basicCard" onClick={() => handleChangeRoute()}>
+        <div
+            className="basicCard"
+            onClick={handleNavigate}
+            style={{
+                background: `linear-gradient(90deg, rgba(255,255,255,1) 80%, ${balanceColor} 200%)`,
+            }}
+        >
             <div className="user">
                 <span className="profilePicture">
-                    {!userImage ? (
-                        <i className="fas fa-user-circle"></i>
+                    {userImage ? (
+                        <div className="profileImage">
+                            <img
+                                src={`${BASE_URL}/${userImage}`}
+                                alt="profile"
+                                width="100%"
+                            />
+                        </div>
                     ) : (
-                        <img
-                            src={`${BASE_URL}/${userImage}`}
-                            alt="pofile_picture"
-                            width="40px"
-                        />
+                        <i className="fas fa-user-circle" />
                     )}
                 </span>
                 <span className="userName">{name}</span>
             </div>
-            <div
-                style={
-                    totalGiven - totalTaken === 0
-                        ? { color: "black" }
-                        : totalGiven > totalTaken
-                        ? { color: "#006300" }
-                        : { color: "darkred" }
-                }
-                className="card_balance"
-            >
-                {moneyFormate(totalGiven - totalTaken)}
-                <i class="fa-solid fa-chevron-right"></i>
+
+            <div className="card_balance" style={{ color: balanceColor }}>
+                {moneyFormate(totalBalance)}{" "}
+                <i className="fa-solid fa-chevron-right" />
             </div>
 
-            <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+            <Snackbar
+                open={showSnackbar}
+                autoHideDuration={5000}
+                onClose={handleClose}
+            >
                 <Alert
                     onClose={handleClose}
                     severity="success"
@@ -74,12 +93,6 @@ const UserDetailsCard = (props) => {
                     {message}!
                 </Alert>
             </Snackbar>
-
-            <SimpleDialog
-                isOpen={isOpen}
-                handleClose={handleClose}
-                content={content}
-            />
         </div>
     );
 };

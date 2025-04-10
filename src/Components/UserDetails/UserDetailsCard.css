@@ -1,12 +1,18 @@
 .user {
-	width: 42%;
+	width: 58%;
 	text-align: left;
 	display: flex;
 	align-items: center;
 }
 
-.profilePicture {
-	font-size: 25px;
+.profileImage {
+	width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .profilePicture i {
 	font-size: 50px;
@@ -25,11 +31,16 @@
 .card_balance {
 	font-size: 17px;
 	font-weight: 600;
-	width: 45%;
+	width: 30%;
 	text-align: right;
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+	
+}
+
+.card_balance i{
+	color: #16169f;
 }
 
 .fa-chevron-right {

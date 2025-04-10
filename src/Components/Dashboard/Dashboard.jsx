@@ -1,157 +1,145 @@
-import React, { useContext } from "react";
-import "./Dashboard.css";
+import React, {
+    useContext,
+    useEffect,
+    useCallback,
+    useState,
+    memo,
+} from "react";
 import axios from "axios";
+import { Snackbar, Alert as MuiAlert } from "@mui/material";
+
+import "./Dashboard.css";
 import { provider } from "../../Context/ContextPovider";
-import { Snackbar } from "@mui/material";
-import MuiAlert from "@mui/material/Alert";
 import { BASE_URL, EVENTS } from "../../constants";
+
 import UserDetailsCard from "../UserDetails/UserDetailsCard";
 import DetailsCard from "../DetailsCard/DetailsCard";
 import SimpleDialog from "../Modal";
-import eventBus from "../../utils/eventBus";
 import NewUser from "../Table/NewUser";
-import { useEffect } from "react";
-import { useCallback } from "react";
-import BottomNav from "../Navbar/BottomNav";
+import eventBus from "../../utils/eventBus";
+import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+const Alert = React.forwardRef((props, ref) => (
+    <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+));
 
 const Dashboard = () => {
-    const [users, setUsers] = React.useState([]);
-    const [isLoading, setIsLoading] = React.useState(false);
-    const { setMessage, message, adminPannel, handleState } =
-        useContext(provider);
-    const [open, setOpen] = React.useState(false);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [content, setContent] = React.useState("");
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [dialogContent, setDialogContent] = useState("");
 
-    React.useEffect(() => {
-        // speak(`Welcome back, ${adminPannel.admin.name.split(' ')[0]}`);
-    }, []);
+    const { getRequest } = useMakeApiCalls();
 
-    const getUsers = useCallback(
-        (id) => {
-            setIsLoading(true);
+    const {
+        setMessage,
+        message,
+        adminPannel,
+        handleState,
+        users,
+        getUsers,
+        isLoading,
+        setIsLoading,
+        setUsers,
+    } = useContext(provider);
 
-            let url;
-            if (id) url = `${BASE_URL}/users/${id}`;
-            else url = `${BASE_URL}/users/`;
-            const headers = {
-                headers: {
-                    Authorization: "Bearer " + adminPannel.token,
-                },
-            };
-            axios
-                .get(url, headers)
-                .then((res) => setUsers([...res.data]))
-                .catch((e) => console.log(e))
-                .finally(() => setIsLoading(false));
-        },
-        [adminPannel.token]
-    );
+    useEffect(() => {
+        if (!users.length) getRequest();
+    }, [getRequest, getUsers, users.length]);
 
-    React.useEffect(() => {
-        getUsers();
-    }, [getUsers]);
-
-    React.useEffect(() => {
-        message !== "" && setOpen(true);
+    useEffect(() => {
+        if (message) setOpenSnackbar(true);
     }, [message]);
 
-    const handleClose = useCallback(
-        (event, reason) => {
-            if (reason === "clickaway") {
-                return;
-            }
-            setOpen(false);
-            setIsOpen(false);
-            handleState("");
-            setMessage("");
-        },
-        [handleState, setMessage]
-    );
+    const handleClose = useCallback(() => {
+        setOpenSnackbar(false);
+        setIsDialogOpen(false);
+        handleState("");
+        setMessage("");
+    }, [handleState, setMessage]);
 
     const handleAddUser = useCallback(
-        (payload) => {
+        async ({ name, profile }) => {
             setIsLoading(true);
-            const { name, profile } = payload;
-
             const formData = new FormData();
             formData.append("name", name);
-
             formData.append("userImage", profile);
-            const url = `${BASE_URL}/users/`;
-            const headers = {
-                headers: {
-                    Authorization: "Bearer " + adminPannel.token,
-                },
-            };
-            axios
-                .post(url, formData, headers)
-                .then(() => {
-                    handleState("User has been successfully added");
-                    setIsLoading(false);
-                })
-                .catch((e) => console.log(e))
-                .finally(() => handleClose());
+
+            try {
+                await axios
+                    .post(`${BASE_URL}/users`, formData, {
+                        headers: {
+                            Authorization: `Bearer ${adminPannel.token}`,
+                        },
+                    })
+                    .then((res) => {
+                        handleState("User has been successfully added");
+                        setUsers([...res.data]);
+                    });
+            } catch (error) {
+                console.error("Add user failed:", error);
+            } finally {
+                setIsLoading(false);
+                handleClose();
+            }
         },
-        [adminPannel.token, handleClose, handleState]
+        [adminPannel.token, handleClose, handleState, setIsLoading, setUsers]
     );
 
     const addNewUser = useCallback(() => {
-        setContent(
+        setDialogContent(
             <NewUser handleClose={handleClose} handleAddUser={handleAddUser} />
         );
-        setIsOpen(true);
+        setIsDialogOpen(true);
     }, [handleAddUser, handleClose]);
 
     useEffect(() => {
-        eventBus.on(EVENTS.ADD_NEW_USER, () => {
-            addNewUser();
-        });
+        eventBus.on(EVENTS.ADD_NEW_USER, addNewUser);
+        return () => eventBus.remove(EVENTS.ADD_NEW_USER, addNewUser);
     }, [addNewUser]);
 
-    return isLoading ? (
-        <div className="loadingAnimation">
-            <lottie-player
-                src="https://assets4.lottiefiles.com/packages/lf20_cj0prrgw.json"
-                background="transparent"
-                speed="1"
-                style={{ width: "50%" }}
-                loop
-                autoplay
-            ></lottie-player>
-        </div>
-    ) : (
+    if (isLoading) {
+        return (
+            <div className="loadingAnimation">
+                <lottie-player
+                    src="https://assets4.lottiefiles.com/packages/lf20_cj0prrgw.json"
+                    background="transparent"
+                    speed="1"
+                    style={{ width: "50%" }}
+                    loop
+                    autoplay
+                ></lottie-player>
+            </div>
+        );
+    }
+
+    return (
         <div>
             <DetailsCard />
-            {users?.map((user) => (
-                <UserDetailsCard {...user} key={user.id} />
+            {users.map((user) => (
+                <UserDetailsCard key={user.id} {...user} />
             ))}
 
-            <BottomNav />
-
-            {/* <CollapsibleTable users={users} /> */}
-            <div className="unused"></div>
-            <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={5000}
+                onClose={handleClose}
+            >
                 <Alert
-                    onClose={handleClose}
                     severity="success"
+                    onClose={handleClose}
                     sx={{ width: "100%" }}
                 >
                     {message}!
                 </Alert>
             </Snackbar>
-            {/* <BottomNav /> */}
+
             <SimpleDialog
-                isOpen={isOpen}
+                isOpen={isDialogOpen}
                 handleClose={handleClose}
-                content={content}
+                content={dialogContent}
             />
         </div>
     );
 };
 
-export default Dashboard;
+export default memo(Dashboard);

@@ -7,7 +7,6 @@ import UpdateUser from "../Table/UpdateUser";
 import { provider } from "../../Context/ContextPovider";
 import { EVENTS, moneyFormate } from "../../constants";
 import ButtonComponent from "../Button/Button";
-import { useState } from "react";
 import DeleteConfirmation from "../Contents/DeleteConfirmation";
 
 const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
@@ -15,7 +14,6 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
     const [open, setOpen] = React.useState(false);
 
     const [content, setContent] = React.useState("");
-    const [details] = useState([]);
     const { message, addTransaction, setAddTransaction, setIsLoading } =
         useContext(provider);
 
@@ -24,32 +22,28 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
     const handleClose = useCallback(() => {
         setIsOpen(false);
         setAddTransaction(false);
-        console.log("called");
     }, [setAddTransaction]);
-
-    // Update main axios Function =>>>---------------------------------------------------------
 
     const handleUpdate = useCallback(
         (payload, _, edit, index, remove, _mode) => {
-            let updatedData = [...data];
+            const updatedData = [...data];
             const d = new Date();
-            const date =
-                d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+            const date = `${d.getDate()}/${
+                d.getMonth() + 1
+            }/${d.getFullYear()}`;
 
-            if (remove) {
-                updatedData?.splice(index, 1);
+            const newData = { ...payload, date };
+            if (edit) {
+                updatedData[index] = newData;
             } else {
-                if (!edit) {
-                    updatedData = [...updatedData, { ...payload, date }];
-                } else {
-                    updatedData[index] = { ...payload, date };
-                }
+                updatedData.push(newData);
             }
 
-            let sum = 0;
-            updatedData?.forEach((item) => {
-                sum += Number(item.actualPrice) - Number(item.paid);
-            });
+            const sum = updatedData.reduce(
+                (acc, item) =>
+                    acc + Number(item.actualPrice) - Number(item.paid),
+                0
+            );
 
             updateRequest({
                 balance: sum,
@@ -60,57 +54,37 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
         },
         [data, handleClose, mode, setIsLoading, updateRequest]
     );
-    console.log(details, "deatils", mode, title);
-
-    const deleteConfirmation = useCallback(
-        ({ row, index, remove, title }) => {
-            handleUpdate(
-                "",
-                row,
-                false,
-                index,
-                remove,
-                title.split(" ")[0]?.toLowerCase()
-            );
-        },
-        [handleUpdate]
-    );
 
     const editAndUpdate = useCallback(
         (row, index, remove, _mode) => {
-            console.log("editAndUpdate");
+            console.log(index);
             if (remove) {
-                const props = {
-                    row,
-                    index,
-                    remove,
-                    title: title.split(" ")[0]?.toLowerCase(),
-                };
+                const confirmationMsg = `Do you really want to remove the transaction of ${moneyFormate(
+                    data[index].actualPrice
+                )}?`;
                 setContent(
                     <DeleteConfirmation
-                        lable={`Do you really want to remove the transaction of ${moneyFormate(
-                            data[index].actualPrice
-                        )}?`}
+                        label={confirmationMsg}
                         handleClose={handleClose}
-                        deleteConfirmation={deleteConfirmation}
-                        props={props}
+                        index={index}
+                        mode={_mode}
                     />
                 );
-                return;
+            } else {
+                setContent(
+                    <UpdateUser
+                        handleClose={handleClose}
+                        handleUpdate={handleUpdate}
+                        row={row}
+                        edit={true}
+                        index={index}
+                        mode={mode}
+                        data={data}
+                    />
+                );
             }
-            setContent(
-                <UpdateUser
-                    handleClose={handleClose}
-                    handleUpdate={handleUpdate}
-                    row={row}
-                    edit={true}
-                    index={index}
-                    mode={title.split(" ")[0]?.toLowerCase()}
-                    data={data}
-                />
-            );
         },
-        [data, deleteConfirmation, handleClose, handleUpdate, title]
+        [data, handleClose, handleUpdate, mode]
     );
 
     const handleUpdateAdd = useCallback(
@@ -118,23 +92,21 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
             if (isOpen) {
                 return;
             }
-            console.log("handleUpdateAdd");
+
             setContent(
                 <UpdateUser
                     handleClose={handleClose}
                     handleUpdate={handleUpdate}
                     row={row}
                     data={data}
-                    name={name}
                 />
             );
             setAddTransaction(true);
         },
-        [data, handleClose, handleUpdate, isOpen, name, setAddTransaction]
+        [data, handleClose, handleUpdate, isOpen, setAddTransaction]
     );
 
-    const userActioons = (row, i) => {
-        console.log("userAction");
+    const userActions = (row, i) => {
         setIsOpen(true);
         setContent(
             <div className="editModal">
@@ -177,10 +149,7 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
         <>
             {data?.length !== 0 ? (
                 <div className="basicCard transaction">
-                    <div
-                        style={{ backgroundColor: bgColor }}
-                        className="header"
-                    >
+                    <div style={{ background: bgColor }} className="header">
                         <span className="title">{title}</span>
                         <span className="title">{moneyFormate(total)}</span>
                     </div>
@@ -197,7 +166,7 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
                                 <span
                                     className="actualPrice"
                                     onClick={() =>
-                                        userActioons({ row: data }, i)
+                                        userActions({ row: data }, i)
                                     }
                                 >
                                     <span>
@@ -210,6 +179,7 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
                     </div>
                 </div>
             ) : null}
+
             <Snackbar
                 open={open}
                 autoHideDuration={5000}

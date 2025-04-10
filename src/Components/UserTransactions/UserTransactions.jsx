@@ -1,65 +1,50 @@
 import { Alert, Snackbar } from "@mui/material";
-import axios from "axios";
-import React, { useContext, useEffect, useCallback, useRef } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router";
-import { BASE_URL, EVENTS } from "../../constants";
+import { COLORS, EVENTS } from "../../constants";
 import { provider } from "../../Context/ContextPovider";
 import eventBus from "../../utils/eventBus";
 import { compareDate } from "../../utils/helpers";
 import DeleteConfirmation from "../Contents/DeleteConfirmation";
 import DetailsCard from "../DetailsCard/DetailsCard";
 import SimpleDialog from "../Modal";
-import BottomNav from "../Navbar/BottomNav";
 import DataCard from "./DataCard";
 import "./UserTransactions.css";
+import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 
 const UserTransactions = () => {
     const {
-        adminPannel,
         handleState,
         message,
         getUsers,
         isLoading,
         currentUser,
+        totalAmount,
     } = useContext(provider);
+
     const [open, setOpen] = React.useState(false);
-    const params = useParams();
     const [isOpen, setIsOpen] = React.useState(false);
     const [content, setContent] = React.useState("");
+
+    const params = useParams();
     const navigate = useNavigate();
 
-    const { name, given, taken, userImage, totalGiven, totalTaken, _id } =
-        currentUser;
+    const { deleteRequest, putRequest, getRequest } = useMakeApiCalls();
 
-    const givenRef = useRef(totalGiven);
-    const takenRef = useRef(totalTaken);
+    const { name, given, taken, userImage, _id } = currentUser;
 
     useEffect(() => {
-        let sum1 = 0;
-        given?.map((a) => (sum1 += Number(a.actualPrice) - Number(a.paid)));
-        givenRef.current = sum1;
-
-        let sum2 = 0;
-        taken?.map((a) => (sum2 += Number(a.actualPrice) - Number(a.paid)));
-        takenRef.current = sum2;
-
         if (!name) {
-            getUsers(params.id);
+            getRequest(params.id);
         }
 
-        eventBus.on(EVENTS.REFRESH_USER, () => {
-            getUsers(params.id);
-        });
-    }, [
-        currentUser,
-        getUsers,
-        given,
-        name,
-        params.id,
-        taken,
-        totalGiven,
-        totalTaken,
-    ]);
+        const refreshHandler = () => getUsers(params.id);
+        eventBus.on(EVENTS.REFRESH_USER, refreshHandler);
+
+        return () => {
+            eventBus.remove(EVENTS.REFRESH_USER, refreshHandler); // cleanup
+        };
+    }, [getUsers, given, taken, name, params.id, getRequest]);
 
     const handleClose = useCallback(() => {
         setIsOpen(false);
@@ -70,24 +55,14 @@ const UserTransactions = () => {
     const deleteConfirmation = useCallback(
         (id) => {
             handleClose();
-            const url = `${BASE_URL}/users/${id}`;
-            const headers = {
-                headers: {
-                    Authorization: "Bearer " + adminPannel.token,
-                },
-            };
-            axios
-                .delete(url, headers)
-                .then(() => handleState("User has been successfully deleted"))
-                .catch((e) => console.log(e))
-                .finally(() => navigate("/"));
+            deleteRequest(id);
+            navigate("/");
         },
-        [adminPannel.token, handleClose, handleState, navigate]
+        [deleteRequest, handleClose, navigate]
     );
 
     const deleteUser = useCallback(
         (id, name) => {
-            console.log("delete");
             setIsOpen(true);
             setContent(
                 <DeleteConfirmation
@@ -108,37 +83,27 @@ const UserTransactions = () => {
     const updateRequest = useCallback(
         (payload) => {
             setIsOpen(false);
-            const url = `${BASE_URL}/users/${_id}`;
-            const headers = {
-                headers: {
-                    Authorization: "Bearer " + adminPannel.token,
-                },
-            };
-            axios
-                .patch(url, payload, headers)
-                .then((res) => {
-                    handleState("User has been successfully updated");
-                })
-                .catch((e) => console.log(e))
-                .finally(() => {
-                    getUsers(_id);
-                });
+            putRequest(_id, payload);
         },
-        [_id, adminPannel.token, handleState, getUsers]
+        [_id, putRequest]
     );
 
-    return isLoading ? (
-        <div className="loadingAnimation">
-            <lottie-player
-                src="https://assets4.lottiefiles.com/packages/lf20_cj0prrgw.json"
-                background="transparent"
-                speed="1"
-                style={{ width: "50%" }}
-                loop
-                autoplay
-            ></lottie-player>
-        </div>
-    ) : (
+    if (isLoading) {
+        return (
+            <div className="loadingAnimation">
+                <lottie-player
+                    src="https://assets4.lottiefiles.com/packages/lf20_cj0prrgw.json"
+                    background="transparent"
+                    speed="1"
+                    style={{ width: "50%" }}
+                    loop
+                    autoplay
+                ></lottie-player>
+            </div>
+        );
+    }
+
+    return (
         <>
             <div className="main">
                 <DetailsCard userName={name} profilePic={userImage} />
@@ -149,10 +114,12 @@ const UserTransactions = () => {
                 </div>
 
                 <DataCard
-                    data={given?.sort((a, b) => compareDate(a.date, b.date))}
+                    data={given?.sort((a, b) =>
+                        compareDate(a.updatedAt, b.updatedAt)
+                    )}
                     title="Given (Debit)"
-                    total={givenRef.current}
-                    bgColor="#c5e1a5"
+                    total={totalAmount.given}
+                    bgColor={COLORS.GIVEN_HEADER_BG}
                     id={_id}
                     name={name}
                     updateRequest={updateRequest}
@@ -161,8 +128,8 @@ const UserTransactions = () => {
                 <DataCard
                     data={taken?.sort((a, b) => compareDate(a.date, b.date))}
                     title="Taken (Credit)"
-                    total={takenRef.current}
-                    bgColor="#ffcdd2"
+                    total={totalAmount.taken}
+                    bgColor={COLORS.TAKEN_HEADER_BG}
                     id={_id}
                     name={name}
                     updateRequest={updateRequest}
@@ -191,7 +158,6 @@ const UserTransactions = () => {
                     content={content}
                 />
             </div>
-            <BottomNav />
         </>
     );
 };

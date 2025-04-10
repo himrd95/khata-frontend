@@ -1,7 +1,5 @@
-import axios from "axios";
-import React, { createContext, useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { BASE_URL } from "../constants";
+import React, { createContext, useEffect, useState } from "react";
+import { calculateTotal } from "../utils/helpers";
 
 export const provider = createContext();
 
@@ -20,37 +18,8 @@ const ContextPovider = ({ children }) => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [currentUser, setCurrentUser] = useState({});
     const [addTransaction, setAddTransaction] = useState(false);
-
-    const navigate = useNavigate();
-
-    const getUsers = useCallback(
-        (id) => {
-            setIsLoading(true);
-
-            let url;
-            if (id) url = `${BASE_URL}/users/${id}`;
-            else url = `${BASE_URL}/users/`;
-            const headers = {
-                headers: {
-                    Authorization: "Bearer " + adminPannel.token,
-                },
-            };
-            axios
-                .get(url, headers)
-                .then((res) => {
-                    console.log(res.data);
-                    if (id) {
-                        !res.data && navigate("/error404");
-                        setCurrentUser({ ...res.data });
-                    } else {
-                        setUsers([...res.data]);
-                    }
-                })
-                .catch((e) => navigate("/error404"))
-                .finally(() => setIsLoading(false));
-        },
-        [adminPannel.token, navigate]
-    );
+    const [shouldFetchUsers, setShouldFetchUsers] = useState(false);
+    const [totalAmount, setTotalAmount] = useState({ given: 0, taken: 0 });
 
     useEffect(() => {
         localStorage.setItem("khata", JSON.stringify(adminPannel));
@@ -66,6 +35,15 @@ const ContextPovider = ({ children }) => {
             setLoginPopup(false);
         }, 1000);
     }, [loginPopup]);
+
+    useEffect(() => {
+        if (currentUser) {
+            setTotalAmount({
+                given: calculateTotal(currentUser.given),
+                taken: calculateTotal(currentUser.taken),
+            });
+        }
+    }, [currentUser, currentUser.given, currentUser.taken]);
 
     const value = {
         state,
@@ -86,7 +64,10 @@ const ContextPovider = ({ children }) => {
         setAddTransaction,
         users,
         setUsers,
-        getUsers,
+        shouldFetchUsers,
+        setShouldFetchUsers,
+        totalAmount,
+        setTotalAmount,
     };
     return <provider.Provider value={value}>{children}</provider.Provider>;
 };

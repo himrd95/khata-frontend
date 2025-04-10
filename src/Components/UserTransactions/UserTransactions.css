@@ -8,13 +8,13 @@
 	justify-content: space-between;
 	width: 100%;
 	margin: auto;
-	padding: 20px;
+	padding: 14px 16px;
 	border-radius: 16px 16px 0 0;
 }
 
 .title {
 	text-align: left;
-	font-size: 22px;
+	font-size: 20px;
 	font-weight: 500;
 }
 
@@ -25,6 +25,7 @@
 	width: 100%;
 	margin: auto;
 	padding: 20px;
+	padding-bottom: 0;
 }
 
 .row {
@@ -32,8 +33,17 @@
 	justify-content: space-between;
 	width: 100%;
 	margin: auto;
-	padding: 10px;
+	padding: 8px;
 	border-bottom: 1px solid #dcdcdc;
+}
+
+.row:first-child{
+	padding-top: 0;
+}
+
+.row:last-child{
+	border: none;
+	padding-bottom: 0;
 }
 
 .dateAndPurpose {
@@ -83,7 +93,9 @@
 .actions {
 	justify-content: space-around;
 	padding: 0;
-	background-image: linear-gradient(to right, #bdecff, #ffa8a8);
+	background-image: linear-gradient(90deg,  #163b8b 45%,  #b64646 55%);
+	box-shadow: 5px 5px 10px #e6e6e6, -5px -5px 10px #e6e6e6;
+	color: white;
 }
 
 .actions span {

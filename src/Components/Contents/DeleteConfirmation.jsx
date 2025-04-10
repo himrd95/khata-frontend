@@ -1,31 +1,34 @@
-import {
-	Button,
-	DialogActions,
-	DialogTitle,
-} from '@material-ui/core';
-import React from 'react';
+import React, { memo, useCallback, useContext } from "react";
+import { Button, DialogActions, DialogTitle } from "@material-ui/core";
+import useMakeApiCalls from "../../hooks/useMakeApiCalls";
+import { provider } from "../../Context/ContextPovider";
 
-const DeleteConfirmation = ({
-	handleClose,
-	lable,
-	id,
-	deleteConfirmation,
-	props,
-}) => {
-	return (
-		<div className="deletePopup">
-			<DialogTitle>{lable}</DialogTitle>
-			<DialogActions>
-				<Button onClick={() => handleClose()}>Cancle</Button>
-				<Button
-					onClick={() => deleteConfirmation(id || props)}
-					autoFocus
-				>
-					Yes
-				</Button>
-			</DialogActions>
-		</div>
-	);
+const DeleteConfirmation = ({ handleClose, label, index, mode }) => {
+    const { currentUser, setCurrentUser } = useContext(provider);
+    const { putRequest } = useMakeApiCalls();
+
+    const handleDelete = useCallback(() => {
+        const updatedUser = { ...currentUser };
+        const key = mode.toLowerCase();
+
+        updatedUser[key].splice(index, 1);
+
+        putRequest(updatedUser._id, updatedUser);
+        setCurrentUser(updatedUser);
+        handleClose();
+    }, [currentUser, handleClose, index, mode, putRequest, setCurrentUser]);
+
+    return (
+        <div className="deletePopup">
+            <DialogTitle>{label}</DialogTitle>
+            <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={handleDelete} style={{ color: "red" }}>
+                    Yes
+                </Button>
+            </DialogActions>
+        </div>
+    );
 };
 
-export default DeleteConfirmation;
+export default memo(DeleteConfirmation);
