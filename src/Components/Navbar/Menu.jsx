@@ -3,7 +3,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { provider } from "../../Context/ContextPovider";
-import DetailsCard from "../DetailsCard/DetailsCard";
 
 export default function FadeMenu({ userName, pic }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,12 +27,6 @@ export default function FadeMenu({ userName, pic }) {
 
     return (
         <div>
-            <DetailsCard
-                profilePic={pic}
-                profileName={userName}
-                userName="him"
-            />
-
             <Menu
                 id="fade-menu"
                 MenuListProps={{

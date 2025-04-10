@@ -1,19 +1,9 @@
-import {
-    Button,
-    DialogTitle,
-    Input,
-    Paper,
-    TextField,
-} from "@material-ui/core";
+import { Button, DialogTitle, Input, TextField } from "@material-ui/core";
 import Styled from "styled-components";
 import React, { useContext, useEffect, useState } from "react";
 import { provider } from "../../Context/ContextPovider";
 import { CircularProgress, DialogActions } from "@mui/material";
 
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import speak from "../../utils/speech";
 import { useRef } from "react";
 
@@ -82,6 +72,7 @@ const NewUser = ({ handleClose, handleAddUser }) => {
                     Choose User's pic
                 </Button>
             </label>
+
             <br />
             <br />
 

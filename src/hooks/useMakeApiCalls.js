@@ -82,16 +82,16 @@ const useMakeApiCalls = () => {
                 setIsLoading(true);
                 const response = await axios.delete(url, headers);
 
-                const user = response.data.find((user) => user._id === id);
-                setCurrentUser(user);
                 setUsers([...response.data]);
                 handleState("User has been successfully deleted");
             } catch (error) {
                 console.error("DELETE request failed:", error);
                 navigate("/error404");
+            } finally {
+                setIsLoading(false);
             }
         },
-        [handleState, headers, navigate, setCurrentUser, setIsLoading, setUsers]
+        [handleState, headers, navigate, setIsLoading, setUsers]
     );
 
     return {

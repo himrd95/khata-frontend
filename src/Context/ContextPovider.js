@@ -43,7 +43,7 @@ const ContextPovider = ({ children }) => {
                 taken: calculateTotal(currentUser.taken),
             });
         }
-    }, [currentUser, currentUser.given, currentUser.taken]);
+    }, [currentUser]);
 
     const value = {
         state,

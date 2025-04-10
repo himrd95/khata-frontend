@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { EVENTS } from "../../../constants";
 import eventBus from "../../../utils/eventBus";
 import "./BottomNav.css";
 import cx from "classnames";
+import { provider } from "../../../Context/ContextPovider";
 
 const TABS = {
     HOME: "HOME",
@@ -13,6 +14,7 @@ const TABS = {
 
 const BottomNav = () => {
     const [active, setActive] = useState(TABS.HOME);
+    const { setCurrentUser } = useContext(provider);
     const path = useLocation();
     const navigate = useNavigate();
 
@@ -21,15 +23,17 @@ const BottomNav = () => {
             setActive(tab);
             if (tab === TABS.HOME) {
                 navigate("/");
+                setCurrentUser({});
             } else if (tab === TABS.PROFILE) {
                 navigate("/profile");
+                setCurrentUser({});
             } else if (path.pathname === "/") {
                 return eventBus.dispatch(EVENTS.ADD_NEW_USER, true);
             } else {
                 return eventBus.dispatch(EVENTS.ADD_NEW_TRANSACTION, true);
             }
         },
-        [navigate, path.pathname]
+        [navigate, path.pathname, setCurrentUser]
     );
 
     const getClassName = useCallback(

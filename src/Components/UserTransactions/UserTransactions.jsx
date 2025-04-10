@@ -66,10 +66,11 @@ const UserTransactions = () => {
             setIsOpen(true);
             setContent(
                 <DeleteConfirmation
-                    lable={`Do you really want to close account with ${name}`}
+                    label={`Do you really want to close account with ${name}`}
                     handleClose={handleClose}
                     deleteConfirmation={deleteConfirmation}
                     id={id}
+                    closeAccount={true}
                 />
             );
         },
@@ -105,9 +106,7 @@ const UserTransactions = () => {
 
     return (
         <>
-            <div className="main">
-                <DetailsCard userName={name} profilePic={userImage} />
-
+            <div className="main extraMargin">
                 <div className="basicCard actions">
                     <span>Edit</span>
                     <span onClick={() => deleteUser(_id, name)}>Delete</span>

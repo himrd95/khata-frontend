@@ -5,10 +5,13 @@ import NotFoundPage from "../Components/NotFoundPage/NotFoundPage";
 import Profile from "../Components/Profile/Profile";
 import UserTransactions from "../Components/UserTransactions/UserTransactions";
 import BottomNav from "../Components/Navbar/BottomNav/BottomNav";
+import DetailsCard from "../Components/DetailsCard/DetailsCard";
 
 const Routing = () => {
     return (
         <>
+            <DetailsCard />
+
             <Routes>
                 <Route exact path="/" element={<Dashboard />} />
                 <Route exact path="/:id" element={<UserTransactions />} />

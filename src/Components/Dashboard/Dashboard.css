@@ -11,3 +11,9 @@ Box div {
 .heading {
 	color: aliceblue;
 }
+
+.usersDetails{
+	margin-top: 165px;
+    height: 72vh;
+    overflow: scroll;
+}

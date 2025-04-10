@@ -115,9 +115,12 @@ const Dashboard = () => {
     return (
         <div>
             <DetailsCard />
-            {users.map((user) => (
-                <UserDetailsCard key={user.id} {...user} />
-            ))}
+
+            <div className="usersDetails">
+                {users.map((user) => (
+                    <UserDetailsCard key={user.id} {...user} />
+                ))}
+            </div>
 
             <Snackbar
                 open={openSnackbar}

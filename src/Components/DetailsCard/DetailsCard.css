@@ -1,14 +1,29 @@
 .wrapper {
 	justify-content: space-evenly;
 	height: 220px;
-	background-color: #f0fcff;
+	background-color: #edf3ff;
 	margin: 20px auto;
+}
+
+.detailsCard{
+	width: 100%;
+	height: 160px;
+	background-color: #d8effe;
+	margin: 0 auto 20px;
+	position: fixed;
+	z-index: 10000;
+	top: 0;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	border-radius: 0 0 20px 20px;
+	box-shadow: 0px 6px 10px 0px #d7d7d7;
 }
 
 .profilePic {
 	width: 70px;
 	height: 70px;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 .profileContainer {
@@ -39,7 +54,7 @@
 }
 
 .profileText span:last-child {
-	font-size: 27px;
+	font-size: 24px;
 	font-weight: 500;
 	text-transform: capitalize;
 }

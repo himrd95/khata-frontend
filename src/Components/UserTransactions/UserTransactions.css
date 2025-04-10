@@ -79,6 +79,11 @@
 	animation: slideLeft 0.5s forwards;
 }
 
+.extraMargin{
+	margin-top: 175px;
+}
+
+
 @keyframes slideLeft {
 	0% {
 		transform: translateX(300px);

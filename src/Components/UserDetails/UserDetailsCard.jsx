@@ -76,7 +76,7 @@ const UserDetailsCard = ({
             </div>
 
             <div className="card_balance" style={{ color: balanceColor }}>
-                {moneyFormate(totalBalance)}{" "}
+                {moneyFormate(totalBalance)}
                 <i className="fa-solid fa-chevron-right" />
             </div>
 
