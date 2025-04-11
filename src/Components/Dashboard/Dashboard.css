@@ -13,7 +13,7 @@ Box div {
 }
 
 .usersDetails{
-	margin-top: 165px;
-    height: 72vh;
+	margin-top: 162px;
+    height: calc(100vh - 232px);
     overflow: scroll;
 }
