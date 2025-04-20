@@ -1,4 +1,3 @@
-import { Alert, Snackbar } from "@mui/material";
 import React, { useContext, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router";
 import { COLORS, EVENTS } from "../../constants";
@@ -6,20 +5,21 @@ import { provider } from "../../Context/ContextPovider";
 import eventBus from "../../utils/eventBus";
 import { compareDate } from "../../utils/helpers";
 import DeleteConfirmation from "../Contents/DeleteConfirmation";
-import DetailsCard from "../DetailsCard/DetailsCard";
-import SimpleDialog from "../Modal";
 import DataCard from "./DataCard";
 import "./UserTransactions.css";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
+import { useSwipe } from "../../hooks/useSwipe";
+import SimpleDialog from "../Modal";
+import { Alert, Snackbar } from "@mui/material";
 
 const UserTransactions = () => {
     const {
-        handleState,
         message,
         getUsers,
         isLoading,
         currentUser,
         totalAmount,
+        setCurrentUser,
     } = useContext(provider);
 
     const [open, setOpen] = React.useState(false);
@@ -31,13 +31,15 @@ const UserTransactions = () => {
 
     const { deleteRequest, putRequest, getRequest } = useMakeApiCalls();
 
-    const { name, given, taken, userImage, _id } = currentUser;
+    const { name, given, taken, _id } = currentUser;
+
+    const handleSwipeRight = () => {
+        setCurrentUser({});
+    };
+
+    const swipeHandlers = useSwipe(handleSwipeRight);
 
     useEffect(() => {
-        if (!name) {
-            getRequest(params.id);
-        }
-
         const refreshHandler = () => getUsers(params.id);
         eventBus.on(EVENTS.REFRESH_USER, refreshHandler);
 
@@ -49,16 +51,15 @@ const UserTransactions = () => {
     const handleClose = useCallback(() => {
         setIsOpen(false);
         setOpen(false);
-        handleState("");
-    }, [handleState]);
+    }, []);
 
     const deleteConfirmation = useCallback(
         (id) => {
             handleClose();
             deleteRequest(id);
-            navigate("/");
+            setCurrentUser({});
         },
-        [deleteRequest, handleClose, navigate]
+        [deleteRequest, handleClose, setCurrentUser]
     );
 
     const deleteUser = useCallback(
@@ -83,7 +84,6 @@ const UserTransactions = () => {
 
     const updateRequest = useCallback(
         (payload) => {
-            setIsOpen(false);
             putRequest(_id, payload);
         },
         [_id, putRequest]
@@ -106,7 +106,7 @@ const UserTransactions = () => {
 
     return (
         <>
-            <div className="main extraMargin">
+            <div className="main usersDetails" {...swipeHandlers}>
                 <div className="basicCard actions">
                     <span>Edit</span>
                     <span onClick={() => deleteUser(_id, name)}>Delete</span>

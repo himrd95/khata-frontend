@@ -1,3 +1,4 @@
+
 Box div {
 	margin: 20px;
 	font-size: 20px;
@@ -12,8 +13,6 @@ Box div {
 	color: aliceblue;
 }
 
-.usersDetails{
-	margin-top: 162px;
-    height: calc(100vh - 232px);
-    overflow: scroll;
+.usersCards{
+    width: 100vw;
 }

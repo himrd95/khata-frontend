@@ -4,6 +4,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import { useContext } from "react";
 import { provider } from "./Context/ContextPovider";
 import Routing from "./Route/Routes";
+import Home from "./Components/Home";
 
 function App() {
     const { adminPannel } = useContext(provider);
@@ -11,7 +12,7 @@ function App() {
     return (
         <div className="App">
             <Navbar />
-            {adminPannel.token !== "" ? <Routing /> : <Registration />}
+            {adminPannel.token !== "" ? <Home /> : <Registration />}
         </div>
     );
 }

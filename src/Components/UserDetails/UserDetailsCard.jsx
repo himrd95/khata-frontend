@@ -47,7 +47,6 @@ const UserDetailsCard = ({
             totalTaken,
             ...rest,
         });
-        navigate(`${_id}`);
     };
 
     return (

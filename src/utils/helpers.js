@@ -35,3 +35,19 @@ export const getUrl = (id) => {
         return `${BASE_URL}/${ENDPOINT}`;
     }
 };
+
+export const isEmpty = (value) => {
+    if (value == null) return true; // null or undefined
+
+    if (typeof value === "string") return value.trim() === "";
+
+    if (Array.isArray(value)) return value.length === 0;
+
+    if (typeof value === "object") return Object.keys(value).length === 0;
+
+    if (typeof value === "boolean") return !value;
+
+    if (typeof value === "number") return isNaN(value) || value === 0;
+
+    return false;
+};

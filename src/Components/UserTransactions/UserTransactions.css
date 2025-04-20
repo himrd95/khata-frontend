@@ -76,11 +76,7 @@
 }
 
 .main {
-	animation: slideLeft 0.5s forwards;
-}
-
-.extraMargin{
-	margin-top: 175px;
+	width: 100vw;
 }
 
 

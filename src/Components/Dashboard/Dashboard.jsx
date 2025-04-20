@@ -6,22 +6,18 @@ import React, {
     memo,
 } from "react";
 import axios from "axios";
-import { Snackbar, Alert as MuiAlert } from "@mui/material";
+import { Snackbar, Alert as MuiAlert, Alert } from "@mui/material";
 
 import "./Dashboard.css";
 import { provider } from "../../Context/ContextPovider";
 import { BASE_URL, EVENTS } from "../../constants";
 
 import UserDetailsCard from "../UserDetails/UserDetailsCard";
-import DetailsCard from "../DetailsCard/DetailsCard";
-import SimpleDialog from "../Modal";
 import NewUser from "../Table/NewUser";
 import eventBus from "../../utils/eventBus";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
-
-const Alert = React.forwardRef((props, ref) => (
-    <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
-));
+import { isEmpty } from "../../utils/helpers";
+import SimpleDialog from "../Modal";
 
 const Dashboard = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -114,9 +110,7 @@ const Dashboard = () => {
 
     return (
         <div>
-            <DetailsCard />
-
-            <div className="usersDetails">
+            <div className="usersDetails usersCards">
                 {users.map((user) => (
                     <UserDetailsCard key={user.id} {...user} />
                 ))}
