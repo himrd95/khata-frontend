@@ -1,5 +1,10 @@
 import React, { memo, useCallback, useContext } from "react";
-import { Button, DialogActions, DialogTitle } from "@material-ui/core";
+import {
+    Button,
+    capitalize,
+    DialogActions,
+    DialogTitle,
+} from "@material-ui/core";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 import { provider } from "../../Context/ContextPovider";
 
@@ -11,6 +16,7 @@ const DeleteConfirmation = ({
     closeAccount,
     deleteConfirmation,
     id,
+    transactionAmount,
 }) => {
     const { currentUser, setCurrentUser } = useContext(provider);
     const { putRequest } = useMakeApiCalls();
@@ -25,7 +31,8 @@ const DeleteConfirmation = ({
 
             updatedUser[key].splice(index, 1);
 
-            putRequest(updatedUser._id, updatedUser);
+            const msg = `Successfully deleted the transaction of ${transactionAmount}`;
+            putRequest(updatedUser._id, updatedUser, msg);
             setCurrentUser({ ...updatedUser });
             handleClose();
         }
@@ -39,14 +46,21 @@ const DeleteConfirmation = ({
         mode,
         putRequest,
         setCurrentUser,
+        transactionAmount,
     ]);
 
     return (
         <div className="deletePopup">
-            <DialogTitle>{label}</DialogTitle>
+            <div className="confirmationTitle">{label}</div>
             <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleDelete} style={{ color: "red" }}>
+                <Button variant="contained" onClick={handleClose}>
+                    Cancel
+                </Button>
+                <Button
+                    variant="contained"
+                    onClick={handleDelete}
+                    style={{ color: "red" }}
+                >
                     Yes
                 </Button>
             </DialogActions>

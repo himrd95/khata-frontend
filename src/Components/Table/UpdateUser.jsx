@@ -3,10 +3,11 @@ import "./UpdateUser.css";
 import CustomSelect from "./CustomSelectBox";
 import { provider } from "../../Context/ContextPovider";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
-import { calculateTotal } from "../../utils/helpers";
+import { calculateTotal, capitalize } from "../../utils/helpers";
+import LineLoader from "../Common/LineLoader";
 
 const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
-    const { currentUser, setCurrentUser, setTotalAmount } =
+    const { currentUser, setCurrentUser, setTotalAmount, isModalLoading } =
         useContext(provider);
     const { name, _id: id } = currentUser;
     const { putRequest } = useMakeApiCalls();
@@ -36,7 +37,7 @@ const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
         setSelectedMode(value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const date = new Date();
@@ -67,14 +68,15 @@ const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
         setCurrentUser(finalData);
         setTotalAmount({ given: totalGiven, taken: totalTaken });
 
-        putRequest(id, finalData);
+        const msg = `${currentUser.name}'s account is successfully updated`;
+        await putRequest(id, finalData, msg);
         handleClose();
     };
 
     return (
         <div className="apple-form-container">
             <form onSubmit={handleSubmit} className="apple-form">
-                <h2>Update {name}'s account</h2>
+                <h2>Update {capitalize(name)}'s account</h2>
 
                 <div className="apple-form-group">
                     <label>Purpose</label>
@@ -122,6 +124,8 @@ const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
                     </button>
                 </div>
             </form>
+
+            {isModalLoading && <LineLoader />}
         </div>
     );
 };

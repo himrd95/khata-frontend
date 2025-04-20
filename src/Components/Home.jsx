@@ -12,7 +12,7 @@ const Home = () => {
             <Routing />
             <BottomNav />
             <Modal />
-            {/* <Snackbar /> */}
+            <Snackbar />
         </>
     );
 };

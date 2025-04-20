@@ -59,15 +59,15 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
         (row, index, remove, _mode) => {
             console.log(index);
             if (remove) {
-                const confirmationMsg = `Do you really want to remove the transaction of ${moneyFormate(
-                    data[index].actualPrice
-                )}?`;
+                const transactionAmount = moneyFormate(data[index].actualPrice);
+                const confirmationMsg = `Do you really want to remove the transaction of ${transactionAmount}?`;
                 setContent(
                     <DeleteConfirmation
                         label={confirmationMsg}
                         handleClose={handleClose}
                         index={index}
                         mode={_mode}
+                        transactionAmount={transactionAmount}
                     />
                 );
             } else {
@@ -108,31 +108,26 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
 
     const userActions = (row, i) => {
         setIsOpen(true);
+        const mode = title.split(" ")[0];
         setContent(
             <div className="editModal">
-                <ButtonComponent
-                    label="Edit trasection"
-                    data={row}
-                    handleClick={editAndUpdate}
-                    remove={false}
-                    mode={title.split(" ")[0]}
-                    index={i}
-                />
-                <ButtonComponent
-                    label="Remove trasection"
-                    data={row}
-                    handleClick={editAndUpdate}
-                    remove={true}
-                    mode={title.split(" ")[0]}
-                    index={i}
-                />
-                <br />
-                <br />
-                <DialogActions>
-                    <Button variant="outlined" onClick={handleClose}>
-                        Do nothing
-                    </Button>
-                </DialogActions>
+                <Button
+                    variant="text"
+                    fullWidth
+                    onClick={() => editAndUpdate(row, i, false, mode)}
+                >
+                    Edit trasection
+                </Button>
+                <Button
+                    variant="text"
+                    fullWidth
+                    onClick={() => editAndUpdate(row, i, true, mode)}
+                >
+                    Remove trasection
+                </Button>
+                <Button variant="text" onClick={handleClose}>
+                    Do nothing
+                </Button>
             </div>
         );
     };

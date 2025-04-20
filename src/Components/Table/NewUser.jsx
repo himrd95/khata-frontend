@@ -2,25 +2,28 @@ import { Button, DialogTitle, Input, TextField } from "@material-ui/core";
 import Styled from "styled-components";
 import React, { useContext, useEffect, useState } from "react";
 import { provider } from "../../Context/ContextPovider";
-import { CircularProgress, DialogActions } from "@mui/material";
+import { DialogActions } from "@mui/material";
 
 import speak from "../../utils/speech";
 import { useRef } from "react";
+import LineLoader from "../Common/LineLoader";
 
 const Container = Styled.div`
-padding:10px 30px;
-text-align:center;
-width:fit-content
-margin:auto;
+    padding: 16px;
+    text-align: center;
+    width: fit-content
+    margin: auto;
 `;
+
 const NewUser = ({ handleClose, handleAddUser }) => {
     const [payload, setPayload] = useState({ mode: "" });
     const inputRef = useRef();
 
-    const { isLoading, adminPannel } = useContext(provider);
+    const { isModalLoading, adminPannel } = useContext(provider);
 
     const handlechange = (e) => {
         const { name, value, files } = e.target;
+        console.log(e, e.target);
         setPayload({
             ...payload,
             [name]: name === "profile" ? files[0] : value,
@@ -39,25 +42,24 @@ const NewUser = ({ handleClose, handleAddUser }) => {
         <Container>
             <DialogTitle>Add a new User</DialogTitle>
 
-            <TextField
-                onChange={(e) => handlechange(e)}
-                required
-                id="filled-required"
-                label="Name"
-                variant="filled"
-                name="name"
-            />
-            <br />
-            <br />
+            <div className="apple-form-group">
+                <input
+                    required
+                    type="text"
+                    name="name"
+                    value={payload.name}
+                    onChange={(e) => handlechange(e)}
+                    placeholder="Name"
+                />
+            </div>
             <Input
                 ref={inputRef}
                 accept="image/*"
                 id="raised-button-file"
                 onChange={(e) => handlechange(e)}
                 type="file"
-                required
                 label="Profile"
-                variant="filled"
+                fullWidth
                 name="profile"
                 multiple
                 style={{ display: "none" }}
@@ -89,16 +91,11 @@ const NewUser = ({ handleClose, handleAddUser }) => {
                     variant="contained"
                     color="primary"
                 >
-                    {isLoading && (
-                        <CircularProgress
-                            sx={{ color: "white", marginRight: "10px" }}
-                            size={16}
-                        />
-                    )}
                     Add User
                 </Button>
             </DialogActions>
-            <br />
+
+            {isModalLoading && <LineLoader />}
         </Container>
     );
 };

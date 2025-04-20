@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Snackbar, Alert } from "@mui/material";
+import React, { useContext, useMemo } from "react";
 import { provider } from "../../Context/ContextPovider";
 import { BASE_URL, moneyFormate } from "../../constants";
 import "./UserDetailsCard.css";
@@ -14,9 +12,7 @@ const UserDetailsCard = ({
     _id,
     ...rest
 }) => {
-    const { setCurrentUser, message } = useContext(provider);
-    const [showSnackbar, setShowSnackbar] = useState(false);
-    const navigate = useNavigate();
+    const { setCurrentUser } = useContext(provider);
 
     // Memoized calculations
     const totalGiven = useMemo(() => calculateTotal(given), [given]);
@@ -29,12 +25,6 @@ const UserDetailsCard = ({
         () => getBalanceColor(totalBalance),
         [totalBalance]
     );
-
-    useEffect(() => {
-        if (message) setShowSnackbar(true);
-    }, [message]);
-
-    const handleClose = () => setShowSnackbar(false);
 
     const handleNavigate = () => {
         setCurrentUser({
@@ -78,20 +68,6 @@ const UserDetailsCard = ({
                 {moneyFormate(totalBalance)}
                 <i className="fa-solid fa-chevron-right" />
             </div>
-
-            <Snackbar
-                open={showSnackbar}
-                autoHideDuration={5000}
-                onClose={handleClose}
-            >
-                <Alert
-                    onClose={handleClose}
-                    severity="success"
-                    sx={{ width: "100%" }}
-                >
-                    {message}!
-                </Alert>
-            </Snackbar>
         </div>
     );
 };

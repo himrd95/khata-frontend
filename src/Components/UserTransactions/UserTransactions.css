@@ -31,9 +31,10 @@
 .row {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	width: 100%;
 	margin: auto;
-	padding: 8px;
+	padding: 4px;
 	border-bottom: 1px solid #dcdcdc;
 }
 
@@ -64,15 +65,24 @@
 	margin-left: 10px;
 	font-size: 15px;
 	color: #373791;
+	padding: 8px;
 }
 
 .editModal {
-	width: 250px;
-	padding: 20px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color: #eee;
+	background-color: #fff;
+}
+
+.editModal > button{
+	border-bottom: 1px solid #dadada;
+	padding: 10px 25px;
+	font-size: 16px;
+	color: #002982;
+	font-weight: 600;
+	letter-spacing: 0.3px;
+	text-transform: capitalize;
 }
 
 .main {
@@ -116,6 +126,14 @@
 	border-radius: 0 16px 16px 0;
 }
 
+.confirmationTitle{
+	font-size: 18px;
+	font-weight: 500;
+	color: #202020;
+	padding-bottom: 10px;
+	letter-spacing: 0.3px;
+}
+
 .deletePopup {
-	padding: 20px;
+	padding: 16px;
 }

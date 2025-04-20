@@ -10,14 +10,13 @@ const Snackbar = () => {
             open={snackbar.open}
             autoHideDuration={5000}
             onClose={onSnackBarClose}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
             <Alert
                 onClose={onSnackBarClose}
-                severity={snackbar.severity}
+                severity="success"
                 sx={{ width: "100%" }}
             >
-                {snackbar.message}
+                {snackbar.message}!
             </Alert>
         </MuiSnackbar>
     );

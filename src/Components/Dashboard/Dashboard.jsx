@@ -5,80 +5,68 @@ import React, {
     useState,
     memo,
 } from "react";
-import axios from "axios";
-import { Snackbar, Alert as MuiAlert, Alert } from "@mui/material";
 
 import "./Dashboard.css";
 import { provider } from "../../Context/ContextPovider";
-import { BASE_URL, EVENTS } from "../../constants";
+import { EVENTS } from "../../constants";
 
 import UserDetailsCard from "../UserDetails/UserDetailsCard";
 import NewUser from "../Table/NewUser";
 import eventBus from "../../utils/eventBus";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
-import { isEmpty } from "../../utils/helpers";
 import SimpleDialog from "../Modal";
+import Shimmer from "../Shimmer/Shimmer";
+import { capitalize } from "../../utils/helpers";
 
 const Dashboard = () => {
-    const [openSnackbar, setOpenSnackbar] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [dialogContent, setDialogContent] = useState("");
 
-    const { getRequest } = useMakeApiCalls();
+    const { getRequest, postRequest } = useMakeApiCalls();
 
     const {
         setMessage,
-        message,
-        adminPannel,
         handleState,
         users,
         getUsers,
         isLoading,
-        setIsLoading,
-        setUsers,
+        setCurrentUser,
+        showSnackbar,
     } = useContext(provider);
 
     useEffect(() => {
         if (!users.length) getRequest();
     }, [getRequest, getUsers, users.length]);
 
-    useEffect(() => {
-        if (message) setOpenSnackbar(true);
-    }, [message]);
-
     const handleClose = useCallback(() => {
-        setOpenSnackbar(false);
         setIsDialogOpen(false);
         handleState("");
         setMessage("");
     }, [handleState, setMessage]);
 
+    const redirectIfUserExist = useCallback(
+        (id) => {
+            const user = users.find((data) => data._id === id);
+            setCurrentUser(user);
+            showSnackbar(
+                `You already have account with ${capitalize(user.name)}.`
+            );
+        },
+        [setCurrentUser, showSnackbar, users]
+    );
+
     const handleAddUser = useCallback(
         async ({ name, profile }) => {
-            setIsLoading(true);
             const formData = new FormData();
             formData.append("name", name);
             formData.append("userImage", profile);
 
-            try {
-                await axios
-                    .post(`${BASE_URL}/users`, formData, {
-                        headers: {
-                            Authorization: `Bearer ${adminPannel.token}`,
-                        },
-                    })
-                    .then((res) => {
-                        handleState("User has been successfully added");
-                        setUsers([...res.data]);
-                    });
-            } catch (error) {
-                console.error("Add user failed:", error);
-            } finally {
-                setIsLoading(false);
-                handleClose();
-            }
+            const snackbarMsg = `User "${name}" has been added successfully!`;
+            await postRequest(formData, snackbarMsg, redirectIfUserExist);
+            setIsDialogOpen(false);
+            setDialogContent(null);
         },
-        [adminPannel.token, handleClose, handleState, setIsLoading, setUsers]
+        [postRequest, redirectIfUserExist]
     );
 
     const addNewUser = useCallback(() => {
@@ -94,18 +82,7 @@ const Dashboard = () => {
     }, [addNewUser]);
 
     if (isLoading) {
-        return (
-            <div className="loadingAnimation">
-                <lottie-player
-                    src="https://assets4.lottiefiles.com/packages/lf20_cj0prrgw.json"
-                    background="transparent"
-                    speed="1"
-                    style={{ width: "50%" }}
-                    loop
-                    autoplay
-                ></lottie-player>
-            </div>
-        );
+        return <Shimmer />;
     }
 
     return (
@@ -115,20 +92,6 @@ const Dashboard = () => {
                     <UserDetailsCard key={user.id} {...user} />
                 ))}
             </div>
-
-            <Snackbar
-                open={openSnackbar}
-                autoHideDuration={5000}
-                onClose={handleClose}
-            >
-                <Alert
-                    severity="success"
-                    onClose={handleClose}
-                    sx={{ width: "100%" }}
-                >
-                    {message}!
-                </Alert>
-            </Snackbar>
 
             <SimpleDialog
                 isOpen={isDialogOpen}

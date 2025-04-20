@@ -1,12 +1,19 @@
 import { useCallback, useContext, useMemo } from "react";
 import axios from "axios";
-import { getUrl } from "../utils/helpers";
+import { capitalize, getUrl } from "../utils/helpers";
 import { useNavigate } from "react-router";
 import { provider } from "../Context/ContextPovider";
 
 const useMakeApiCalls = () => {
-    const { setIsLoading, setUsers, adminPannel, handleState, setCurrentUser } =
-        useContext(provider);
+    const {
+        setIsLoading,
+        setUsers,
+        adminPannel,
+        handleState,
+        setCurrentUser,
+        showSnackbar,
+        setIsModalLoading,
+    } = useContext(provider);
     const navigate = useNavigate();
     const headers = useMemo(
         () => ({
@@ -43,25 +50,33 @@ const useMakeApiCalls = () => {
     );
 
     const postRequest = useCallback(
-        async (payload) => {
+        async (payload, msg, redirectIfUserExist) => {
             try {
                 const url = getUrl();
-                setIsLoading(true);
+                setIsModalLoading(true);
                 const response = await axios.post(url, payload, headers);
-                setUsers([...response.data]);
+
+                if (response.status === 200) {
+                    redirectIfUserExist(response.data.id);
+                } else {
+                    setUsers([...response.data]);
+                    showSnackbar(msg);
+                }
             } catch (error) {
-                console.error("POST request failed:", error);
+                console.error("POST request failed:", error.message);
                 navigate("/error404");
             } finally {
-                setIsLoading(false);
+                setIsModalLoading(false);
             }
         },
-        [headers, navigate, setIsLoading, setUsers]
+        [headers, navigate, setIsModalLoading, setUsers, showSnackbar]
     );
 
     const putRequest = useCallback(
-        async (id, payload) => {
+        async (id, payload, msg) => {
             try {
+                setIsModalLoading(true);
+
                 const url = getUrl(id);
                 console.log(id, url);
                 const response = await axios.put(url, payload, headers);
@@ -70,28 +85,38 @@ const useMakeApiCalls = () => {
             } catch (error) {
                 console.error("PATCH request failed:", error);
                 navigate("/error404");
+            } finally {
+                setIsModalLoading(false);
+                showSnackbar(msg);
             }
         },
-        [handleState, headers, navigate, setUsers]
+        [
+            handleState,
+            headers,
+            navigate,
+            setIsModalLoading,
+            setUsers,
+            showSnackbar,
+        ]
     );
 
     const deleteRequest = useCallback(
-        async (id) => {
+        async (id, msg) => {
             try {
                 const url = getUrl(id);
                 setIsLoading(true);
                 const response = await axios.delete(url, headers);
 
                 setUsers([...response.data]);
-                handleState("User has been successfully deleted");
             } catch (error) {
                 console.error("DELETE request failed:", error);
                 navigate("/error404");
             } finally {
                 setIsLoading(false);
+                showSnackbar(msg);
             }
         },
-        [handleState, headers, navigate, setIsLoading, setUsers]
+        [headers, navigate, setIsLoading, setUsers, showSnackbar]
     );
 
     return {

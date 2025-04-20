@@ -43,6 +43,10 @@ i {
 
 .usersDetails{
 	margin-top: 120px;
-    height: calc(100vh - 190px);
+    height: calc(100vh - 175px);
     overflow: scroll;
+}
+
+.MuiPaper-rounded {
+    border-radius: 16px !important;
 }

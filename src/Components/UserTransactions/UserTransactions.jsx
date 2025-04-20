@@ -1,33 +1,25 @@
 import React, { useContext, useEffect, useCallback } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { COLORS, EVENTS } from "../../constants";
 import { provider } from "../../Context/ContextPovider";
 import eventBus from "../../utils/eventBus";
-import { compareDate } from "../../utils/helpers";
+import { capitalize, compareDate } from "../../utils/helpers";
 import DeleteConfirmation from "../Contents/DeleteConfirmation";
 import DataCard from "./DataCard";
 import "./UserTransactions.css";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 import { useSwipe } from "../../hooks/useSwipe";
 import SimpleDialog from "../Modal";
-import { Alert, Snackbar } from "@mui/material";
+import Shimmer from "../Shimmer/Shimmer";
 
 const UserTransactions = () => {
-    const {
-        message,
-        getUsers,
-        isLoading,
-        currentUser,
-        totalAmount,
-        setCurrentUser,
-    } = useContext(provider);
+    const { getUsers, isLoading, currentUser, totalAmount, setCurrentUser } =
+        useContext(provider);
 
-    const [open, setOpen] = React.useState(false);
     const [isOpen, setIsOpen] = React.useState(false);
     const [content, setContent] = React.useState("");
 
     const params = useParams();
-    const navigate = useNavigate();
 
     const { deleteRequest, putRequest, getRequest } = useMakeApiCalls();
 
@@ -50,16 +42,18 @@ const UserTransactions = () => {
 
     const handleClose = useCallback(() => {
         setIsOpen(false);
-        setOpen(false);
     }, []);
 
     const deleteConfirmation = useCallback(
         (id) => {
             handleClose();
-            deleteRequest(id);
+            const msg = `Account has been closed with ${capitalize(
+                currentUser.name
+            )}`;
+            deleteRequest(id, msg);
             setCurrentUser({});
         },
-        [deleteRequest, handleClose, setCurrentUser]
+        [currentUser.name, deleteRequest, handleClose, setCurrentUser]
     );
 
     const deleteUser = useCallback(
@@ -67,7 +61,9 @@ const UserTransactions = () => {
             setIsOpen(true);
             setContent(
                 <DeleteConfirmation
-                    label={`Do you really want to close account with ${name}`}
+                    label={`Do you really want to close account with ${capitalize(
+                        name
+                    )}`}
                     handleClose={handleClose}
                     deleteConfirmation={deleteConfirmation}
                     id={id}
@@ -78,30 +74,16 @@ const UserTransactions = () => {
         [deleteConfirmation, handleClose]
     );
 
-    useEffect(() => {
-        message !== "" && setOpen(true);
-    }, [message]);
-
     const updateRequest = useCallback(
         (payload) => {
-            putRequest(_id, payload);
+            const msg = `${currentUser.name}'s account has been updated successfully!`;
+            putRequest(_id, payload, msg);
         },
-        [_id, putRequest]
+        [_id, currentUser.name, putRequest]
     );
 
     if (isLoading) {
-        return (
-            <div className="loadingAnimation">
-                <lottie-player
-                    src="https://assets4.lottiefiles.com/packages/lf20_cj0prrgw.json"
-                    background="transparent"
-                    speed="1"
-                    style={{ width: "50%" }}
-                    loop
-                    autoplay
-                ></lottie-player>
-            </div>
-        );
+        return <Shimmer />;
     }
 
     return (
@@ -136,20 +118,6 @@ const UserTransactions = () => {
                 />
 
                 <div style={{ height: "100px" }}></div>
-
-                <Snackbar
-                    open={open}
-                    autoHideDuration={5000}
-                    onClose={handleClose}
-                >
-                    <Alert
-                        onClose={handleClose}
-                        severity="success"
-                        sx={{ width: "100%" }}
-                    >
-                        {message}!
-                    </Alert>
-                </Snackbar>
 
                 <SimpleDialog
                     isOpen={isOpen}

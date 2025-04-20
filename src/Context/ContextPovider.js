@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState, useCallback } from "react";
 import { calculateTotal } from "../utils/helpers";
 
 export const provider = createContext();
@@ -16,10 +16,16 @@ const ContextPovider = ({ children }) => {
     const [loginPopup, setLoginPopup] = useState(false);
     const [adminPannel, setAdminPannel] = useState(preToken);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [isModalLoading, setIsModalLoading] = React.useState(false);
     const [currentUser, setCurrentUser] = useState({});
     const [addTransaction, setAddTransaction] = useState(false);
     const [shouldFetchUsers, setShouldFetchUsers] = useState(false);
     const [totalAmount, setTotalAmount] = useState({ given: 0, taken: 0 });
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: "",
+        severity: "success",
+    });
 
     useEffect(() => {
         localStorage.setItem("khata", JSON.stringify(adminPannel));
@@ -45,6 +51,18 @@ const ContextPovider = ({ children }) => {
         }
     }, [currentUser]);
 
+    const showSnackbar = useCallback((message, severity = "success") => {
+        setSnackbar({
+            open: true,
+            message,
+            severity,
+        });
+    }, []);
+
+    const onSnackBarClose = useCallback(() => {
+        setSnackbar((prev) => ({ ...prev, open: false }));
+    }, []);
+
     const value = {
         state,
         handleState,
@@ -56,6 +74,8 @@ const ContextPovider = ({ children }) => {
         setLoginPopup,
         isLoading,
         setIsLoading,
+        isModalLoading,
+        setIsModalLoading,
         error,
         setError,
         currentUser,
@@ -68,6 +88,9 @@ const ContextPovider = ({ children }) => {
         setShouldFetchUsers,
         totalAmount,
         setTotalAmount,
+        snackbar,
+        showSnackbar,
+        onSnackBarClose,
     };
     return <provider.Provider value={value}>{children}</provider.Provider>;
 };

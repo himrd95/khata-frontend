@@ -5,7 +5,7 @@
     bottom: 0;
     width: 100%;
     background: white;
-    height: 70px;
+    height: 55px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -24,7 +24,7 @@
   }
   
   .nav-item i {
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 5px;
   }
   
@@ -41,9 +41,9 @@
     top: -20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 70px;
-    height: 70px;
-    background: #6245e0;
+    width: 60px;
+    height: 60px;
+    background: #5538d5;
     border-radius: 50%;
     box-shadow: 0 5px 15px rgba(98, 69, 224, 0.3);
     display: flex;
