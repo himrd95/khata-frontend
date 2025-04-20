@@ -4,8 +4,9 @@
 
 .container404 {
 	width: 100%;
-	height: 100vh;
 	background: white;
+	height: 95vh;
+	margin-top: 2vh;
 }
 
 .page_404 {
@@ -16,12 +17,12 @@
 }
 
 .page_404 img {
-	width: 100%;
+	width: 90%;
 }
 
 .four_zero_four_bg {
 	background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
-	height: 400px;
+	height: 360px;
 	background-position: center;
 }
 
@@ -31,6 +32,7 @@
 
 .four_zero_four_bg h3 {
 	font-size: 80px;
+
 }
 
 .link_404 {
@@ -42,6 +44,9 @@
 }
 .contant_box_404 {
 	margin-top: -50px;
+	padding: 0 10px;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 .col-sm-12 {
@@ -50,4 +55,15 @@
 
 .row404 {
 	padding: 0 !important;
+}
+
+.subtitle{
+	margin-top: -15px;
+	margin-bottom: 30px;
+}
+
+.retryButton{
+	font-size: 16px;
+	color: #33087d;
+	font-weight: 600;
 }

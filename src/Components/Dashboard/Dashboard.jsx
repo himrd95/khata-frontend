@@ -91,6 +91,8 @@ const Dashboard = () => {
                 {users.map((user) => (
                     <UserDetailsCard key={user.id} {...user} />
                 ))}
+                <br />
+                <br />
             </div>
 
             <SimpleDialog
