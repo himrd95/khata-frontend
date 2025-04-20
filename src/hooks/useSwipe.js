@@ -11,7 +11,7 @@ export const useSwipe = ( onSwipeRight) => {
         const touchEndX = e.changedTouches[0].clientX;
         const diffX = touchStartX.current - touchEndX;
 
-         if (diffX < -50) {
+         if (diffX < -80) {
             // Swiped right
             onSwipeRight?.();
         }

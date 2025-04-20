@@ -45,8 +45,6 @@ const BottomNav = () => {
 
     return (
         <>
-            <div className="navBackgroundPlaceholder"></div>
-
             <div className="bottom-nav">
                 <div
                     className={getClassName(TABS.HOME)}

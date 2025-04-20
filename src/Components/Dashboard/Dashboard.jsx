@@ -86,7 +86,7 @@ const Dashboard = () => {
     }
 
     return (
-        <div>
+        <>
             <div className="usersDetails usersCards">
                 {users.map((user) => (
                     <UserDetailsCard key={user.id} {...user} />
@@ -98,7 +98,7 @@ const Dashboard = () => {
                 handleClose={handleClose}
                 content={dialogContent}
             />
-        </div>
+        </>
     );
 };
 
