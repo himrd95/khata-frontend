@@ -94,7 +94,7 @@ const useMakeApiCalls = () => {
                     );
                     setAdminPannel({ ...updatedAdminPannel });
                     localStorage.setItem(
-                        "khata",
+                        "khata-2.0",
                         JSON.stringify(updatedAdminPannel)
                     );
                 }

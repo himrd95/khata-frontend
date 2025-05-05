@@ -3,7 +3,7 @@ import { calculateTotal } from "../utils/helpers";
 
 export const provider = createContext();
 
-const preToken = JSON.parse(localStorage.getItem("khata")) || {
+const preToken = JSON.parse(localStorage.getItem("khata-2.0")) || {
     token: "",
     admin: {},
     voice: false,
@@ -29,7 +29,7 @@ const ContextPovider = ({ children }) => {
     });
 
     useEffect(() => {
-        localStorage.setItem("khata", JSON.stringify(adminPannel));
+        localStorage.setItem("khata-2.0", JSON.stringify(adminPannel));
     }, [adminPannel]);
 
     const handleState = (msg) => {
