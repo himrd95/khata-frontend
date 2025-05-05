@@ -69,7 +69,7 @@ const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
         setTotalAmount({ given: totalGiven, taken: totalTaken });
 
         const msg = `${currentUser.name}'s account is successfully updated`;
-        await putRequest(id, finalData, msg);
+        await putRequest(id, finalData, msg, {});
         handleClose();
     };
 

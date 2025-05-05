@@ -81,7 +81,7 @@ const UserTransactions = () => {
     const updateRequest = useCallback(
         (payload) => {
             const msg = `${currentUser.name}'s account has been updated successfully!`;
-            putRequest(_id, payload, msg);
+            putRequest(_id, payload, msg, {});
         },
         [_id, currentUser.name, putRequest]
     );

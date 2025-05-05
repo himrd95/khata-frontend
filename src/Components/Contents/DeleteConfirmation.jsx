@@ -32,7 +32,7 @@ const DeleteConfirmation = ({
             updatedUser[key].splice(index, 1);
 
             const msg = `Successfully deleted the transaction of ${transactionAmount}`;
-            putRequest(updatedUser._id, updatedUser, msg);
+            putRequest(updatedUser._id, updatedUser, msg, {});
             setCurrentUser({ ...updatedUser });
             handleClose();
         }
