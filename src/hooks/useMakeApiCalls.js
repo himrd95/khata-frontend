@@ -1,6 +1,6 @@
 import { useCallback, useContext, useMemo } from "react";
 import axios from "axios";
-import { getUrl } from "../utils/helpers";
+import { getUrl, isEmpty } from "../utils/helpers";
 import { useNavigate } from "react-router";
 import { provider } from "../Context/ContextPovider";
 import { BASE_URL } from "../constants";
@@ -82,16 +82,22 @@ const useMakeApiCalls = () => {
                 const url = `${BASE_URL}/register/update/${id}`;
 
                 const response = await axios.patch(url, payload);
-                console.log(response.data, "response");
-                const updatedAdminPannel = {
-                    ...adminPannel,
-                    admin: response.data,
-                };
-                setAdminPannel(updatedAdminPannel);
-                localStorage.setItem(
-                    "khata",
-                    JSON.stringify(updatedAdminPannel)
-                );
+                if (!isEmpty(response.data.user)) {
+                    const updatedAdminPannel = {
+                        ...adminPannel,
+                        admin: response.data.user,
+                    };
+                    console.log(
+                        updatedAdminPannel,
+                        "updatedAdminPannel",
+                        response
+                    );
+                    setAdminPannel({ ...updatedAdminPannel });
+                    localStorage.setItem(
+                        "khata",
+                        JSON.stringify(updatedAdminPannel)
+                    );
+                }
             } catch (error) {
                 console.error("PATCH request failed:", error);
                 showSnackbar("Something went wrong", "error");

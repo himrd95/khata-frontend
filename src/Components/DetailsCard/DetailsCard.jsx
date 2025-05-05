@@ -29,15 +29,16 @@ const DetailsCard = () => {
             <div className="detailsCard">
                 <div className="profileContainer">
                     <div className="profilePic">
-                        {!adminPannel.admin.profile ? (
+                        {!adminPannel?.admin?.profile ? (
                             <i className="fas fa-user-circle"></i>
                         ) : (
                             <img
                                 src={getCloudinaryUrl(
-                                    adminPannel.admin.profile
+                                    adminPannel?.admin?.profile
                                 )}
                                 alt="pofile_picture"
                                 height="100%"
+                                width="100%"
                             />
                         )}
                     </div>
