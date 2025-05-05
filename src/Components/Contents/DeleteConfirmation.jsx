@@ -21,19 +21,19 @@ const DeleteConfirmation = ({
     const { currentUser, setCurrentUser } = useContext(provider);
     const { putRequest } = useMakeApiCalls();
 
-    const handleDelete = useCallback(() => {
+    const handleDelete = useCallback(async () => {
         if (closeAccount) {
             deleteConfirmation(id);
             setCurrentUser({});
         } else {
             const updatedUser = { ...currentUser };
+            delete updatedUser.userImage;
             const key = mode.toLowerCase();
 
             updatedUser[key].splice(index, 1);
 
             const msg = `Successfully deleted the transaction of ${transactionAmount}`;
-            putRequest(updatedUser._id, updatedUser, msg, {});
-            setCurrentUser({ ...updatedUser });
+            await putRequest(updatedUser._id, updatedUser, msg, {});
             handleClose();
         }
     }, [

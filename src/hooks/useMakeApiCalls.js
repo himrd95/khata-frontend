@@ -119,7 +119,7 @@ const useMakeApiCalls = () => {
 
                 const url = getUrl(id);
                 console.log(id, url);
-                const response = await axios.put(url, payload, headers);
+                const response = await axios.patch(url, payload, headers);
                 setUsers([...response.data]);
                 setCurrentUser(response.data.find((user) => user._id === id));
             } catch (error) {

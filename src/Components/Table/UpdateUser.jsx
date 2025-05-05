@@ -65,10 +65,10 @@ const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
         const balance = totalGiven - totalTaken;
 
         const finalData = { ...updatedUser, balance };
-        setCurrentUser(finalData);
         setTotalAmount({ given: totalGiven, taken: totalTaken });
 
         const msg = `${currentUser.name}'s account is successfully updated`;
+        delete finalData.userImage;
         await putRequest(id, finalData, msg, {});
         handleClose();
     };

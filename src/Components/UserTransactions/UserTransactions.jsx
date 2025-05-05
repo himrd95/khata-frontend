@@ -79,9 +79,10 @@ const UserTransactions = () => {
     );
 
     const updateRequest = useCallback(
-        (payload) => {
+        async (payload) => {
             const msg = `${currentUser.name}'s account has been updated successfully!`;
-            putRequest(_id, payload, msg, {});
+            delete payload.userImage;
+            await putRequest(_id, payload, msg, {});
         },
         [_id, currentUser.name, putRequest]
     );
