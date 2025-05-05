@@ -1,12 +1,13 @@
-import { Button, DialogTitle, Input, TextField } from "@material-ui/core";
+import { Button, DialogTitle, Input } from "@material-ui/core";
 import Styled from "styled-components";
 import React, { useContext, useEffect, useState } from "react";
-import { provider } from "../../Context/ContextPovider";
 import { DialogActions } from "@mui/material";
 
 import speak from "../../utils/speech";
 import { useRef } from "react";
 import LineLoader from "../Common/LineLoader";
+import { isEmpty } from "../../utils/helpers";
+import { provider } from "../../Context/ContextPovider";
 
 const Container = Styled.div`
     padding: 16px;
@@ -15,15 +16,18 @@ const Container = Styled.div`
     margin: auto;
 `;
 
-const NewUser = ({ handleClose, handleAddUser }) => {
-    const [payload, setPayload] = useState({ mode: "" });
+const NewUser = ({ handleClose, handleAddUser, userName }) => {
+    const { isModalLoading, adminPannel, currentUser } = useContext(provider);
+    const [payload, setPayload] = useState({
+        mode: "",
+        name: userName,
+        id: !isEmpty(userName) ? currentUser._id : "",
+    });
     const inputRef = useRef();
-
-    const { isModalLoading, adminPannel } = useContext(provider);
 
     const handlechange = (e) => {
         const { name, value, files } = e.target;
-        console.log(e, e.target);
+
         setPayload({
             ...payload,
             [name]: name === "profile" ? files[0] : value,

@@ -1,19 +1,22 @@
 import { useCallback, useContext, useMemo } from "react";
 import axios from "axios";
-import { capitalize, getUrl } from "../utils/helpers";
+import { getUrl } from "../utils/helpers";
 import { useNavigate } from "react-router";
 import { provider } from "../Context/ContextPovider";
+import { BASE_URL } from "../constants";
 
 const useMakeApiCalls = () => {
     const {
         setIsLoading,
         setUsers,
         adminPannel,
-        handleState,
+        setAdminPannel,
         setCurrentUser,
         showSnackbar,
         setIsModalLoading,
+        setRefreshProfile,
     } = useContext(provider);
+
     const navigate = useNavigate();
     const headers = useMemo(
         () => ({
@@ -72,29 +75,65 @@ const useMakeApiCalls = () => {
         [headers, navigate, setIsModalLoading, setUsers, showSnackbar]
     );
 
-    const putRequest = useCallback(
-        async (id, payload, msg) => {
+    const patchRequest = useCallback(
+        async (id, payload) => {
             try {
-                setIsModalLoading(true);
+                setRefreshProfile(true);
+                const url = `${BASE_URL}/register/update/${id}`;
+
+                const response = await axios.patch(url, payload);
+                console.log(response.data, "response");
+                const updatedAdminPannel = {
+                    ...adminPannel,
+                    admin: response.data,
+                };
+                setAdminPannel(updatedAdminPannel);
+                localStorage.setItem(
+                    "khata",
+                    JSON.stringify(updatedAdminPannel)
+                );
+            } catch (error) {
+                console.error("PATCH request failed:", error);
+                showSnackbar("Something went wrong", "error");
+            } finally {
+                setRefreshProfile(false);
+            }
+        },
+        [adminPannel, setAdminPannel, setRefreshProfile, showSnackbar]
+    );
+
+    const putRequest = useCallback(
+        async (id, payload, msg, { shouldPageReload = false }) => {
+            try {
+                if (shouldPageReload) {
+                    setRefreshProfile(true);
+                } else {
+                    setIsModalLoading(true);
+                }
 
                 const url = getUrl(id);
                 console.log(id, url);
                 const response = await axios.put(url, payload, headers);
                 setUsers([...response.data]);
-                handleState("User has been successfully updated");
+                setCurrentUser(response.data.find((user) => user._id === id));
             } catch (error) {
                 console.error("PATCH request failed:", error);
                 navigate("/error404");
             } finally {
-                setIsModalLoading(false);
+                if (shouldPageReload) {
+                    setRefreshProfile(false);
+                } else {
+                    setIsModalLoading(false);
+                }
                 showSnackbar(msg);
             }
         },
         [
-            handleState,
             headers,
             navigate,
+            setCurrentUser,
             setIsModalLoading,
+            setRefreshProfile,
             setUsers,
             showSnackbar,
         ]
@@ -124,6 +163,7 @@ const useMakeApiCalls = () => {
         postRequest,
         putRequest,
         deleteRequest,
+        patchRequest,
     };
 };
 

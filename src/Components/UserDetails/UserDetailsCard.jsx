@@ -1,8 +1,12 @@
 import React, { useContext, useMemo } from "react";
 import { provider } from "../../Context/ContextPovider";
-import { BASE_URL, moneyFormate } from "../../constants";
+import { moneyFormate } from "../../constants";
 import "./UserDetailsCard.css";
-import { calculateTotal, getBalanceColor } from "../../utils/helpers";
+import {
+    calculateTotal,
+    getBalanceColor,
+    getCloudinaryUrl,
+} from "../../utils/helpers";
 
 const UserDetailsCard = ({
     name,
@@ -52,7 +56,7 @@ const UserDetailsCard = ({
                     {userImage ? (
                         <div className="profileImage">
                             <img
-                                src={`${BASE_URL}/${userImage}`}
+                                src={getCloudinaryUrl(userImage)}
                                 alt="profile"
                                 width="100%"
                             />

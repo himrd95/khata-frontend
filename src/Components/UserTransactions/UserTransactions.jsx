@@ -44,6 +44,10 @@ const UserTransactions = () => {
         setIsOpen(false);
     }, []);
 
+    const handleEdit = useCallback(() => {
+        eventBus.dispatch(EVENTS.ADD_NEW_USER, name);
+    }, [name]);
+
     const deleteConfirmation = useCallback(
         (id) => {
             handleClose();
@@ -90,7 +94,7 @@ const UserTransactions = () => {
         <>
             <div className="main usersDetails" {...swipeHandlers}>
                 <div className="basicCard actions">
-                    <span>Edit</span>
+                    <span onClick={handleEdit}>Edit</span>
                     <span onClick={() => deleteUser(_id, name)}>Delete</span>
                 </div>
 

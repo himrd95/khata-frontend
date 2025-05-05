@@ -11,6 +11,7 @@ const preToken = JSON.parse(localStorage.getItem("khata")) || {
 const ContextPovider = ({ children }) => {
     const [state, setState] = useState(false);
     const [users, setUsers] = React.useState([]);
+    const [refreshProfile, setRefreshProfile] = useState(false);
     const [message, setMessage] = useState("");
     const [error, setError] = useState({ message: "", open: false });
     const [loginPopup, setLoginPopup] = useState(false);
@@ -91,6 +92,8 @@ const ContextPovider = ({ children }) => {
         snackbar,
         showSnackbar,
         onSnackBarClose,
+        refreshProfile,
+        setRefreshProfile,
     };
     return <provider.Provider value={value}>{children}</provider.Provider>;
 };

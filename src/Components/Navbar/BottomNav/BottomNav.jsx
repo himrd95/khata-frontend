@@ -24,6 +24,9 @@ const BottomNav = () => {
             setActive(tab);
             if (tab === TABS.HOME) {
                 setCurrentUser({});
+                if (path.pathname === "/profile") {
+                    navigate("/");
+                }
             } else if (tab === TABS.PROFILE) {
                 navigate("/profile");
                 setCurrentUser({});

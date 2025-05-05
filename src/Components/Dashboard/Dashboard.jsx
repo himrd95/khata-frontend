@@ -16,13 +16,13 @@ import eventBus from "../../utils/eventBus";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 import SimpleDialog from "../Modal";
 import Shimmer from "../Shimmer/Shimmer";
-import { capitalize } from "../../utils/helpers";
+import { capitalize, isEmpty } from "../../utils/helpers";
 
 const Dashboard = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [dialogContent, setDialogContent] = useState("");
 
-    const { getRequest, postRequest } = useMakeApiCalls();
+    const { getRequest, postRequest, putRequest } = useMakeApiCalls();
 
     const {
         setMessage,
@@ -56,25 +56,39 @@ const Dashboard = () => {
     );
 
     const handleAddUser = useCallback(
-        async ({ name, profile }) => {
+        async ({ name, profile, id }) => {
             const formData = new FormData();
             formData.append("name", name);
             formData.append("userImage", profile);
 
-            const snackbarMsg = `User "${name}" has been added successfully!`;
-            await postRequest(formData, snackbarMsg, redirectIfUserExist);
+            if (!isEmpty(id)) {
+                const snackbarMsg = `User "${name}" has been updated successfully!`;
+                putRequest(id, formData, snackbarMsg, {
+                    shouldPageReload: true,
+                });
+            } else {
+                const snackbarMsg = `User "${name}" has been added successfully!`;
+                await postRequest(formData, snackbarMsg, redirectIfUserExist);
+            }
             setIsDialogOpen(false);
             setDialogContent(null);
         },
-        [postRequest, redirectIfUserExist]
+        [postRequest, putRequest, redirectIfUserExist]
     );
 
-    const addNewUser = useCallback(() => {
-        setDialogContent(
-            <NewUser handleClose={handleClose} handleAddUser={handleAddUser} />
-        );
-        setIsDialogOpen(true);
-    }, [handleAddUser, handleClose]);
+    const addNewUser = useCallback(
+        (userName) => {
+            setDialogContent(
+                <NewUser
+                    handleClose={handleClose}
+                    handleAddUser={handleAddUser}
+                    userName={userName}
+                />
+            );
+            setIsDialogOpen(true);
+        },
+        [handleAddUser, handleClose]
+    );
 
     useEffect(() => {
         eventBus.on(EVENTS.ADD_NEW_USER, addNewUser);

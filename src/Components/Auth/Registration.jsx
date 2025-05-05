@@ -31,6 +31,7 @@ const Registration = () => {
         formData.append("password", password);
         formData.append("profile", profile);
         setError({ message: "", open: false });
+
         setIsLoading(true);
         const url = `${BASE_URL}/register/`;
         axios
@@ -38,7 +39,6 @@ const Registration = () => {
             .then((res) => {
                 setIsLoading(false);
                 if (res.data.token) {
-                    console.log(res.data);
                     successPopup();
                 } else
                     setError({
@@ -54,6 +54,7 @@ const Registration = () => {
             )
             .finally(() => setIsLoading(false));
     };
+
     const handleRegistrationModal = () => {
         setError({ message: "", open: false });
         setIsOpen(true);
@@ -101,6 +102,7 @@ const Registration = () => {
             handleLoginModal();
         }
     }, [handleLoginModal, loginPopup]);
+
     return (
         <div
             className="messages"

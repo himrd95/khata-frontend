@@ -1,9 +1,11 @@
 import React, { memo, useContext } from "react";
 import "./DetailsCard.css";
 import cx from "classnames";
+import DetailsCardShimmer from "./DetailsCardShimmer";
 
 import { provider } from "../../Context/ContextPovider";
 import { getCloudinaryUrl } from "../../utils/helpers";
+
 const welcomeTexts = [
     "Welcome back,",
     "Welcome",
@@ -14,9 +16,13 @@ const welcomeTexts = [
 ];
 
 const DetailsCard = () => {
-    const { adminPannel, currentUser } = useContext(provider);
+    const { adminPannel, currentUser, refreshProfile } = useContext(provider);
     const { name, userImage } = currentUser;
     const randomNumber = Math.floor(Math.random() * 7);
+
+    if (refreshProfile) {
+        return <DetailsCardShimmer />;
+    }
 
     return (
         <>

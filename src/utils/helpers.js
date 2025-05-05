@@ -58,7 +58,7 @@ export function capitalize(word) {
 }
 
 export const getCloudinaryUrl = (publicId, options = {}) => {
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
     const baseUrl = `https://res.cloudinary.com/${cloudName}/image/upload`;
 
     const transformations = [];
