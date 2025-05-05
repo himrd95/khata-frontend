@@ -1,10 +1,9 @@
 import React, { memo, useContext } from "react";
-import { BASE_URL } from "../../constants";
 import "./DetailsCard.css";
 import cx from "classnames";
 
 import { provider } from "../../Context/ContextPovider";
-
+import { getCloudinaryUrl } from "../../utils/helpers";
 const welcomeTexts = [
     "Welcome back,",
     "Welcome",
@@ -28,7 +27,9 @@ const DetailsCard = () => {
                             <i className="fas fa-user-circle"></i>
                         ) : (
                             <img
-                                src={`${BASE_URL}/${adminPannel.admin.profile}`}
+                                src={getCloudinaryUrl(
+                                    adminPannel.admin.profile
+                                )}
                                 alt="pofile_picture"
                                 height="100%"
                             />
@@ -64,7 +65,7 @@ const DetailsCard = () => {
                                 <i className="fas fa-user-circle"></i>
                             ) : (
                                 <img
-                                    src={`${BASE_URL}/${userImage}`}
+                                    src={getCloudinaryUrl(userImage)}
                                     alt="pofile_picture"
                                     width="100%"
                                     height="100%"

@@ -56,3 +56,22 @@ export function capitalize(word) {
     if (typeof word !== "string") return "";
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
+
+export const getCloudinaryUrl = (publicId, options = {}) => {
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const baseUrl = `https://res.cloudinary.com/${cloudName}/image/upload`;
+
+    const transformations = [];
+
+    if (options.width) transformations.push(`w_${options.width}`);
+    if (options.height) transformations.push(`h_${options.height}`);
+    if (options.crop) transformations.push(`c_${options.crop}`);
+    if (options.quality) transformations.push(`q_${options.quality}`);
+    if (options.format) transformations.push(`f_${options.format}`);
+
+    const transformationString = transformations.length
+        ? `${transformations.join(",")}/`
+        : "";
+
+    return `${baseUrl}/${transformationString}${publicId}`;
+};
