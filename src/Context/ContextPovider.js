@@ -1,5 +1,11 @@
-import React, { createContext, useEffect, useState, useCallback } from "react";
-import { calculateTotal } from "../utils/helpers";
+import React, {
+    createContext,
+    useEffect,
+    useState,
+    useCallback,
+    useMemo,
+} from "react";
+import { calculateTotal, isEmpty } from "../utils/helpers";
 
 export const provider = createContext();
 
@@ -7,6 +13,7 @@ const preToken = JSON.parse(localStorage.getItem("khata-2.0")) || {
     token: "",
     admin: {},
     voice: false,
+    totalBalance: 0,
 };
 const ContextPovider = ({ children }) => {
     const [state, setState] = useState(false);
@@ -22,6 +29,20 @@ const ContextPovider = ({ children }) => {
     const [addTransaction, setAddTransaction] = useState(false);
     const [shouldFetchUsers, setShouldFetchUsers] = useState(false);
     const [totalAmount, setTotalAmount] = useState({ given: 0, taken: 0 });
+
+    const totalBalnce = useMemo(() => {
+        if (!isEmpty(currentUser) && currentUser.given && currentUser.taken) {
+            // Calculate for the selected user
+            return totalAmount.given - totalAmount.taken;
+        }
+        // Calculate for all users
+        return users.reduce((acc, user) => {
+            const totalGiven = calculateTotal(user.given);
+            const totalTaken = calculateTotal(user.taken);
+            return acc + (totalGiven - totalTaken);
+        }, 0);
+    }, [currentUser, totalAmount.given, totalAmount.taken, users]);
+
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: "",
@@ -29,8 +50,11 @@ const ContextPovider = ({ children }) => {
     });
 
     useEffect(() => {
-        localStorage.setItem("khata-2.0", JSON.stringify(adminPannel));
-    }, [adminPannel]);
+        const updatedAdminPannel = isEmpty(currentUser)
+            ? { ...adminPannel, totalBalance: totalBalnce }
+            : { ...adminPannel };
+        localStorage.setItem("khata-2.0", JSON.stringify(updatedAdminPannel));
+    }, [adminPannel, currentUser, totalBalnce]);
 
     const handleState = (msg) => {
         setState(!state);
@@ -94,6 +118,7 @@ const ContextPovider = ({ children }) => {
         onSnackBarClose,
         refreshProfile,
         setRefreshProfile,
+        totalBalnce,
     };
     return <provider.Provider value={value}>{children}</provider.Provider>;
 };

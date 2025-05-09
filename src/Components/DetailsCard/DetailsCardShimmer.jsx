@@ -7,57 +7,46 @@ const shimmerAnimation = keyframes`
 `;
 
 const Card = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 120px;
-    background-color: #d8effe;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    border-radius: 0 0 20px 20px;
-    box-shadow: 0px 6px 10px 0px #d7d7d7;
-`;
-
-const ProfileContainer = styled.div`
+    max-width: 420px;
+    min-width: 280px;
+    background: #eaf6ff;
+    border-radius: 0 0 28px 28px;
+    box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.1);
+    padding: 16px 4px 4px;
+    position: fixed;
+    z-index: 10000;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: fit-content;
+    justify-content: flex-start;
 `;
 
-const ShimmerCircle = styled.div`
-    width: 50px;
-    height: 50px;
+const ProfilePicShimmer = styled.div`
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    margin-bottom: 10px;
+    margin: 0 auto 12px auto;
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: ${shimmerAnimation} 1.5s infinite;
 `;
 
-const ShimmerText = styled.div`
-    width: 90px;
+const NameShimmer = styled.div`
+    width: 120px;
     height: 22px;
-    border-radius: 4px;
-    margin: 4px 0;
+    border-radius: 8px;
+    margin: 0 auto 16px auto;
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: ${shimmerAnimation} 1.5s infinite;
 `;
 
-const CenterIcons = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-`;
-
-const ShimmerIcon = styled.div`
-    width: 30px;
-    height: 15px;
-    border-radius: 8px;
+const BalanceRowShimmer = styled.div`
+    width: 98%;
+    height: 36px;
+    border-radius: 4px 4px 24px 24px;
+    margin: 18px auto 0 auto;
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: ${shimmerAnimation} 1.5s infinite;
@@ -65,18 +54,9 @@ const ShimmerIcon = styled.div`
 
 const DetailsCardShimmer = () => (
     <Card>
-        <ProfileContainer>
-            <ShimmerCircle />
-            <ShimmerText />
-        </ProfileContainer>
-        <CenterIcons>
-            <ShimmerIcon />
-            <ShimmerIcon />
-        </CenterIcons>
-        <ProfileContainer>
-            <ShimmerCircle />
-            <ShimmerText />
-        </ProfileContainer>
+        <ProfilePicShimmer />
+        <NameShimmer />
+        <BalanceRowShimmer />
     </Card>
 );
 

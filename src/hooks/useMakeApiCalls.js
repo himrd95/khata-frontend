@@ -87,11 +87,6 @@ const useMakeApiCalls = () => {
                         ...adminPannel,
                         admin: response.data.user,
                     };
-                    console.log(
-                        updatedAdminPannel,
-                        "updatedAdminPannel",
-                        response
-                    );
                     setAdminPannel({ ...updatedAdminPannel });
                     localStorage.setItem(
                         "khata-2.0",

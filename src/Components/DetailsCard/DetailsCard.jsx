@@ -1,10 +1,11 @@
-import React, { memo, useContext } from "react";
+import React, { memo, useContext, useMemo } from "react";
 import "./DetailsCard.css";
 import cx from "classnames";
 import DetailsCardShimmer from "./DetailsCardShimmer";
 
 import { provider } from "../../Context/ContextPovider";
-import { getCloudinaryUrl } from "../../utils/helpers";
+import { getBalanceColor, getCloudinaryUrl } from "../../utils/helpers";
+import { moneyFormate } from "../../constants";
 
 const welcomeTexts = [
     "Welcome back,",
@@ -16,16 +17,22 @@ const welcomeTexts = [
 ];
 
 const DetailsCard = () => {
-    const { adminPannel, currentUser, refreshProfile } = useContext(provider);
+    const { adminPannel, currentUser, refreshProfile, totalBalnce } =
+        useContext(provider);
     const { name, userImage } = currentUser;
     const randomNumber = Math.floor(Math.random() * 7);
+
+    const balanceColor = useMemo(
+        () => getBalanceColor(totalBalnce),
+        [totalBalnce]
+    );
 
     if (refreshProfile) {
         return <DetailsCardShimmer />;
     }
 
     return (
-        <>
+        <div className="detailsCardContainer">
             <div className="detailsCard">
                 <div className="profileContainer">
                     <div className="profilePic">
@@ -36,7 +43,7 @@ const DetailsCard = () => {
                                 src={getCloudinaryUrl(
                                     adminPannel?.admin?.profile
                                 )}
-                                alt="pofile_picture"
+                                alt="profile_picture"
                                 height="100%"
                                 width="100%"
                             />
@@ -45,12 +52,7 @@ const DetailsCard = () => {
 
                     <div className={cx("profileText", name && "flexClass")}>
                         {!name && (
-                            <span
-                                style={{
-                                    margin: "0 5px",
-                                    textTransform: "capitalize",
-                                }}
-                            >
+                            <span className="welcomeText">
                                 {welcomeTexts[randomNumber]}
                             </span>
                         )}
@@ -60,8 +62,7 @@ const DetailsCard = () => {
 
                 {name && (
                     <div className="transferIcons">
-                        <i class="fa-solid fa-left-long"></i>
-                        <i class="fa-solid fa-right-long"></i>
+                        <i class="fa-solid fa-left-right"></i>
                     </div>
                 )}
 
@@ -73,7 +74,7 @@ const DetailsCard = () => {
                             ) : (
                                 <img
                                     src={getCloudinaryUrl(userImage)}
-                                    alt="pofile_picture"
+                                    alt="profile_picture"
                                     width="100%"
                                     height="100%"
                                 />
@@ -86,7 +87,18 @@ const DetailsCard = () => {
                     </div>
                 )}
             </div>
-        </>
+            <div
+                className="totalBalanceRow"
+                style={{
+                    background: `linear-gradient(180deg, rgba(255,255,255,1) 0%, ${balanceColor} 300%)`,
+                }}
+            >
+                <span className="totalBalanceLabel">Total Balance</span>
+                <span className="totalBalanceValue">{` ${moneyFormate(
+                    totalBalnce
+                )}`}</span>
+            </div>
+        </div>
     );
 };
 

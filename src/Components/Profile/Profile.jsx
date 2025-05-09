@@ -40,13 +40,19 @@ const Profile = () => {
         <div className="profile">
             <div className="actionButtonsHeading">Action Buttons</div>
             <div className="actionButtons" onClick={handleVoice}>
+                <i
+                    className={`fas ${
+                        adminPannel.voice ? "fa-volume-up" : "fa-volume-mute"
+                    }`}
+                    style={{ marginRight: 8 }}
+                />
                 Turn {action} voice
             </div>
             <input
                 ref={inputRef}
                 accept="image/*"
                 id="raised-button-file"
-                onChange={(e) => handlechange(e)}
+                onChange={handlechange}
                 type="file"
                 label="Profile"
                 fullWidth
@@ -54,13 +60,19 @@ const Profile = () => {
                 multiple
                 style={{ display: "none" }}
             />
+            <div className="actionButtons" onClick={() => {}}>
+  <i className="fas fa-user-cog" style={{ marginRight: 8 }} />
+  Edit Profile Info
+</div>
             <div
                 className="actionButtons"
                 onClick={() => inputRef.current.click()}
             >
+                <i className="fas fa-user-edit" style={{ marginRight: 8 }} />
                 Change Profile Picture
             </div>
             <div className="actionButtons" onClick={handleLogOut}>
+                <i className="fas fa-sign-out-alt" style={{ marginRight: 8 }} />
                 Logout
             </div>
         </div>

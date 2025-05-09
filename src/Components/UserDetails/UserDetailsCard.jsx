@@ -25,6 +25,7 @@ const UserDetailsCard = ({
         () => totalGiven - totalTaken,
         [totalGiven, totalTaken]
     );
+    
     const balanceColor = useMemo(
         () => getBalanceColor(totalBalance),
         [totalBalance]
