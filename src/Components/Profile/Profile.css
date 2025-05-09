@@ -10,6 +10,9 @@
 	text-align: center;
 	background-color: #e0f7fa;
 	font-size: 25px;
+	border-radius: 0 0 16px 16px;
+	font-weight: 600;
+	letter-spacing: 1px;
 }
 
 .actionButtons {
@@ -23,4 +26,26 @@
 
 .actionButtons .fas {
     margin-right: 8px;
+}
+
+.enhanced-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f7fafc;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 18px 12px 0 12px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #22304a;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+}
+
+.enhanced-action:hover {
+    background: #e0f7fa;
+    color: #0077b6;
+    box-shadow: 0 4px 16px 0 rgba(0,0,0,0.08);
 }

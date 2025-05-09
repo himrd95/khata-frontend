@@ -7,7 +7,18 @@ import SimpleDialog from "../Modal";
 import { SuccessPopupContent } from "../SuccessPopupContent";
 import LoginContent from "./LoginContent";
 import "./Registration.css";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import RegistrationContent from "./RegistrationContent";
+import {
+    HeroSection,
+    ContentWrapper,
+    Title,
+    Subtitle,
+    BottomSection,
+    LoginText,
+    TitleWrapper,
+    LottieWrapper,
+} from "./Registration.styles";
 
 const Registration = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -104,42 +115,71 @@ const Registration = () => {
     }, [handleLoginModal, loginPopup]);
 
     return (
-        <div
-            className="messages"
-            style={{ backgroundImage: "url(/money_exchange_.png)" }}
-        >
-            <div>
-                <div className="unused"></div>
-                <h1>Tired of managing your daily expenses?</h1>
-
-                <div className="bottom_section">
-                    <h3>Here's the solution. So let's</h3>
+        <HeroSection>
+            <ContentWrapper>
+                <LottieWrapper>
+                    <lottie-player
+                        src="https://lottie.host/3adaa1df-5724-4165-babe-db6555db2952/w2HInrNsTh.json"
+                        background="transparent"
+                        speed="1"
+                        loop
+                        autoplay
+                    />
+                </LottieWrapper>
+                <TitleWrapper>
+                    <Title>Tired of managing your daily expenses?</Title>
+                    <Subtitle>Here's the solution. So let's</Subtitle>
+                </TitleWrapper>
+                <BottomSection>
                     <Button
-                        onClick={() => handleRegistrationModal()}
-                        sx={{ padding: "10px 25px" }}
+                        onClick={handleRegistrationModal}
                         variant="contained"
                         color="primary"
+                        size="large"
+                        sx={{
+                            padding: "12px 32px",
+                            fontSize: "1.1rem",
+                            fontWeight: 600,
+                            borderRadius: "16px",
+                            textTransform: "none",
+                            fontFamily: "'Kanit', sans-serif",
+                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                            "&:hover": {
+                                transform: "translateY(-2px)",
+                                boxShadow: "0 6px 8px rgba(0, 0, 0, 0.2)",
+                            },
+                            transition: "all 0.2s ease-in-out",
+                        }}
                     >
                         Get Started
                     </Button>
-                    <p>
+                    <LoginText>
                         Already registered?
                         <Button
-                            onClick={() => handleLoginModal()}
-                            sx={{ color: "#2bc3ff" }}
+                            onClick={handleLoginModal}
+                            sx={{
+                                color: "#2bc3ff",
+                                fontSize: "1rem",
+                                fontWeight: 600,
+                                textTransform: "none",
+                                fontFamily: "'Kanit', sans-serif",
+                                "&:hover": {
+                                    backgroundColor: "rgba(43, 195, 255, 0.1)",
+                                },
+                            }}
                         >
                             Login
                         </Button>
-                    </p>
-                </div>
-            </div>
+                    </LoginText>
+                </BottomSection>
+            </ContentWrapper>
 
             <SimpleDialog
                 isOpen={isOpen}
                 handleClose={handleClose}
                 content={content}
             />
-        </div>
+        </HeroSection>
     );
 };
 

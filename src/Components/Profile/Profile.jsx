@@ -37,16 +37,19 @@ const Profile = () => {
     const action = adminPannel.voice ? "off" : "on";
 
     return (
-        <div className="profile">
+        <div className="profile enhanced-profile">
             <div className="actionButtonsHeading">Action Buttons</div>
-            <div className="actionButtons" onClick={handleVoice}>
+            <div
+                className="actionButtons enhanced-action"
+                onClick={handleVoice}
+            >
                 <i
                     className={`fas ${
                         adminPannel.voice ? "fa-volume-up" : "fa-volume-mute"
                     }`}
-                    style={{ marginRight: 8 }}
+                    style={{ marginRight: 12, fontSize: 18 }}
                 />
-                Turn {action} voice
+                <span>Turn {action} voice</span>
             </div>
             <input
                 ref={inputRef}
@@ -60,20 +63,32 @@ const Profile = () => {
                 multiple
                 style={{ display: "none" }}
             />
-            <div className="actionButtons" onClick={() => {}}>
-  <i className="fas fa-user-cog" style={{ marginRight: 8 }} />
-  Edit Profile Info
-</div>
+            <div className="actionButtons enhanced-action" onClick={() => {}}>
+                <i
+                    className="fas fa-user-cog"
+                    style={{ marginRight: 12, fontSize: 18 }}
+                />
+                <span>Edit Profile Info</span>
+            </div>
             <div
-                className="actionButtons"
+                className="actionButtons enhanced-action"
                 onClick={() => inputRef.current.click()}
             >
-                <i className="fas fa-user-edit" style={{ marginRight: 8 }} />
-                Change Profile Picture
+                <i
+                    className="fas fa-user-edit"
+                    style={{ marginRight: 12, fontSize: 18 }}
+                />
+                <span>Change Profile Picture</span>
             </div>
-            <div className="actionButtons" onClick={handleLogOut}>
-                <i className="fas fa-sign-out-alt" style={{ marginRight: 8 }} />
-                Logout
+            <div
+                className="actionButtons enhanced-action"
+                onClick={handleLogOut}
+            >
+                <i
+                    className="fas fa-sign-out-alt"
+                    style={{ marginRight: 12, fontSize: 18 }}
+                />
+                <span>Logout</span>
             </div>
         </div>
     );
