@@ -2,11 +2,10 @@ import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import eventBus from "../../utils/eventBus";
 
 import SimpleDialog from "../Modal";
-import { Alert, Button, DialogActions, Snackbar } from "@mui/material";
+import { Alert, Button, Snackbar } from "@mui/material";
 import UpdateUser from "../Table/UpdateUser";
 import { provider } from "../../Context/ContextPovider";
 import { EVENTS, moneyFormate } from "../../constants";
-import ButtonComponent from "../Button/Button";
 import DeleteConfirmation from "../Contents/DeleteConfirmation";
 
 const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {

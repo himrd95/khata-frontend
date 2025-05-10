@@ -7,7 +7,6 @@ import SimpleDialog from "../Modal";
 import { SuccessPopupContent } from "../SuccessPopupContent";
 import LoginContent from "./LoginContent";
 import "./Registration.css";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import RegistrationContent from "./RegistrationContent";
 import {
     HeroSection,

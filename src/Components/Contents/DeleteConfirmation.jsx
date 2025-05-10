@@ -1,10 +1,5 @@
 import React, { memo, useCallback, useContext } from "react";
-import {
-    Button,
-    capitalize,
-    DialogActions,
-    DialogTitle,
-} from "@material-ui/core";
+import { Button, DialogActions } from "@material-ui/core";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 import { provider } from "../../Context/ContextPovider";
 

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback, useState, memo } from "react";
+import React, { useRef, useEffect, useState, memo } from "react";
 import { provider } from "../../Context/ContextPovider";
 import "./Profile.css";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";

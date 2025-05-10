@@ -7,7 +7,7 @@ import { calculateTotal, capitalize } from "../../utils/helpers";
 import LineLoader from "../Common/LineLoader";
 
 const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
-    const { currentUser, setCurrentUser, setTotalAmount, isModalLoading } =
+    const { currentUser, setTotalAmount, isModalLoading } =
         useContext(provider);
     const { name, _id: id } = currentUser;
     const { putRequest } = useMakeApiCalls();
