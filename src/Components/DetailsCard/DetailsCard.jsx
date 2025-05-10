@@ -4,7 +4,11 @@ import cx from "classnames";
 import DetailsCardShimmer from "./DetailsCardShimmer";
 
 import { provider } from "../../Context/ContextPovider";
-import { getBalanceColor, getCloudinaryUrl } from "../../utils/helpers";
+import {
+    getBalanceColor,
+    getCloudinaryUrl,
+    isEmpty,
+} from "../../utils/helpers";
 import { moneyFormate } from "../../constants";
 
 const welcomeTexts = [
@@ -19,13 +23,24 @@ const welcomeTexts = [
 const DetailsCard = () => {
     const { adminPannel, currentUser, refreshProfile, totalBalnce } =
         useContext(provider);
-    const { name, userImage } = currentUser;
-    const randomNumber = Math.floor(Math.random() * 7);
+    const { name: currentUserName, userImage: currentUserImage } = currentUser;
+
+    const welcomeText = useMemo(() => {
+        const randomNumber = Math.floor(Math.random() * 7);
+        return welcomeTexts[randomNumber];
+    }, []);
 
     const balanceColor = useMemo(
         () => getBalanceColor(totalBalnce),
         [totalBalnce]
     );
+
+    const adminName = useMemo(() => {
+        if (!isEmpty(currentUserName)) {
+            return adminPannel?.admin?.name?.split(" ")[0];
+        }
+        return adminPannel?.admin?.name;
+    }, [adminPannel?.admin?.name, currentUserName]);
 
     if (refreshProfile) {
         return <DetailsCardShimmer />;
@@ -50,30 +65,33 @@ const DetailsCard = () => {
                         )}
                     </div>
 
-                    <div className={cx("profileText", name && "flexClass")}>
-                        {!name && (
-                            <span className="welcomeText">
-                                {welcomeTexts[randomNumber]}
-                            </span>
+                    <div
+                        className={cx(
+                            "profileText",
+                            currentUserName && "flexClass"
                         )}
-                        <span>{adminPannel.admin.name.split(" ")[0]}</span>
+                    >
+                        {!currentUserName && (
+                            <span className="welcomeText">{welcomeText}</span>
+                        )}
+                        <span>{adminName}</span>
                     </div>
                 </div>
 
-                {name && (
+                {currentUserName && (
                     <div className="transferIcons">
                         <i class="fa-solid fa-left-right"></i>
                     </div>
                 )}
 
-                {name && (
+                {currentUserName && (
                     <div className="profileContainer">
                         <div className="profilePic">
-                            {!userImage ? (
+                            {!currentUserImage ? (
                                 <i className="fas fa-user-circle"></i>
                             ) : (
                                 <img
-                                    src={getCloudinaryUrl(userImage)}
+                                    src={getCloudinaryUrl(currentUserImage)}
                                     alt="profile_picture"
                                     width="100%"
                                     height="100%"
@@ -81,8 +99,13 @@ const DetailsCard = () => {
                             )}
                         </div>
 
-                        <div className={cx("profileText", name && "flexClass")}>
-                            <span>{name}</span>
+                        <div
+                            className={cx(
+                                "profileText",
+                                currentUserName && "flexClass"
+                            )}
+                        >
+                            <span>{currentUserName}</span>
                         </div>
                     </div>
                 )}

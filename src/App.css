@@ -39,8 +39,8 @@ i {
 
 
 .usersDetails{
-	margin-top: 180px;
-    height: calc(100vh - 235px);
+	margin-top: 170px;
+    height: calc(100vh - 225px);
     overflow: scroll;
 }
 

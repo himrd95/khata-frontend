@@ -61,7 +61,7 @@ const ContextPovider = ({ children }) => {
         setMessage(msg);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         setTimeout(() => {
             setLoginPopup(false);
         }, 1000);

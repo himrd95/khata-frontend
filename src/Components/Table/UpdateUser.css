@@ -154,7 +154,7 @@ button.update:hover {
     position: absolute;
     width: 100%;
     z-index: 999;
-    max-height: 180px;
+    max-height: 170px;
     overflow-y: scroll;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }

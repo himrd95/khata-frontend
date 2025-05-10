@@ -1,15 +1,24 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useCallback, useState, memo } from "react";
 import { provider } from "../../Context/ContextPovider";
 import "./Profile.css";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
+import { isEmpty } from "../../utils/helpers";
 
 const Profile = () => {
     const [, setAnchorEl] = React.useState(null);
+    const [profileName, setProfileName] = useState("");
 
     const { adminPannel, setAdminPannel } = React.useContext(provider);
     const inputRef = useRef();
+    const editProfileInputRef = useRef();
 
     const { patchRequest } = useMakeApiCalls();
+
+    useEffect(() => {
+        if (!isEmpty(profileName) && editProfileInputRef.current) {
+            editProfileInputRef.current.focus();
+        }
+    }, [profileName]);
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -21,6 +30,28 @@ const Profile = () => {
         formData.append("profile", files[0]);
 
         patchRequest(adminPannel.admin._id, formData);
+    };
+
+    const handleProfileNameChange = (e) => {
+        setProfileName(e.target.value);
+    };
+
+    const handleProfileNameSubmit = async (e) => {
+        if (e.key === "Enter" && profileName.trim()) {
+            try {
+                await patchRequest(adminPannel.admin._id, {
+                    name: profileName.trim(),
+                });
+                setAdminPannel({
+                    ...adminPannel,
+                    admin: { ...adminPannel.admin, name: profileName.trim() },
+                });
+            } catch (error) {
+                console.error("Failed to update profile name:", error);
+            } finally {
+                setProfileName("");
+            }
+        }
     };
 
     const handleLogOut = () => {
@@ -63,12 +94,53 @@ const Profile = () => {
                 multiple
                 style={{ display: "none" }}
             />
-            <div className="actionButtons enhanced-action" onClick={() => {}}>
-                <i
-                    className="fas fa-user-cog"
-                    style={{ marginRight: 12, fontSize: 18 }}
-                />
-                <span>Edit Profile Info</span>
+            <div
+                className="actionButtons enhanced-action"
+                onClick={() => {
+                    if (isEmpty(profileName)) {
+                        setProfileName(adminPannel.admin.name || "");
+                    }
+                }}
+            >
+                {isEmpty(profileName) ? (
+                    <>
+                        <i
+                            className="fas fa-user-cog"
+                            style={{ marginRight: 12, fontSize: 18 }}
+                        />
+                        <span>Edit Profile Info</span>
+                    </>
+                ) : (
+                    <div className="editProfileContainer">
+                        <button
+                            className="cancelProfileButton"
+                            onClick={() => {
+                                setProfileName("");
+                            }}
+                        >
+                            <i className="fas fa-times" />
+                        </button>
+                        <input
+                            ref={editProfileInputRef}
+                            className="editProfileInput"
+                            type="text"
+                            value={profileName}
+                            onChange={handleProfileNameChange}
+                            onKeyDown={handleProfileNameSubmit}
+                            placeholder="Enter your name"
+                        />
+                        <button
+                            className="submitProfileButton"
+                            onClick={() => {
+                                if (profileName.trim()) {
+                                    handleProfileNameSubmit({ key: "Enter" });
+                                }
+                            }}
+                        >
+                            <i className="fas fa-check" />
+                        </button>
+                    </div>
+                )}
             </div>
             <div
                 className="actionButtons enhanced-action"
@@ -94,4 +166,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default memo(Profile);

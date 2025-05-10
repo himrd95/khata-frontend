@@ -22,7 +22,8 @@ const Dashboard = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [dialogContent, setDialogContent] = useState("");
 
-    const { getRequest, postRequest, putRequest } = useMakeApiCalls();
+    const { getRequest, postRequest, putRequest, patchRequest } =
+        useMakeApiCalls();
 
     const {
         setMessage,
@@ -32,6 +33,7 @@ const Dashboard = () => {
         isLoading,
         setCurrentUser,
         showSnackbar,
+        adminPannel,
     } = useContext(provider);
 
     useEffect(() => {
@@ -94,6 +96,13 @@ const Dashboard = () => {
         eventBus.on(EVENTS.ADD_NEW_USER, addNewUser);
         return () => eventBus.remove(EVENTS.ADD_NEW_USER, addNewUser);
     }, [addNewUser]);
+
+    useEffect(() => {
+        if (!isEmpty(adminPannel) && isEmpty(users)) {
+            patchRequest(adminPannel.admin._id, {});
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (isLoading) {
         return <Shimmer />;
