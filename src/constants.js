@@ -10,11 +10,16 @@ export const EVENTS = {
 };
 
 export const moneyFormate = (amount) => {
-    return new Intl.NumberFormat("en-US", {
+    const formatter = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "INR",
-        maximumSignificantDigits: 3,
-    }).format(amount);
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+    });
+
+    const formatted = formatter.format(amount);
+    // Remove .00 if it exists at the end
+    return formatted.replace(/\.00$/, "");
 };
 
 export const COLORS = {

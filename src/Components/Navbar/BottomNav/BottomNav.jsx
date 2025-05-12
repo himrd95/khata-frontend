@@ -31,7 +31,7 @@ const BottomNav = () => {
                 navigate("/profile");
                 setCurrentUser({});
             } else if (path.pathname === "/" && isEmpty(currentUser)) {
-                return eventBus.dispatch(EVENTS.ADD_NEW_USER, true);
+                return eventBus.dispatch(EVENTS.ADD_NEW_USER, "");
             } else {
                 return eventBus.dispatch(EVENTS.ADD_NEW_TRANSACTION, true);
             }

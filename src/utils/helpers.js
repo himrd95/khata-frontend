@@ -18,10 +18,11 @@ export const compareDate = (a, b) => {
 };
 
 export const calculateTotal = (entries = []) =>
-    entries.reduce(
-        (acc, curr) => acc + (Number(curr.actualPrice) - Number(curr.paid)),
-        0
-    );
+    entries.reduce((acc, curr) => {
+        const actualPrice = parseFloat(curr.actualPrice) || 0;
+        const paid = parseFloat(curr.paid) || 0;
+        return Number((acc + (actualPrice - paid)).toFixed(2));
+    }, 0);
 
 export const getBalanceColor = (balance) => {
     if (balance === 0) return "black";
