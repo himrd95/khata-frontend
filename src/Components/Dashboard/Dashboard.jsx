@@ -60,8 +60,8 @@ const Dashboard = () => {
     const handleAddUser = useCallback(
         async ({ name, profile, id }) => {
             const formData = new FormData();
-            formData.append("name", name);
-            formData.append("userImage", profile);
+            name && formData.append("name", name);
+            profile && formData.append("userImage", profile);
 
             if (!isEmpty(id)) {
                 const snackbarMsg = `User "${name}" has been updated successfully!`;
@@ -114,6 +114,7 @@ const Dashboard = () => {
                 {users.map((user) => (
                     <UserDetailsCard key={user.id} {...user} />
                 ))}
+                <br />
                 <br />
                 <br />
             </div>

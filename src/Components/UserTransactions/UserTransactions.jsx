@@ -31,20 +31,14 @@ const UserTransactions = () => {
 
     const swipeHandlers = useSwipe(handleSwipeRight);
 
-    // Scroll to top when component mounts
+    // Simple scroll to top on mount
     useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
-    // Scroll to top when user changes
-    useEffect(() => {
-        if (_id) {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-            });
+        try {
+            window.scrollTo(0, 0);
+        } catch (error) {
+            console.error("Scroll error:", error);
         }
-    }, [_id]);
+    }, []);
 
     useEffect(() => {
         const refreshHandler = () => getUsers(params.id);

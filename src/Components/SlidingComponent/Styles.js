@@ -5,4 +5,5 @@ export const Slider = styled.div(({ slideLeft }) => ({
     width: "200vw",
     transform: `translateX(${slideLeft ? "-100vw" : "0"})`,
     transition: "0.3s",
+    minHeight: "100vh",
 }));

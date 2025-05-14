@@ -18,12 +18,15 @@ import {
     TitleWrapper,
     LottieWrapper,
 } from "./Registration.styles";
+import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 
 const Registration = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [content, setContent] = useState("");
     const { loginPopup, setAdminPannel, setIsLoading, setError } =
         useContext(provider);
+
+    const { getRequest } = useMakeApiCalls();
 
     const handleClose = () => {
         setIsOpen(false);
@@ -94,9 +97,12 @@ const Registration = () => {
                 .catch((e) =>
                     setError({ message: "Wrong credentials!", open: true })
                 )
-                .finally(() => setIsLoading(false));
+                .finally(() => {
+                    setIsLoading(false);
+                    getRequest();
+                });
         },
-        [setAdminPannel, setError, setIsLoading]
+        [getRequest, setAdminPannel, setError, setIsLoading]
     );
 
     const handleLoginModal = useCallback(() => {

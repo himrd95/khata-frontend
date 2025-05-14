@@ -87,17 +87,13 @@
 
 .main {
 	width: 100vw;
-	scroll-behavior: smooth; /* Enable smooth scrolling */
 }
 
-/* Make sure each view fills the viewport */
-.sliding-container {
+/* Reset all possible styling that could interfere with scroll */
+html, body {
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
-}
-
-/* Apply auto-scroll reset when component becomes visible */
-.usersDetails {
-    scroll-padding-top: 0;
 }
 
 /* Make action buttons sticky at the top */
