@@ -27,6 +27,7 @@ const Profile = () => {
     const handlechange = (e) => {
         const { files } = e.target;
         const formData = new FormData();
+        formData.append("name", adminPannel.admin.name);
         formData.append("profile", files[0]);
 
         patchRequest(adminPannel.admin._id, formData);
