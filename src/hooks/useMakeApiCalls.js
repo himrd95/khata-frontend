@@ -81,7 +81,7 @@ const useMakeApiCalls = () => {
                 setRefreshProfile(true);
                 const url = `${BASE_URL}/register/update/${id}`;
 
-                const response = await axios.patch(url, payload);
+                const response = await axios.patch(url, payload, headers);
                 if (!isEmpty(response.data.user)) {
                     const updatedAdminPannel = {
                         ...adminPannel,
@@ -100,7 +100,7 @@ const useMakeApiCalls = () => {
                 setRefreshProfile(false);
             }
         },
-        [adminPannel, setAdminPannel, setRefreshProfile, showSnackbar]
+        [adminPannel, headers, setAdminPannel, setRefreshProfile, showSnackbar]
     );
 
     const putRequest = useCallback(
