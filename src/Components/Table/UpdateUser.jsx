@@ -14,16 +14,34 @@ const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
 
     const [selectedMode, setSelectedMode] = useState(mode);
 
+    // Get today's date in YYYY-MM-DD format for the date input
+    const today = new Date().toISOString().split("T")[0];
+
+    // Format date from DD/MM/YYYY to YYYY-MM-DD for the date input
+    const formatDateForInput = (dateStr) => {
+        if (!dateStr) return today;
+
+        const parts = dateStr.split("/");
+        if (parts.length !== 3) return today;
+
+        return `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(
+            2,
+            "0"
+        )}`;
+    };
+
     const initState = edit
         ? {
               purpose: data[index]?.purpose || "",
               actualPrice: data[index]?.actualPrice || "",
               paid: data[index]?.paid || 0,
+              date: formatDateForInput(data[index]?.date) || today,
           }
         : {
               purpose: "",
               actualPrice: "",
               paid: 0,
+              date: today,
           };
 
     const [payload, setPayLoad] = useState(initState);
@@ -40,12 +58,14 @@ const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const date = new Date();
-        const formattedDate = `${date.getDate()}/${
-            date.getMonth() + 1
-        }/${date.getFullYear()}`;
+        // Convert the date from YYYY-MM-DD to DD/MM/YYYY format
+        const dateParts = payload.date.split("-");
+        const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
-        const newData = { ...payload, date: formattedDate };
+        const newData = {
+            ...payload,
+            date: formattedDate,
+        };
 
         const updatedUser = { ...currentUser };
 
@@ -98,6 +118,18 @@ const UpdateUser = ({ handleClose, handleUpdate, edit, index, mode, data }) => {
                         value={payload.actualPrice}
                         onChange={handleChange}
                         placeholder="Enter amount"
+                        required
+                    />
+                </div>
+
+                <div className="apple-form-group">
+                    <label>Date</label>
+                    <input
+                        type="date"
+                        name="date"
+                        value={payload.date}
+                        onChange={handleChange}
+                        max={today}
                         required
                     />
                 </div>

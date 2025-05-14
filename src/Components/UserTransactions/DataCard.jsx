@@ -7,6 +7,7 @@ import UpdateUser from "../Table/UpdateUser";
 import { provider } from "../../Context/ContextPovider";
 import { EVENTS, moneyFormate } from "../../constants";
 import DeleteConfirmation from "../Contents/DeleteConfirmation";
+import { capitalize } from "../../utils/helpers";
 
 const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -154,7 +155,7 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
                                 <div className="dateAndPurpose">
                                     <span className="date">{data.date}</span>
                                     <span className="purpose">
-                                        {data.purpose}
+                                        {capitalize(data.purpose)}
                                     </span>
                                 </div>
                                 <span
@@ -163,10 +164,10 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
                                         userActions({ row: data }, i)
                                     }
                                 >
-                                    <span>
+                                    <span className="actual-price">
                                         {moneyFormate(data.actualPrice)}
                                     </span>
-                                    <i class="fa-solid fa-chevron-right"></i>
+                                    <i className="fa-solid fa-ellipsis-vertical"></i>
                                 </span>
                             </div>
                         ))}

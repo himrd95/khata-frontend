@@ -49,6 +49,30 @@
     transition: border 0.2s;
 }
 
+/* Special styling for date input to make it consistent across browsers */
+.apple-form-group input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 30px; /* Space for the calendar icon */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23007aff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    position: relative;
+}
+
+/* Hide the default calendar icon in webkit browsers */
+.apple-form-group input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    width: 30px; /* Only cover the calendar icon area */
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0; /* Position at the right side only */
+    cursor: pointer;
+}
+
+/* Focus styles */
 .apple-form-group input:focus,
 .apple-form-group select:focus {
     border-color: #007aff;

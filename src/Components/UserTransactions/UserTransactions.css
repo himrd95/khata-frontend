@@ -24,7 +24,7 @@
 	justify-content: space-between;
 	width: 100%;
 	margin: auto;
-	padding: 20px;
+	padding: 16px;
 	padding-bottom: 0;
 }
 
@@ -34,8 +34,9 @@
 	align-items: center;
 	width: 100%;
 	margin: auto;
-	padding: 4px;
+	padding: 2px 0;
 	border-bottom: 1px solid #dcdcdc;
+	font-size: 14px;
 }
 
 .row:first-child{
@@ -53,19 +54,24 @@
 
 .date {
 	display: block;
-	width: 90px;
+	width: 85px;
+	text-align: left;
 }
 
-.date,
 .purpose {
+	width: 45vw;
 	text-align: left;
 }
 
 .actualPrice i:last-child {
-	margin-left: 10px;
+	margin-left: 5px;
 	font-size: 15px;
 	color: #373791;
 	padding: 8px;
+}
+
+.actual-price{
+	font-weight: 600;
 }
 
 .editModal {
