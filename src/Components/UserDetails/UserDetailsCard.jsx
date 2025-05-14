@@ -2,11 +2,8 @@ import React, { useContext, useMemo } from "react";
 import { provider } from "../../Context/ContextPovider";
 import { moneyFormate } from "../../constants";
 import "./UserDetailsCard.css";
-import {
-    calculateTotal,
-    getBalanceColor,
-    getCloudinaryUrl,
-} from "../../utils/helpers";
+import { calculateTotal, getBalanceColor } from "../../utils/helpers";
+import ProfileImage from "../Common/ProfileImage";
 
 const UserDetailsCard = ({
     name,
@@ -25,7 +22,7 @@ const UserDetailsCard = ({
         () => totalGiven - totalTaken,
         [totalGiven, totalTaken]
     );
-    
+
     const balanceColor = useMemo(
         () => getBalanceColor(totalBalance),
         [totalBalance]
@@ -54,17 +51,7 @@ const UserDetailsCard = ({
         >
             <div className="user">
                 <span className="profilePicture">
-                    {userImage ? (
-                        <div className="profileImage">
-                            <img
-                                src={getCloudinaryUrl(userImage)}
-                                alt="profile"
-                                width="100%"
-                            />
-                        </div>
-                    ) : (
-                        <i className="fas fa-user-circle" />
-                    )}
+                    <ProfileImage src={userImage} className="profileImage" />
                 </span>
                 <span className="userName">{name}</span>
             </div>

@@ -157,11 +157,12 @@ const Registration = () => {
                         <Button
                             onClick={handleLoginModal}
                             sx={{
-                                color: "#2bc3ff",
-                                fontSize: "1rem",
-                                fontWeight: 600,
+                                color: "blue",
+                                fontSize: "1.15rem",
+                                fontWeight: 800,
                                 textTransform: "none",
                                 fontFamily: "'Kanit', sans-serif",
+                                marginLeft: "-10px",
                                 "&:hover": {
                                     backgroundColor: "rgba(43, 195, 255, 0.1)",
                                 },

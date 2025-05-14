@@ -4,12 +4,9 @@ import cx from "classnames";
 import DetailsCardShimmer from "./DetailsCardShimmer";
 
 import { provider } from "../../Context/ContextPovider";
-import {
-    getBalanceColor,
-    getCloudinaryUrl,
-    isEmpty,
-} from "../../utils/helpers";
+import { getBalanceColor, isEmpty } from "../../utils/helpers";
 import { moneyFormate } from "../../constants";
+import ProfileImage from "../Common/ProfileImage";
 
 const welcomeTexts = [
     "Welcome back,",
@@ -51,18 +48,10 @@ const DetailsCard = () => {
             <div className="detailsCard">
                 <div className="profileContainer">
                     <div className="profilePic">
-                        {!adminPannel?.admin?.profile ? (
-                            <i className="fas fa-user-circle"></i>
-                        ) : (
-                            <img
-                                src={getCloudinaryUrl(
-                                    adminPannel?.admin?.profile
-                                )}
-                                alt="profile_picture"
-                                height="100%"
-                                width="100%"
-                            />
-                        )}
+                        <ProfileImage
+                            src={adminPannel?.admin?.profile}
+                            alt="admin profile"
+                        />
                     </div>
 
                     <div
@@ -80,23 +69,17 @@ const DetailsCard = () => {
 
                 {currentUserName && (
                     <div className="transferIcons">
-                        <i class="fa-solid fa-left-right"></i>
+                        <i className="fa-solid fa-left-right"></i>
                     </div>
                 )}
 
                 {currentUserName && (
                     <div className="profileContainer">
                         <div className="profilePic">
-                            {!currentUserImage ? (
-                                <i className="fas fa-user-circle"></i>
-                            ) : (
-                                <img
-                                    src={getCloudinaryUrl(currentUserImage)}
-                                    alt="profile_picture"
-                                    width="100%"
-                                    height="100%"
-                                />
-                            )}
+                            <ProfileImage
+                                src={currentUserImage}
+                                alt="user profile"
+                            />
                         </div>
 
                         <div

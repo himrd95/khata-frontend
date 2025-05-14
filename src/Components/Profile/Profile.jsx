@@ -3,7 +3,7 @@ import { provider } from "../../Context/ContextPovider";
 import "./Profile.css";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 import { isEmpty } from "../../utils/helpers";
-
+import { useNavigate } from "react-router-dom";
 const Profile = () => {
     const [, setAnchorEl] = React.useState(null);
     const [profileName, setProfileName] = useState("");
@@ -13,7 +13,7 @@ const Profile = () => {
     const editProfileInputRef = useRef();
 
     const { patchRequest } = useMakeApiCalls();
-
+    const navigate = useNavigate();
     useEffect(() => {
         if (!isEmpty(profileName) && editProfileInputRef.current) {
             editProfileInputRef.current.focus();
@@ -29,7 +29,6 @@ const Profile = () => {
         const formData = new FormData();
         formData.append("name", adminPannel.admin.name);
         formData.append("profile", files[0]);
-
         patchRequest(adminPannel.admin._id, formData);
     };
 
@@ -56,11 +55,14 @@ const Profile = () => {
     };
 
     const handleLogOut = () => {
-        handleClose();
+        navigate("/");
+        console.log("navigated");
         setAdminPannel({
             token: "",
             admin: {},
+            setUsers: [],
         });
+        handleClose();
     };
     const handleVoice = () => {
         handleClose();

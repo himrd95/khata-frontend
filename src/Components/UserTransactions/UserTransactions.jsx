@@ -31,6 +31,21 @@ const UserTransactions = () => {
 
     const swipeHandlers = useSwipe(handleSwipeRight);
 
+    // Scroll to top when component mounts
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    // Scroll to top when user changes
+    useEffect(() => {
+        if (_id) {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        }
+    }, [_id]);
+
     useEffect(() => {
         const refreshHandler = () => getUsers(params.id);
         eventBus.on(EVENTS.REFRESH_USER, refreshHandler);
@@ -93,7 +108,12 @@ const UserTransactions = () => {
 
     return (
         <>
-            <div className="main usersDetails" {...swipeHandlers}>
+            <div
+                className="main usersDetails"
+                onTouchStart={swipeHandlers.onTouchStart}
+                onTouchMove={swipeHandlers.onTouchMove}
+                onTouchEnd={swipeHandlers.onTouchEnd}
+            >
                 <div className="basicCard actions">
                     <span onClick={handleEdit}>Edit</span>
                     <span onClick={() => deleteUser(_id, name)}>Delete</span>

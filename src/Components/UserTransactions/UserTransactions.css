@@ -87,26 +87,29 @@
 
 .main {
 	width: 100vw;
+	scroll-behavior: smooth; /* Enable smooth scrolling */
 }
 
-
-@keyframes slideLeft {
-	0% {
-		transform: translateX(300px);
-		opacity: 0;
-	}
-	100% {
-		transform: translateX(0px);
-		opacity: 1;
-	}
+/* Make sure each view fills the viewport */
+.sliding-container {
+    overflow-x: hidden;
 }
 
+/* Apply auto-scroll reset when component becomes visible */
+.usersDetails {
+    scroll-padding-top: 0;
+}
+
+/* Make action buttons sticky at the top */
 .actions {
 	justify-content: space-around;
 	padding: 0;
 	background-image: linear-gradient(90deg,  #163b8b 45%,  #b64646 55%);
 	box-shadow: 5px 5px 10px #e6e6e6, -5px -5px 10px #e6e6e6;
 	color: white;
+	position: sticky;
+	top: 0;
+	z-index: 10;
 }
 
 .actions span {
@@ -136,4 +139,15 @@
 
 .deletePopup {
 	padding: 16px;
+}
+
+@keyframes slideLeft {
+	0% {
+		transform: translateX(300px);
+		opacity: 0;
+	}
+	100% {
+		transform: translateX(0px);
+		opacity: 1;
+	}
 }

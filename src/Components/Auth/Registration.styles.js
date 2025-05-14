@@ -37,6 +37,7 @@ export const ContentWrapper = styled(Box)`
 
 export const LottieWrapper = styled(Box)`
     margin-top: -250px;
+    height: 495px;
 `;
 
 export const TitleWrapper = styled(Box)`
