@@ -1,7 +1,7 @@
 import React from "react";
 import "./Shimmer.css";
 
-const Shimmer = ({ count = 8 }) => {
+const Shimmer = ({ count = 10 }) => {
     return (
         <div className="shimmer-wrapper">
             {Array.from({ length: count }).map((_, index) => (

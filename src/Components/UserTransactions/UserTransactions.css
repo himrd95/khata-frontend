@@ -59,7 +59,7 @@
 }
 
 .purpose {
-	width: 45vw;
+	max-width: 40vw;
 	text-align: left;
 }
 

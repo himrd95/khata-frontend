@@ -2,8 +2,8 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 
 const shimmerAnimation = keyframes`
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 `;
 
 const Card = styled.div`
