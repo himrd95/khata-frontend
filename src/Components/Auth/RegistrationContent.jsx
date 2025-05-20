@@ -3,9 +3,11 @@ import { Button, DialogTitle, Input, TextField } from "@material-ui/core";
 import Styled from "styled-components";
 import { provider } from "../../Context/ContextPovider";
 import { CircularProgress } from "@mui/material";
+import useLoadingTimeout from "../../hooks/useLoadingTimeout";
+import LoadingDots from "../LoadingDots";
 
 const Container = Styled.div`
-padding:30px;
+padding: 16px;
 text-align:center;
 width:fit-content
 margin:auto;
@@ -21,6 +23,8 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
     const passwordRef = useRef(false);
     const [, setE] = useState(false);
     const inputRef = useRef();
+
+    const { showLongerApiCallMessage, title, message } = useLoadingTimeout();
 
     const handleChoose = () => {
         inputRef.current.click();
@@ -179,6 +183,9 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
                 )}
                 Sign up
             </Button>
+            {showLongerApiCallMessage && (
+                <LoadingDots title={title} message={message} />
+            )}
         </Container>
     );
 };

@@ -31,3 +31,10 @@
         background-position: -200% 0;
     }
 }
+
+.waiting-message {
+    position: absolute;
+    top: 46%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+}

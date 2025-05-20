@@ -1,23 +1,27 @@
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { Button, DialogTitle, TextField } from '@material-ui/core';
 import Styled from 'styled-components';
 import { CircularProgress } from '@mui/material';
 import { provider } from '../../Context/ContextPovider';
+import useLoadingTimeout from '../../hooks/useLoadingTimeout';
+import LoadingDots from '../LoadingDots';
 
 const Container = Styled.div`
-padding:30px;
-text-align:center;
-width:fit-content
-margin:auto;
+	padding: 8px 8px 28px;
+	text-align:center;
+	width:fit-content
+	margin:auto;
 `;
 
 const Error = Styled.div`
-color:red;
-font-size:14px;
+	color:red;
+	font-size:14px;
 `;
+
 const LoginContent = ({ handleClose, handleLogin }) => {
 	const [payload, setPayLoad] = React.useState({});
 	const { isLoading, error } = useContext(provider);
+	const {showLongerApiCallMessage, title, message} = useLoadingTimeout();
 
 	const handlechange = (e) => {
 		const { name, value } = e.target;
@@ -49,7 +53,6 @@ const LoginContent = ({ handleClose, handleLogin }) => {
 			/>
 			<Error>{error.open && error.message}</Error>
 			<br />
-			<br />
 
 			<Button
 				onClick={handleClose}
@@ -72,8 +75,12 @@ const LoginContent = ({ handleClose, handleLogin }) => {
 				)}
 				Log in
 			</Button>
+
+			{showLongerApiCallMessage && (
+				<LoadingDots text={title} message={message} />
+			)}
 		</Container>
 	);
 };
 
-export default LoginContent;
+export default memo(LoginContent);

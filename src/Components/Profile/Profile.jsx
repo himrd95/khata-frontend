@@ -8,7 +8,8 @@ const Profile = () => {
     const [, setAnchorEl] = React.useState(null);
     const [profileName, setProfileName] = useState("");
 
-    const { adminPannel, setAdminPannel } = React.useContext(provider);
+    const { adminPannel, setAdminPannel, setUsers, setCurrentUser } =
+        React.useContext(provider);
     const inputRef = useRef();
     const editProfileInputRef = useRef();
 
@@ -56,7 +57,8 @@ const Profile = () => {
 
     const handleLogOut = () => {
         navigate("/");
-        console.log("navigated");
+        setUsers([]);
+        setCurrentUser({});
         setAdminPannel({
             token: "",
             admin: {},

@@ -18,15 +18,17 @@ import {
     TitleWrapper,
     LottieWrapper,
 } from "./Registration.styles";
-import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 
 const Registration = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [content, setContent] = useState("");
-    const { loginPopup, setAdminPannel, setIsLoading, setError } =
-        useContext(provider);
+    const {
+        loginPopup,
+        setAdminPannel,
+        setIsLoading,
+        setError,
+    } = useContext(provider);
 
-    const { getRequest } = useMakeApiCalls();
 
     const handleClose = () => {
         setIsOpen(false);
@@ -99,10 +101,9 @@ const Registration = () => {
                 )
                 .finally(() => {
                     setIsLoading(false);
-                    getRequest();
                 });
         },
-        [getRequest, setAdminPannel, setError, setIsLoading]
+        [setAdminPannel, setError, setIsLoading]
     );
 
     const handleLoginModal = useCallback(() => {

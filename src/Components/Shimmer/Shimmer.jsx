@@ -1,7 +1,11 @@
 import React from "react";
 import "./Shimmer.css";
+import useLoadingTimeout from "../../hooks/useLoadingTimeout";
+import LoadingDots from "../LoadingDots";
 
 const Shimmer = ({ count = 10 }) => {
+    const { showLongerApiCallMessage, title, message } = useLoadingTimeout();
+
     return (
         <div className="shimmer-wrapper">
             {Array.from({ length: count }).map((_, index) => (
@@ -9,6 +13,12 @@ const Shimmer = ({ count = 10 }) => {
                     <div className="shimmer-content" />
                 </div>
             ))}
+            <div className="waiting-message" >
+
+            {showLongerApiCallMessage && (
+                <LoadingDots title={title} message={message} />
+            )}
+            </div>
         </div>
     );
 };

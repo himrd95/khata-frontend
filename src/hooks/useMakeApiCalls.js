@@ -29,6 +29,7 @@ const useMakeApiCalls = () => {
 
     const getRequest = useCallback(
         async (id) => {
+            console.log("getRequest", adminPannel);
             try {
                 const url = getUrl();
                 setIsLoading(true);
@@ -49,7 +50,7 @@ const useMakeApiCalls = () => {
                 setIsLoading(false);
             }
         },
-        [headers, navigate, setCurrentUser, setIsLoading, setUsers]
+        [adminPannel, headers, navigate, setCurrentUser, setIsLoading, setUsers]
     );
 
     const postRequest = useCallback(
