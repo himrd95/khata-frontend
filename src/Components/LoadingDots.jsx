@@ -29,9 +29,9 @@ const Container = styled.div`
 `;
 
 const Text = styled.span`
-    color: #ffa500;
+    color: #666666;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.3px;
 `;
 
@@ -41,12 +41,12 @@ const TextWithDot = styled.span`
 
 const DotsContainer = styled.div`
     display: inline-block;
-    color: #ffa500;
+    color: #666666;
     font-size: 1rem;
     letter-spacing: 2px;
     width: 16px;
     text-align: left;
-    font-weight: 500;
+    font-weight: 600;
 `;
 
 const LoadingDots = ({ title, message }) => {

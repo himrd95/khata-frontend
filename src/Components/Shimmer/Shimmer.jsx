@@ -13,12 +13,11 @@ const Shimmer = ({ count = 10 }) => {
                     <div className="shimmer-content" />
                 </div>
             ))}
-            <div className="waiting-message" >
-
             {showLongerApiCallMessage && (
-                <LoadingDots title={title} message={message} />
+                <div className="waiting-message">
+                    <LoadingDots title={title} message={message} />
+                </div>
             )}
-            </div>
         </div>
     );
 };

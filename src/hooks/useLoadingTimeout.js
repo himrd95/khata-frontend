@@ -34,19 +34,19 @@ const useLoadingTimeout = () => {
     useEffect(() => {
         let timeoutId;
         let longTimeoutId;
-        
-        if (isLoading) {
-        timeoutId = setTimeout(() => {
-            setShowLongerApiCallMessage(true);
-            setTitle(warningText(warningTexts));
-            setMessage(warningText(messages));
-        }, timeoutDuration);
 
-        longTimeoutId = setTimeout(() => {
-            setShowLongerApiCallMessage(true);
-            setTitle(warningText(warningTexts));
-            setMessage(warningText(messages));
-        }, longTimeoutDuration);
+        if (isLoading) {
+            timeoutId = setTimeout(() => {
+                setShowLongerApiCallMessage(true);
+                setTitle(warningText(warningTexts));
+                setMessage(warningText(messages));
+            }, timeoutDuration);
+
+            longTimeoutId = setTimeout(() => {
+                setShowLongerApiCallMessage(true);
+                setTitle(warningText(warningTexts));
+                setMessage(warningText(messages));
+            }, longTimeoutDuration);
         } else {
             setShowLongerApiCallMessage(false);
             setTitle("");

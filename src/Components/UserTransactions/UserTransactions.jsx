@@ -96,10 +96,6 @@ const UserTransactions = () => {
         [_id, currentUser.name, putRequest]
     );
 
-    if (isLoading) {
-        return <Shimmer />;
-    }
-
     return (
         <>
             <div
