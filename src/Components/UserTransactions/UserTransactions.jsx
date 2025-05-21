@@ -105,8 +105,8 @@ const UserTransactions = () => {
                 onTouchEnd={swipeHandlers.onTouchEnd}
             >
                 <div className="basicCard actions">
-                    <span onClick={handleEdit}>Edit</span>
-                    <span onClick={() => deleteUser(_id, name)}>Delete</span>
+                    <span onClick={handleEdit}>Edit Profile</span>
+                    <span onClick={() => deleteUser(_id, name)}>Delete Profile</span>
                 </div>
 
                 <DataCard
