@@ -3,12 +3,30 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://khata-manager.com/sitemap.xml
+Sitemap: https://khata-manager.netlify.app/sitemap.xml
 
 # Disallow admin and private routes
 Disallow: /admin/
 Disallow: /private/
 Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /*.json$
+Disallow: /*.js$
+Disallow: /*.css$
 
 # Crawl-delay
-Crawl-delay: 10
+Crawl-delay: 5
+
+# Allow specific bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1

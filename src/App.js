@@ -1,8 +1,23 @@
-import "./App.css";
-import Registration from "./Components/Auth/Registration";
-import { useContext, useEffect, useCallback } from "react";
+import React, {
+    Suspense,
+    lazy,
+    useContext,
+    useEffect,
+    useCallback,
+} from "react";
 import { provider } from "./Context/ContextPovider";
-import Home from "./Components/Home";
+import "./App.css";
+
+// Lazy load components
+const Home = lazy(() => import("./Components/Home"));
+const Registration = lazy(() => import("./Components/Auth/Registration"));
+
+// Loading fallback component
+const LoadingFallback = () => (
+    <div className="hero-section">
+        <h1 className="hero-title">Tired of managing your daily expenses?</h1>
+    </div>
+);
 
 function App() {
     const { adminPannel, currentUser } = useContext(provider);
@@ -28,7 +43,9 @@ function App() {
 
     return (
         <div className="App">
-            {adminPannel.token !== "" ? <Home /> : <Registration />}
+            <Suspense fallback={<LoadingFallback />}>
+                {adminPannel.token !== "" ? <Home /> : <Registration />}
+            </Suspense>
         </div>
     );
 }

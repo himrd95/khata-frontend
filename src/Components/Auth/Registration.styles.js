@@ -44,7 +44,7 @@ export const TitleWrapper = styled(Box)`
     margin-top: -90px;
 `;
 
-export const Title = styled("h2")`
+export const Title = styled("h3")`
     font-family: "Montserrat", sans-serif;
     font-size: 2.5rem;
     font-weight: 700;

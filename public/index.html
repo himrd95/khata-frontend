@@ -10,14 +10,47 @@
             content="Manage your business transactions, track expenses, and keep your accounts organized with our easy-to-use platform."
         />
 
+        <!-- Preload critical assets -->
+        <link
+            rel="preload"
+            href="%PUBLIC_URL%/static/js/main.chunk.js"
+            as="script"
+        />
+        <link
+            rel="preload"
+            href="%PUBLIC_URL%/static/js/0.chunk.js"
+            as="script"
+        />
+        <link
+            rel="preload"
+            href="%PUBLIC_URL%/static/js/bundle.js"
+            as="script"
+        />
+        <link
+            rel="preload"
+            href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&display=swap"
+            as="style"
+        />
+        <link
+            rel="preload"
+            href="https://kit.fontawesome.com/774fc5d4d8.js"
+            as="script"
+        />
+        <link
+            rel="preload"
+            href="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"
+            as="script"
+        />
+
         <!-- Resource Hints -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com"
+            crossorigin
+        />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link rel="dns-prefetch" href="https://kit.fontawesome.com" />
         <link rel="dns-prefetch" href="https://unpkg.com" />
-        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
         <!-- Favicon and PWA -->
         <link rel="icon" href="khata_new.png" type="image/icon type" />
@@ -29,24 +62,246 @@
             /* Critical path CSS */
             body {
                 margin: 0;
-                font-family: "Kanit", sans-serif;
+                font-family: "Kanit", system-ui, -apple-system, sans-serif;
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
+                background-color: #ffffff;
             }
             #root {
                 min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            .loading {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+            /* Hero section styles */
+            .hero-section {
+                padding: 2rem;
+                text-align: center;
+                background: linear-gradient(135deg, #072949 0%, #0a3d7a 100%);
+                color: white;
+                opacity: 0;
+            }
+            .hero-title {
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+                opacity: 0;
+                animation: fadeIn 0.5s ease-in forwards;
+            }
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Lottie player styles */
+            lottie-player {
+                width: 100%;
+                height: 300px;
+                margin: 0 auto;
+            }
+
+            /* Essential Font Awesome icons */
+            .fa {
+                display: inline-block;
+                font-style: normal;
+                font-variant: normal;
+                text-rendering: auto;
+                -webkit-font-smoothing: antialiased;
+            }
+            .fa-user:before {
+                content: "\f007";
+            }
+            .fa-lock:before {
+                content: "\f023";
+            }
+            .fa-envelope:before {
+                content: "\f0e0";
+            }
+            .fa-home:before {
+                content: "\f015";
+            }
+            .fa-chart-bar:before {
+                content: "\f080";
+            }
+            .fa-cog:before {
+                content: "\f013";
+            }
+            .fa-sign-out-alt:before {
+                content: "\f2f5";
+            }
+            .fa-plus:before {
+                content: "\f067";
+            }
+            .fa-minus:before {
+                content: "\f068";
+            }
+            .fa-edit:before {
+                content: "\f044";
+            }
+            .fa-trash:before {
+                content: "\f1f8";
+            }
+            .fa-search:before {
+                content: "\f002";
+            }
+            .fa-calendar:before {
+                content: "\f133";
+            }
+            .fa-money-bill:before {
+                content: "\f0d6";
+            }
+            .fa-file-invoice:before {
+                content: "\f570";
+            }
+            .fa-users:before {
+                content: "\f0c0";
+            }
+            .fa-bell:before {
+                content: "\f0f3";
+            }
+            .fa-exclamation-circle:before {
+                content: "\f06a";
+            }
+            .fa-check-circle:before {
+                content: "\f058";
+            }
+            .fa-times-circle:before {
+                content: "\f057";
+            }
+            .fa-info-circle:before {
+                content: "\f05a";
+            }
+            .fa-question-circle:before {
+                content: "\f059";
+            }
+            .fa-chevron-left:before {
+                content: "\f053";
+            }
+            .fa-chevron-right:before {
+                content: "\f054";
+            }
+            .fa-chevron-up:before {
+                content: "\f077";
+            }
+            .fa-chevron-down:before {
+                content: "\f078";
+            }
+            .fa-bars:before {
+                content: "\f0c9";
+            }
+            .fa-times:before {
+                content: "\f00d";
+            }
+            .fa-filter:before {
+                content: "\f0b0";
+            }
+            .fa-sort:before {
+                content: "\f0dc";
+            }
+            .fa-sort-up:before {
+                content: "\f0de";
+            }
+            .fa-sort-down:before {
+                content: "\f0dd";
+            }
+            .fa-download:before {
+                content: "\f019";
+            }
+            .fa-upload:before {
+                content: "\f093";
+            }
+            .fa-print:before {
+                content: "\f02f";
+            }
+            .fa-share:before {
+                content: "\f064";
+            }
+            .fa-bookmark:before {
+                content: "\f02e";
+            }
+            .fa-star:before {
+                content: "\f005";
+            }
+            .fa-heart:before {
+                content: "\f004";
+            }
+            .fa-comment:before {
+                content: "\f075";
+            }
+            .fa-envelope-open:before {
+                content: "\f2b6";
+            }
+            .fa-paper-plane:before {
+                content: "\f1d8";
+            }
+            .fa-link:before {
+                content: "\f0c1";
+            }
+            .fa-image:before {
+                content: "\f03e";
+            }
+            .fa-video:before {
+                content: "\f03d";
+            }
+            .fa-camera:before {
+                content: "\f030";
+            }
+            .fa-microphone:before {
+                content: "\f130";
+            }
+            .fa-music:before {
+                content: "\f001";
+            }
+            .fa-file:before {
+                content: "\f15b";
+            }
+            .fa-folder:before {
+                content: "\f07b";
+            }
+            .fa-folder-open:before {
+                content: "\f07c";
+            }
+            .fa-save:before {
+                content: "\f0c7";
+            }
+            .fa-undo:before {
+                content: "\f0e2";
+            }
+            .fa-redo:before {
+                content: "\f01e";
+            }
+            .fa-sync:before {
+                content: "\f021";
+            }
+            .fa-history:before {
+                content: "\f1da";
+            }
+            .fa-clock:before {
+                content: "\f017";
+            }
+            .fa-calendar-alt:before {
+                content: "\f073";
             }
         </style>
 
-        <!-- Font loading with display swap -->
+        <!-- Font loading -->
         <link
             href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&display=swap"
             rel="stylesheet"
-            media="print"
-            onload="this.media='all'"
         />
 
-        <!-- External resources with async/defer -->
+        <!-- External resources -->
         <script
             src="https://kit.fontawesome.com/774fc5d4d8.js"
             crossorigin="anonymous"
@@ -57,22 +312,6 @@
             defer
         ></script>
 
-        <!-- Non-critical CSS -->
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-            media="print"
-            onload="this.media='all'"
-        />
-
-        <!-- Fallback for font loading -->
-        <noscript>
-            <link
-                href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&display=swap"
-                rel="stylesheet"
-            />
-        </noscript>
-
         <!-- Structured Data -->
         <script type="application/ld+json">
             {
@@ -80,13 +319,13 @@
                 "@type": "WebApplication",
                 "name": "Khata Manager",
                 "description": "Business account management and expense tracking platform",
-                "url": "https://khata-manager.com",
+                "url": "https://khata-manager.netlify.app",
                 "applicationCategory": "BusinessApplication",
                 "operatingSystem": "Web",
                 "offers": {
                     "@type": "Offer",
                     "price": "0",
-                    "priceCurrency": "USD"
+                    "priceCurrency": "INR"
                 }
             }
         </script>
@@ -95,15 +334,13 @@
     </head>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="root"></div>
-        <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    --></body>
+        <div id="root">
+            <!-- Initial loading state -->
+            <div class="hero-section">
+                <h1 class="hero-title">
+                    Tired of managing your daily expenses?
+                </h1>
+            </div>
+        </div>
+    </body>
 </html>

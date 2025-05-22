@@ -22,13 +22,8 @@ import {
 const Registration = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [content, setContent] = useState("");
-    const {
-        loginPopup,
-        setAdminPannel,
-        setIsLoading,
-        setError,
-    } = useContext(provider);
-
+    const { loginPopup, setAdminPannel, setIsLoading, setError } =
+        useContext(provider);
 
     const handleClose = () => {
         setIsOpen(false);
@@ -127,6 +122,7 @@ const Registration = () => {
                     <lottie-player
                         src="https://lottie.host/3adaa1df-5724-4165-babe-db6555db2952/w2HInrNsTh.json"
                         background="transparent"
+                        style={{ width: "100%", height: "100%" }}
                         speed="1"
                         loop
                         autoplay

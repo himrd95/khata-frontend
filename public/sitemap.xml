@@ -3,19 +3,43 @@
   <url>
     <loc>https://khata-manager.netlify.app/</loc>
     <lastmod>2024-03-20</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://khata-manager.netlify.app/profile</loc>
     <lastmod>2024-03-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://khata-manager.netlify.app/dashboard</loc>
+    <lastmod>2024-03-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://khata-manager.netlify.app/transactions</loc>
+    <lastmod>2024-03-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://khata-manager.netlify.app/reports</loc>
+    <lastmod>2024-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://khata-manager.netlify.app/settings</loc>
+    <lastmod>2024-03-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://khata-manager.netlify.app/error404</loc>
     <lastmod>2024-03-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.3</priority>
   </url>
 </urlset> 
