@@ -1,30 +1,30 @@
 import "./App.css";
 import Registration from "./Components/Auth/Registration";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useCallback } from "react";
 import { provider } from "./Context/ContextPovider";
 import Home from "./Components/Home";
 
 function App() {
     const { adminPannel, currentUser } = useContext(provider);
 
+    // Memoize the scroll handler
+    const handleScroll = useCallback(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     // Global scroll reset handler
     useEffect(() => {
         // Reset scroll position on currentUser change (view change)
-        window.scrollTo(0, 0);
+        handleScroll();
 
-        // Also add a listener for navigation events (route changes)
-        const handleNavigation = () => {
-            window.scrollTo(0, 0);
-        };
-
-        // Add event listeners
-        window.addEventListener("popstate", handleNavigation);
+        // Add event listener for navigation events
+        window.addEventListener("popstate", handleScroll);
 
         // Cleanup
         return () => {
-            window.removeEventListener("popstate", handleNavigation);
+            window.removeEventListener("popstate", handleScroll);
         };
-    }, [currentUser]);
+    }, [currentUser, handleScroll]);
 
     return (
         <div className="App">

@@ -1,6 +1,6 @@
 # Khata App
 
-## [Demo](https://khata-manager.netlify.app/)
+## [Demo](https://khahttps://khata-manager.netlify.app/)
 
 ## To run this app, run folloing commands in your terminal
 ```

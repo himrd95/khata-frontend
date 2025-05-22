@@ -1,47 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#072949" />
+        <meta
+            name="description"
+            content="Manage your business transactions, track expenses, and keep your accounts organized with our easy-to-use platform."
+        />
+
+        <!-- Resource Hints -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="dns-prefetch" href="https://kit.fontawesome.com" />
+        <link rel="dns-prefetch" href="https://unpkg.com" />
+        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+
+        <!-- Favicon and PWA -->
+        <link rel="icon" href="khata_new.png" type="image/icon type" />
+        <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+        <!-- Critical CSS -->
+        <style>
+            /* Critical path CSS */
+            body {
+                margin: 0;
+                font-family: "Kanit", sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+            #root {
+                min-height: 100vh;
+            }
+        </style>
+
+        <!-- Font loading with display swap -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+            media="print"
+            onload="this.media='all'"
+        />
+
+        <!-- External resources with async/defer -->
         <script
             src="https://kit.fontawesome.com/774fc5d4d8.js"
             crossorigin="anonymous"
+            defer
         ></script>
-        <meta charset="utf-8" />
-        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+        <script
+            src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"
+            defer
+        ></script>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-        <meta
-            name="Khata Manager"
-            content="Manage your expances of expenditure and balance."
-        />
-        <link
-            rel="apple-touch-icon"
-            href="https://lottiefiles.com/71174-money"
-        />
-
-        <link
-            rel="preload"
-            href="/src/Components/Navbar/Menu.jsx"
-            as="script"
-        />
-        <link rel="icon" href="khata_new.png" type="image/icon type" />
-
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&family=Kavoon&display=swap"
-            rel="stylesheet"
-        />
-
-        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
+        <!-- Non-critical CSS -->
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+            media="print"
+            onload="this.media='all'"
         />
 
-        <title>Khata Manager</title>
+        <!-- Fallback for font loading -->
+        <noscript>
+            <link
+                href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&display=swap"
+                rel="stylesheet"
+            />
+        </noscript>
+
+        <!-- Structured Data -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebApplication",
+                "name": "Khata Manager",
+                "description": "Business account management and expense tracking platform",
+                "url": "https://khata-manager.com",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                }
+            }
+        </script>
+
+        <title>Khata Manager - Business Account Management</title>
     </head>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>

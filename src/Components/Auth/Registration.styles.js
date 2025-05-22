@@ -45,19 +45,22 @@ export const TitleWrapper = styled(Box)`
 `;
 
 export const Title = styled("h2")`
-    font-family: "Kavoon";
-    font-size: 2rem;
-    font-weight: 500;
+    font-family: "Montserrat", sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
     color: #072949;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
 `;
 
 export const Subtitle = styled("h3")`
-    font-family: "Kanit", sans-serif;
-    margin-top: -1rem;
+    font-family: "Montserrat", sans-serif;
+    margin-top: -0.5rem;
     font-size: 1.5rem;
-    font-weight: 400;
+    font-weight: 500;
     color: #103c66;
+    letter-spacing: -0.3px;
 `;
 
 export const BottomSection = styled(Box)`

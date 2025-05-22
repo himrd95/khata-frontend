@@ -1,3 +1,14 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap
+Sitemap: https://khata-manager.com/sitemap.xml
+
+# Disallow admin and private routes
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+# Crawl-delay
+Crawl-delay: 10

@@ -52,7 +52,7 @@
 .profileText {
 	width: 100%;
     text-align: center;
-    font-family: 'Kavoon';
+    font-family: "Montserrat", sans-serif;
     display: flex;
     align-items: center;
 }
@@ -92,7 +92,7 @@
 	justify-content: space-between;
 	background: #d8effe;
 	border-radius: 4px 4px 24px 24px;
-	padding: 12px;
+	padding: 12px 20px;
 	margin-top: 10px;
 	box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
 	transition: all 0.3s ease;
@@ -100,14 +100,14 @@
 
 .totalBalanceLabel {
 	font-size: 16px;
-	font-weight: 500;
+	font-weight: 600;
 	color: #444;
 }
 
 .totalBalanceValue {
-	font-family: 'Kavoon';
+	font-family: "Montserrat", sans-serif;
 	font-size: 16px;
-	font-weight: 500;
+	font-weight: 600;
 	color: #222;
 	margin-left: 8px;
 	letter-spacing: 1px;
