@@ -29,6 +29,8 @@ const ContextPovider = ({ children }) => {
     const [addTransaction, setAddTransaction] = useState(false);
     const [shouldFetchUsers, setShouldFetchUsers] = useState(false);
     const [totalAmount, setTotalAmount] = useState({ given: 0, taken: 0 });
+    const [totalGivenByAdmin, setTotalGivenByAdmin] = useState(0);
+    const [totalTakenByAdmin, setTotalTakenByAdmin] = useState(0);
 
     const totalBalnce = useMemo(() => {
         if (!isEmpty(currentUser) && currentUser.given && currentUser.taken) {
@@ -36,6 +38,15 @@ const ContextPovider = ({ children }) => {
             return totalAmount.given - totalAmount.taken;
         }
         // Calculate for all users
+        let given = 0;
+        let taken = 0;
+        users.forEach((user) => {
+            given += calculateTotal(user.given);
+            taken += calculateTotal(user.taken);
+        });
+        setTotalGivenByAdmin(given);
+        setTotalTakenByAdmin(taken);
+        return given - taken;
         return users.reduce((acc, user) => {
             const totalGiven = calculateTotal(user.given);
             const totalTaken = calculateTotal(user.taken);
@@ -119,6 +130,8 @@ const ContextPovider = ({ children }) => {
         refreshProfile,
         setRefreshProfile,
         totalBalnce,
+        totalGivenByAdmin,
+        totalTakenByAdmin,
     };
     return <provider.Provider value={value}>{children}</provider.Provider>;
 };

@@ -7,6 +7,7 @@ import { provider } from "../../Context/ContextPovider";
 import { getBalanceColor, isEmpty } from "../../utils/helpers";
 import { moneyFormate } from "../../constants";
 import ProfileImage from "../Common/ProfileImage";
+import ExpandableCard from "../ExpandableCard/ExpandableCard";
 
 const welcomeTexts = [
     "Welcome back,",
@@ -26,11 +27,6 @@ const DetailsCard = () => {
         const randomNumber = Math.floor(Math.random() * 7);
         return welcomeTexts[randomNumber];
     }, []);
-
-    const balanceColor = useMemo(
-        () => getBalanceColor(totalBalnce),
-        [totalBalnce]
-    );
 
     const adminName = useMemo(() => {
         if (!isEmpty(currentUserName)) {
@@ -93,17 +89,7 @@ const DetailsCard = () => {
                     </div>
                 )}
             </div>
-            <div
-                className="totalBalanceRow"
-                style={{
-                    background: `linear-gradient(180deg, rgba(255,255,255,1) 0%, ${balanceColor} 300%)`,
-                }}
-            >
-                <span className="totalBalanceLabel">Total Balance</span>
-                <span className="totalBalanceValue">{` ${moneyFormate(
-                    totalBalnce
-                )}`}</span>
-            </div>
+            <ExpandableCard />
         </div>
     );
 };
