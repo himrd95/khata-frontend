@@ -58,6 +58,12 @@ const ToggleButton = styled.div`
     left: 50%;
     transform: translateX(-50%);
     cursor: pointer;
+    width: 80px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const Chevron = styled(FaChevronDown)`

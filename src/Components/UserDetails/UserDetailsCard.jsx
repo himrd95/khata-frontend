@@ -25,7 +25,17 @@ const UserDetailsCard = ({
     );
 
     useEffect(() => {
-        setBalancesByUser((prev) => [...prev, { name, totalBalance }]);
+        setBalancesByUser((prev) => {
+            const idx = prev.findIndex((u) => u.name === name);
+            if (idx !== -1) {
+                // Update existing user
+                return prev.map((u, i) =>
+                    i === idx ? { ...u, totalBalance } : u
+                );
+            }
+            // Add new user
+            return [...prev, { name, totalBalance }];
+        });
     }, [name, setBalancesByUser, totalBalance]);
 
     const balanceColor = useMemo(
