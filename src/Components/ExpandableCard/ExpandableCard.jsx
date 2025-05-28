@@ -3,16 +3,15 @@ import React, {
     useRef,
     useEffect,
     memo,
-    useMemo,
     useContext,
     useCallback,
 } from "react";
 import styled, { keyframes, css } from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FaChevronDown } from "react-icons/fa";
 import { getBalanceColor, isEmpty } from "../../utils/helpers";
 import { provider } from "../../Context/ContextPovider";
 import { moneyFormate } from "../../constants";
+import FlipCard from "./Components/FlipTextAndPointer";
 
 // Animations
 const attention = keyframes`
@@ -61,7 +60,7 @@ const ToggleButton = styled.div`
     cursor: pointer;
 `;
 
-const Chevron = styled(FontAwesomeIcon)`
+const Chevron = styled(FaChevronDown)`
     transition: transform 0.3s ease;
     ${({ expanded }) =>
         expanded
@@ -105,16 +104,12 @@ const ExpandableCard = () => {
     const [expanded, setExpanded] = useState(false);
     const [contentHeight, setContentHeight] = useState(0);
     const contentRef = useRef(null);
-    const { totalBalnce, currentUser, totalGivenByAdmin, totalTakenByAdmin } =
-        useContext(provider);
+    const { totalBalnce, currentUser } = useContext(provider);
 
-    const balanceColor = useCallback(
-        (amount) => {
-            const color = getBalanceColor(amount);
-            return `linear-gradient(180deg, rgba(255,255,255,1) 0%, ${color} 300%)`;
-        },
-        []
-    );
+    const balanceColor = useCallback((amount) => {
+        const color = getBalanceColor(amount);
+        return `linear-gradient(180deg, rgba(255,255,255,0.1) 0%, ${color} 300%)`;
+    }, []);
 
     useEffect(() => {
         if (contentRef.current && expanded) {
@@ -140,27 +135,10 @@ const ExpandableCard = () => {
                         expanded={expanded}
                         contentHeight={contentHeight}
                     >
-                        <TotalBalanceRow
-                            background={balanceColor(totalGivenByAdmin)}
-                        >
-                            <TotalBalanceLabel>Total Given</TotalBalanceLabel>
-                            <TotalBalanceValue>
-                                {` ${moneyFormate(totalGivenByAdmin)}`}
-                            </TotalBalanceValue>
-                        </TotalBalanceRow>
-                        <TotalBalanceRow
-                            background={balanceColor(-totalTakenByAdmin)}
-                        >
-                            <TotalBalanceLabel>Total Taken</TotalBalanceLabel>
-                            <TotalBalanceValue>
-                                {`-${moneyFormate(totalTakenByAdmin)}`}
-                            </TotalBalanceValue>
-                        </TotalBalanceRow>
+                        {expanded && <FlipCard balanceColor={balanceColor} />}
                     </ExtraContent>
 
-                    <TotalBalanceRow
-                        background={balanceColor(totalBalnce)}
-                    >
+                    <TotalBalanceRow background={balanceColor(totalBalnce)}>
                         <TotalBalanceLabel>Total Balance</TotalBalanceLabel>
                         <TotalBalanceValue>
                             {` ${moneyFormate(totalBalnce)}`}
@@ -170,7 +148,7 @@ const ExpandableCard = () => {
             </div>
             {isEmpty(currentUser) && (
                 <ToggleButton onClick={() => setExpanded(!expanded)}>
-                    <Chevron icon={faChevronDown} expanded={expanded} />
+                    <Chevron expanded={expanded} />
                 </ToggleButton>
             )}
         </Card>

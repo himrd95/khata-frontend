@@ -15,6 +15,7 @@ import Styled from 'styled-components';
 import { provider } from '../../Context/ContextPovider';
 import speak from '../../utils/speech';
 import './Table.css';
+import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 
 const Container = Styled.div`
 padding:10px;
@@ -54,7 +55,7 @@ export default function DataTable({
 							component="div"
 						>
 							<span style={{ marginRight: '10px' }}>Given</span>
-							<i className="fas fa-arrow-alt-circle-up"></i>
+							<FaArrowAltCircleUp />
 						</Typography>
 						<Table
 							sx={{ padding: '20px' }}
@@ -127,7 +128,7 @@ export default function DataTable({
 							component="div"
 						>
 							<span style={{ marginRight: '10px' }}>Taken</span>
-							<i className="fas fa-arrow-alt-circle-down"></i>
+							<FaArrowAltCircleDown />
 						</Typography>
 						<Table
 							sx={{ padding: '20px' }}

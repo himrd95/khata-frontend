@@ -4,6 +4,16 @@ import "./Profile.css";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 import { isEmpty } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
+import {
+    FaUserCog,
+    FaTimes,
+    FaCheck,
+    FaUserEdit,
+    FaSignOutAlt,
+    FaVolumeUp,
+    FaVolumeMute,
+} from "react-icons/fa";
+
 const Profile = () => {
     const [, setAnchorEl] = React.useState(null);
     const [profileName, setProfileName] = useState("");
@@ -79,12 +89,11 @@ const Profile = () => {
                 className="actionButtons enhanced-action"
                 onClick={handleVoice}
             >
-                <i
-                    className={`fas ${
-                        adminPannel.voice ? "fa-volume-up" : "fa-volume-mute"
-                    }`}
-                    style={{ marginRight: 12, fontSize: 18 }}
-                />
+                {adminPannel.voice ? (
+                    <FaVolumeUp style={{ marginRight: 12, fontSize: 18 }} />
+                ) : (
+                    <FaVolumeMute style={{ marginRight: 12, fontSize: 18 }} />
+                )}
                 <span>Turn {action} voice</span>
             </div>
             <input
@@ -109,10 +118,7 @@ const Profile = () => {
             >
                 {isEmpty(profileName) ? (
                     <>
-                        <i
-                            className="fas fa-user-cog"
-                            style={{ marginRight: 12, fontSize: 18 }}
-                        />
+                        <FaUserCog />
                         <span>Edit Profile Info</span>
                     </>
                 ) : (
@@ -123,7 +129,7 @@ const Profile = () => {
                                 setProfileName("");
                             }}
                         >
-                            <i className="fas fa-times" />
+                            <FaTimes />
                         </button>
                         <input
                             ref={editProfileInputRef}
@@ -142,7 +148,7 @@ const Profile = () => {
                                 }
                             }}
                         >
-                            <i className="fas fa-check" />
+                            <FaCheck />
                         </button>
                     </div>
                 )}
@@ -151,20 +157,14 @@ const Profile = () => {
                 className="actionButtons enhanced-action"
                 onClick={() => inputRef.current.click()}
             >
-                <i
-                    className="fas fa-user-edit"
-                    style={{ marginRight: 12, fontSize: 18 }}
-                />
+                <FaUserEdit />
                 <span>Change Profile Picture</span>
             </div>
             <div
                 className="actionButtons enhanced-action"
                 onClick={handleLogOut}
             >
-                <i
-                    className="fas fa-sign-out-alt"
-                    style={{ marginRight: 12, fontSize: 18 }}
-                />
+                <FaSignOutAlt />
                 <span>Logout</span>
             </div>
         </div>

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./UpdateUser.css";
+import { FaChevronDown } from "react-icons/fa";
 
 const CustomSelect = ({ options, selected, onChange }) => {
     const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ const CustomSelect = ({ options, selected, onChange }) => {
             >
                 {selected || "Select mode"}
                 <span className="arrow">
-                    <i class="fa-solid fa-chevron-down"></i>
+                    <FaChevronDown />
                 </span>
             </div>
             {open && (

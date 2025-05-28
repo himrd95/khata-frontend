@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import eventBus from "../../utils/eventBus";
+import { FaEllipsisV } from "react-icons/fa";
 
 import SimpleDialog from "../Modal";
 import { Alert, Button, Snackbar } from "@mui/material";
@@ -158,7 +159,7 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
                                         {capitalize(data.purpose)}
                                     </span>
                                 </div>
-                                <span
+                                <div
                                     className="actualPrice"
                                     onClick={() =>
                                         userActions({ row: data }, i)
@@ -167,8 +168,8 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
                                     <span className="actual-price">
                                         {moneyFormate(data.actualPrice)}
                                     </span>
-                                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                                </span>
+                                    <FaEllipsisV />
+                                </div>
                             </div>
                         ))}
                     </div>

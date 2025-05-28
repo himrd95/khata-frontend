@@ -17,8 +17,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #8299d1;
-    font-size: 10px;
+    color: #515151;
+    font-size: 20px;
     cursor: pointer;
     transition: color 0.2s ease;
   }
@@ -29,11 +29,11 @@
   }
   
   .nav-item:hover {
-    color: #4a64ff;
+    color: #180985;
   }
   
   .active {
-    color: #071fa8;
+    color: #180985;
   }
   
   .center-button {
@@ -57,4 +57,21 @@
   
   .fa-house{
     color: #8299d1;
+  }
+
+  .user-icon{
+    font-size: 16px;
+  }
+
+  .active-dot{
+    position: absolute;
+    bottom: 8px;
+    left: 25%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 3px;
+    background: #180985;
+    border-radius: 50%;
+    box-shadow: 0 0 7px 3px #10056a;
+    transition: left 0.2s ease;
   }

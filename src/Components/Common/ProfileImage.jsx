@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { getCloudinaryUrl } from "../../utils/helpers";
+import { FaUserCircle } from "react-icons/fa";
 
 /**
  * A reusable profile image component that handles loading errors
@@ -53,7 +54,7 @@ const ProfileImage = ({
     if (!src || hasError) {
         return (
             <div className={className} style={containerStyles}>
-                <i className={iconClassName} style={defaultIconStyle} />
+                <FaUserCircle style={defaultIconStyle} />
             </div>
         );
     }

@@ -2,6 +2,7 @@ import React, { memo, useContext, useMemo } from "react";
 import "./DetailsCard.css";
 import cx from "classnames";
 import DetailsCardShimmer from "./DetailsCardShimmer";
+import { FaArrowsAltH } from "react-icons/fa";
 
 import { provider } from "../../Context/ContextPovider";
 import { getBalanceColor, isEmpty } from "../../utils/helpers";
@@ -65,7 +66,7 @@ const DetailsCard = () => {
 
                 {currentUserName && (
                     <div className="transferIcons">
-                        <i className="fa-solid fa-left-right"></i>
+                        <FaArrowsAltH />
                     </div>
                 )}
 

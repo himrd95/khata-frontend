@@ -1,9 +1,10 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useEffect } from "react";
 import { provider } from "../../Context/ContextPovider";
 import { moneyFormate } from "../../constants";
 import "./UserDetailsCard.css";
 import { calculateTotal, getBalanceColor } from "../../utils/helpers";
 import ProfileImage from "../Common/ProfileImage";
+import { FaChevronRight } from "react-icons/fa";
 
 const UserDetailsCard = ({
     name,
@@ -13,7 +14,7 @@ const UserDetailsCard = ({
     _id,
     ...rest
 }) => {
-    const { setCurrentUser } = useContext(provider);
+    const { setCurrentUser, setBalancesByUser } = useContext(provider);
 
     // Memoized calculations
     const totalGiven = useMemo(() => calculateTotal(given), [given]);
@@ -22,6 +23,10 @@ const UserDetailsCard = ({
         () => totalGiven - totalTaken,
         [totalGiven, totalTaken]
     );
+
+    useEffect(() => {
+        setBalancesByUser((prev) => [...prev, { name, totalBalance }]);
+    }, [name, setBalancesByUser, totalBalance]);
 
     const balanceColor = useMemo(
         () => getBalanceColor(totalBalance),
@@ -58,7 +63,7 @@ const UserDetailsCard = ({
 
             <div className="card_balance" style={{ color: balanceColor }}>
                 {moneyFormate(totalBalance)}
-                <i className="fa-solid fa-chevron-right" />
+                <FaChevronRight />
             </div>
         </div>
     );

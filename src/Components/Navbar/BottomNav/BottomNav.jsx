@@ -6,6 +6,7 @@ import "./BottomNav.css";
 import cx from "classnames";
 import { provider } from "../../../Context/ContextPovider";
 import { isEmpty } from "../../../utils/helpers";
+import { FaHome, FaPlus, FaUser } from "react-icons/fa";
 
 const TABS = {
     HOME: "HOME",
@@ -41,7 +42,7 @@ const BottomNav = () => {
 
     const getClassName = useCallback(
         (tab) => {
-            return cx("nav-item", { active: active === tab });
+            return cx("nav-item", { active: active === tab, "user-icon": tab === TABS.PROFILE });
         },
         [active]
     );
@@ -49,26 +50,26 @@ const BottomNav = () => {
     return (
         <>
             <div className="bottom-nav">
+                <div style={{ left: active === TABS.PROFILE ? "75%" : "25%" }} className="active-dot"></div>
                 <div
                     className={getClassName(TABS.HOME)}
                     onClick={() => handleRoute(TABS.HOME)}
                 >
-                    <i className="fas fa-home"></i>
-                    <span>Home</span>
+                    <FaHome />
                 </div>
 
                 <div
                     className="center-button"
                     onClick={() => handleRoute(TABS.ADD)}
                 >
-                    <i className="fas fa-plus"></i>
+                    <FaPlus />
                 </div>
 
                 <div
                     className={getClassName(TABS.PROFILE)}
                     onClick={() => handleRoute(TABS.PROFILE)}
                 >
-                    <i className="fa-solid fa-user"></i>
+                    <FaUser />
                 </div>
             </div>
         </>
