@@ -20,7 +20,7 @@ const welcomeTexts = [
 ];
 
 const DetailsCard = () => {
-    const { adminPannel, currentUser, refreshProfile, totalBalnce } =
+    const { adminPannel, currentUser, refreshProfile } =
         useContext(provider);
     const { name: currentUserName, userImage: currentUserImage } = currentUser;
 
@@ -28,7 +28,7 @@ const DetailsCard = () => {
         const randomNumber = Math.floor(Math.random() * 7);
         return welcomeTexts[randomNumber];
     }, []);
-
+    console.log(adminPannel, "adminPannel");
     const adminName = useMemo(() => {
         if (!isEmpty(currentUserName)) {
             return adminPannel?.admin?.name?.split(" ")[0];

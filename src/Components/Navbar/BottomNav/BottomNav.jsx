@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { EVENTS } from "../../../constants";
 import eventBus from "../../../utils/eventBus";
@@ -46,6 +46,12 @@ const BottomNav = () => {
         },
         [active]
     );
+
+    useEffect(() => {
+        if (path.pathname === "/profile") {
+            setActive(TABS.PROFILE);
+        }
+    }, [path.pathname]);
 
     return (
         <>
