@@ -63,6 +63,7 @@ const UserDetailsCard = ({
             style={{
                 background: `linear-gradient(90deg, rgba(255,255,255,1) 80%, ${balanceColor} 200%)`,
             }}
+            key={_id}
         >
             <div className="user">
                 <span className="profilePicture">

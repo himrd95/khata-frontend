@@ -1,16 +1,14 @@
-import { Button, DialogTitle, Input } from "@material-ui/core";
-import Styled from "styled-components";
-import React, { useContext, useEffect, useState } from "react";
-import { DialogActions } from "@mui/material";
-
+import React, { memo, useContext, useEffect, useMemo, useState } from "react";
 import speak from "../../utils/speech";
-import { useRef } from "react";
+import { DialogTitle } from "@material-ui/core";
+import Styled from "styled-components";
 import LineLoader from "../Common/LineLoader";
 import { isEmpty } from "../../utils/helpers";
 import { provider } from "../../Context/ContextPovider";
+import ImageUpload from "../Common/ImageUpload.jsx";
 
 const Container = Styled.div`
-    padding: 16px;
+    padding: 24px;
     text-align: center;
     width: fit-content
     margin: auto;
@@ -23,19 +21,37 @@ const NewUser = ({ handleClose, handleAddUser, userName }) => {
         name: userName,
         id: !isEmpty(userName) ? currentUser._id : "",
     });
-    const inputRef = useRef();
+    const [previewUrl, setPreviewUrl] = useState(null);
+
+    const updateOrAddText = useMemo(() => {
+        if (isEmpty(userName)) {
+            return "Add";
+        }
+        return "Update";
+    }, [userName]);
 
     const handlechange = (e) => {
-        const { name, value, files } = e.target;
-
+        const { name, value } = e.target;
         setPayload({
             ...payload,
-            [name]: name === "profile" ? files[0] : value,
+            [name]: value,
         });
     };
 
-    const handleChoose = () => {
-        inputRef.current.click();
+    const handleImageSelect = (file, preview) => {
+        setPayload((prev) => ({
+            ...prev,
+            profile: file,
+        }));
+        setPreviewUrl(preview);
+    };
+
+    const handleImageRemove = () => {
+        setPayload((prev) => ({
+            ...prev,
+            profile: null,
+        }));
+        setPreviewUrl(null);
     };
 
     useEffect(() => {
@@ -44,7 +60,7 @@ const NewUser = ({ handleClose, handleAddUser, userName }) => {
 
     return (
         <Container>
-            <DialogTitle>Add a new User</DialogTitle>
+            <DialogTitle>{updateOrAddText} new User</DialogTitle>
 
             <div className="apple-form-group">
                 <input
@@ -56,52 +72,29 @@ const NewUser = ({ handleClose, handleAddUser, userName }) => {
                     placeholder="Name"
                 />
             </div>
-            <Input
-                ref={inputRef}
-                accept="image/*"
-                id="raised-button-file"
-                onChange={(e) => handlechange(e)}
-                type="file"
-                label="Profile"
-                fullWidth
-                name="profile"
-                multiple
-                style={{ display: "none" }}
+
+            <ImageUpload
+                onImageSelect={handleImageSelect}
+                onImageRemove={handleImageRemove}
+                previewUrl={previewUrl}
             />
 
-            <label htmlFor="raised-button-file">
-                <Button
-                    variant="contained"
-                    component="span"
-                    onClick={handleChoose}
-                >
-                    Choose User's pic
-                </Button>
-            </label>
-
-            <br />
-            <br />
-
-            <DialogActions>
-                <Button
-                    onClick={handleClose}
-                    sx={{ margin: "0 10px 10px 0" }}
-                    variant="contained"
-                >
-                    Cancel
-                </Button>
-                <Button
-                    onClick={() => handleAddUser(payload)}
-                    variant="contained"
-                    color="primary"
-                >
-                    Add User
-                </Button>
-            </DialogActions>
+            <div className="apple-buttons">
+                    <button
+                        type="button"
+                        className="cancel"
+                        onClick={handleClose}
+                    >
+                        Cancel
+                    </button>
+                    <button type="submit" className="update" onClick={() => handleAddUser(payload)}>
+                    {updateOrAddText} User
+                    </button>
+                </div>
 
             {isModalLoading && <LineLoader />}
         </Container>
     );
 };
 
-export default NewUser;
+export default memo(NewUser);

@@ -28,3 +28,6 @@ export const COLORS = {
     TAKEN_HEADER_BG:
         "linear-gradient(2700deg,  #fa5a5a 0%,rgb(248, 155, 155) 100%)",
 };
+
+export const ADD_CTA_BG_GRADIENT =
+    "linear-gradient(135deg, #221cdd, hsl(240, 38.8%, 52.5%))";

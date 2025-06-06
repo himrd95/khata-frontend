@@ -5,8 +5,7 @@ import DetailsCardShimmer from "./DetailsCardShimmer";
 import { FaArrowsAltH } from "react-icons/fa";
 
 import { provider } from "../../Context/ContextPovider";
-import { getBalanceColor, isEmpty } from "../../utils/helpers";
-import { moneyFormate } from "../../constants";
+import { isEmpty } from "../../utils/helpers";
 import ProfileImage from "../Common/ProfileImage";
 import ExpandableCard from "../ExpandableCard/ExpandableCard";
 
@@ -28,7 +27,7 @@ const DetailsCard = () => {
         const randomNumber = Math.floor(Math.random() * 7);
         return welcomeTexts[randomNumber];
     }, []);
-    console.log(adminPannel, "adminPannel");
+
     const adminName = useMemo(() => {
         if (!isEmpty(currentUserName)) {
             return adminPannel?.admin?.name?.split(" ")[0];

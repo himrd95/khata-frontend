@@ -1,18 +1,84 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { EVENTS } from "../../../constants";
+import { ADD_CTA_BG_GRADIENT, EVENTS } from "../../../constants";
 import eventBus from "../../../utils/eventBus";
 import "./BottomNav.css";
 import cx from "classnames";
 import { provider } from "../../../Context/ContextPovider";
 import { isEmpty } from "../../../utils/helpers";
 import { FaHome, FaPlus, FaUser } from "react-icons/fa";
+import styled, { keyframes } from "styled-components";
 
 const TABS = {
     HOME: "HOME",
     ADD: "ADD",
     PROFILE: "PROFILE",
 };
+
+const attentionGrab = keyframes`
+  0% {
+    transform: translate(-50%) scale(1) rotate(0deg);
+  }
+  5% {
+    transform: translate(-52%) scale(1) rotate(-5deg);
+  }
+  10% {
+    transform: translate(-48%) scale(1) rotate(5deg);
+  }
+  15% {
+    transform: translate(-52%) scale(1) rotate(-5deg);
+  }
+  20% {
+    transform: translate(-48%) scale(1) rotate(5deg);
+  }
+  25% {
+    transform: translate(-50%) scale(1) rotate(0deg);
+  }
+  /* Pause */
+  45% {
+    transform: translate(-50%) scale(1) rotate(0deg);
+  }
+  /* Scale up with slight rotation */
+  60% {
+    transform: translate(-50%) scale(1.1) rotate(10deg);
+  }
+  /* Bounce back */
+  75% {
+    transform: translate(-50%) scale(0.95) rotate(-5deg);
+  }
+  /* Final settle */
+  100% {
+    transform: translate(-50%) scale(1) rotate(0deg);
+  }
+`;
+
+const AnimatedPlusButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: ${ADD_CTA_BG_GRADIENT};
+    border-radius: 50%;
+    cursor: pointer;
+    animation: ${attentionGrab} 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    svg {
+        color: white;
+        font-size: 24px;
+        transition: transform 0.2s ease;
+    }
+
+    &:active {
+        transform: translateX(-50%) scale(0.95);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+`;
 
 const BottomNav = () => {
     const [active, setActive] = useState(TABS.HOME);
@@ -32,9 +98,13 @@ const BottomNav = () => {
                 navigate("/profile");
                 setCurrentUser({});
             } else if (path.pathname === "/" && isEmpty(currentUser)) {
-                return eventBus.dispatch(EVENTS.ADD_NEW_USER, "");
+                eventBus.dispatch(EVENTS.ADD_NEW_USER, "");
             } else {
-                return eventBus.dispatch(EVENTS.ADD_NEW_TRANSACTION, true);
+                if (path.pathname === "/profile") {
+                    navigate("/");
+                } else {
+                    eventBus.dispatch(EVENTS.ADD_NEW_TRANSACTION, true);
+                }
             }
         },
         [currentUser, navigate, path.pathname, setCurrentUser]
@@ -42,7 +112,10 @@ const BottomNav = () => {
 
     const getClassName = useCallback(
         (tab) => {
-            return cx("nav-item", { active: active === tab, "user-icon": tab === TABS.PROFILE });
+            return cx("nav-item", {
+                active: active === tab,
+                "user-icon": tab === TABS.PROFILE,
+            });
         },
         [active]
     );
@@ -56,7 +129,10 @@ const BottomNav = () => {
     return (
         <>
             <div className="bottom-nav">
-                <div style={{ left: active === TABS.PROFILE ? "75%" : "25%" }} className="active-dot"></div>
+                <div
+                    style={{ left: active === TABS.PROFILE ? "75%" : "25%" }}
+                    className="active-dot"
+                ></div>
                 <div
                     className={getClassName(TABS.HOME)}
                     onClick={() => handleRoute(TABS.HOME)}
@@ -64,12 +140,9 @@ const BottomNav = () => {
                     <FaHome />
                 </div>
 
-                <div
-                    className="center-button"
-                    onClick={() => handleRoute(TABS.ADD)}
-                >
+                <AnimatedPlusButton onClick={() => handleRoute(TABS.ADD)}>
                     <FaPlus />
-                </div>
+                </AnimatedPlusButton>
 
                 <div
                     className={getClassName(TABS.PROFILE)}

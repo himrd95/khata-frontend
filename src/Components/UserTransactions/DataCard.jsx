@@ -152,7 +152,7 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
 
                     <div className="allTransaction">
                         {data?.map((data, i) => (
-                            <div className="row">
+                            <div className="row" key={data.date + data.purpose}>
                                 <div className="dateAndPurpose">
                                     <span className="date">{data.date}</span>
                                     <span className="purpose">

@@ -1,5 +1,4 @@
-import React, { useState, useEffect, memo, useCallback } from "react";
-import { useMemo } from "react";
+import React, { useState, useEffect, memo } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`

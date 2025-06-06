@@ -46,19 +46,20 @@ const DeleteConfirmation = ({
 
     return (
         <div className="deletePopup">
-            <div className="confirmationTitle">{label}</div>
-            <DialogActions>
-                <Button variant="contained" onClick={handleClose}>
+            <div className="confirmationTitle" dangerouslySetInnerHTML={{ __html: label }} />
+            <div className="apple-buttons">
+                <button type="button" className="cancel" onClick={handleClose}>
                     Cancel
-                </Button>
-                <Button
-                    variant="contained"
+                </button>
+                <button
+                    type="submit"
+                    className="update"
                     onClick={handleDelete}
-                    style={{ color: "red" }}
+                    style={{ background: "#e53935" }}
                 >
                     Yes
-                </Button>
-            </DialogActions>
+                </button>
+            </div>
         </div>
     );
 };
