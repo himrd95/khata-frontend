@@ -17,22 +17,22 @@ const pulse = keyframes`
 
 const shimmer = keyframes`
   0% {
-    background-position: -200% 0;
+    background-position: 200% 0;
   }
   100% {
-    background-position: 200% 0;
+    background-position: -200% 0;
   }
 `;
 
 export const LoaderContainer = styled.div`
     width: 100%;
-    height: 4px;
+    height: 5px;
     margin-bottom: -10px;
     background: linear-gradient(
         90deg,
-        rgba(26, 42, 136, 0.1) 0%,
-        rgba(26, 35, 86, 0.2) 50%,
-        rgba(26, 42, 136, 0.1) 100%
+        rgba(103, 121, 222, 0.8) 0%,
+        rgba(105, 117, 186, 0.7) 50%,
+        rgba(73, 96, 226, 0.9) 100%
     );
     position: relative;
     overflow: hidden;
@@ -51,11 +51,11 @@ export const LoaderLine = styled.div`
     height: 100%;
     background: linear-gradient(
         90deg,
-        rgba(26, 42, 136, 0.1) 0%,
-        rgba(126, 147, 236, 0.4) 25%,
-        rgba(17, 31, 106, 0.8) 50%,
-        rgba(124, 134, 181, 0.4) 75%,
-        rgba(26, 42, 136, 0.1) 100%
+        rgb(39, 57, 163) 0%,
+        rgba(169, 178, 217, 0.7) 25%,
+        rgba(39, 14, 94, 0.8) 50%,
+        rgba(174, 204, 210, 0.4) 75%,
+        rgba(8, 19, 73, 0.7) 100%
     );
     background-size: 200% 100%;
     animation: ${shimmer} 2s linear infinite;
