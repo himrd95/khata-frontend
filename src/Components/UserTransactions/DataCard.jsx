@@ -61,7 +61,7 @@ const DataCard = ({ data, title, total, bgColor, name, updateRequest }) => {
             console.log(index);
             if (remove) {
                 const transactionAmount = moneyFormate(data[index].actualPrice);
-                const confirmationMsg = `Do you really want to remove the transaction of ${transactionAmount}?`;
+                const confirmationMsg = `Do you really want to remove the transaction of <b>${transactionAmount}</b>?`;
                 setContent(
                     <DeleteConfirmation
                         label={confirmationMsg}

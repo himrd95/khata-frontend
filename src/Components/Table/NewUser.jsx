@@ -80,17 +80,17 @@ const NewUser = ({ handleClose, handleAddUser, userName }) => {
             />
 
             <div className="apple-buttons">
-                    <button
-                        type="button"
-                        className="cancel"
-                        onClick={handleClose}
-                    >
-                        Cancel
-                    </button>
-                    <button type="submit" className="update" onClick={() => handleAddUser(payload)}>
+                <button type="button" className="cancel" onClick={handleClose}>
+                    Cancel
+                </button>
+                <button
+                    type="submit"
+                    className="update"
+                    onClick={() => handleAddUser(payload)}
+                >
                     {updateOrAddText} User
-                    </button>
-                </div>
+                </button>
+            </div>
 
             {isModalLoading && <LineLoader />}
         </Container>
