@@ -93,7 +93,7 @@ const UserTransactions = () => {
 
     const params = useParams();
 
-    const { deleteRequest, putRequest, getRequest } = useMakeApiCalls();
+    const { deleteRequest, putRequest, getRequest, cancelAllRequests } = useMakeApiCalls();
 
     const { name, given, taken, _id } = currentUser;
 
@@ -111,6 +111,13 @@ const UserTransactions = () => {
             console.error("Scroll error:", error);
         }
     }, []);
+
+    // Cleanup effect to cancel all pending requests on unmount
+    useEffect(() => {
+        return () => {
+            cancelAllRequests();
+        };
+    }, [cancelAllRequests]);
 
     useEffect(() => {
         const refreshHandler = () => getUsers(params.id);

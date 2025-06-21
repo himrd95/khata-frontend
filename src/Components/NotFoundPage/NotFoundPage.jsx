@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./NotFoundPage.css";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 
 const NotFoundPage = () => {
     return (

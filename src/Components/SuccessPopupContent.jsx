@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import Styled from 'styled-components';
 import { FaCheckCircle } from "react-icons/fa";
 

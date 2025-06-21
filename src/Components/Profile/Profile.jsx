@@ -13,23 +13,32 @@ import {
     FaVolumeUp,
     FaVolumeMute,
 } from "react-icons/fa";
+import { TABS } from "../../constants";
 
 const Profile = () => {
     const [, setAnchorEl] = React.useState(null);
     const [profileName, setProfileName] = useState("");
 
-    const { adminPannel, setAdminPannel, setUsers, setCurrentUser } =
+    const { adminPannel, setAdminPannel, setUsers, setCurrentUser, setActiveTab } =
         React.useContext(provider);
     const inputRef = useRef();
     const editProfileInputRef = useRef();
 
-    const { patchRequest } = useMakeApiCalls();
+    const { patchRequest, cancelAllRequests } = useMakeApiCalls();
     const navigate = useNavigate();
+    
     useEffect(() => {
         if (!isEmpty(profileName) && editProfileInputRef.current) {
             editProfileInputRef.current.focus();
         }
     }, [profileName]);
+
+    // Cleanup effect to cancel all pending requests on unmount
+    useEffect(() => {
+        return () => {
+            cancelAllRequests();
+        };
+    }, [cancelAllRequests]);
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -74,6 +83,7 @@ const Profile = () => {
             admin: {},
             setUsers: [],
         });
+        setActiveTab(TABS.HOME);
         handleClose();
     };
     const handleVoice = () => {

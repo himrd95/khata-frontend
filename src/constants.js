@@ -31,3 +31,10 @@ export const COLORS = {
 
 export const ADD_CTA_BG_GRADIENT =
     "linear-gradient(135deg, #221cdd, hsl(240, 38.8%, 52.5%))";
+
+
+export const TABS = {
+    HOME: "HOME",
+    ADD: "ADD",
+    PROFILE: "PROFILE",
+};

@@ -1,6 +1,6 @@
 import React, { memo, useContext, useEffect, useMemo, useState } from "react";
 import speak from "../../utils/speech";
-import { DialogTitle } from "@material-ui/core";
+import { DialogTitle } from "@mui/material";
 import Styled from "styled-components";
 import LineLoader from "../Common/LineLoader";
 import { isEmpty } from "../../utils/helpers";

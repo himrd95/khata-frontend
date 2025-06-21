@@ -22,6 +22,7 @@ const SlidingComponent = () => {
     }, [currentUser]);
 
     return (
+        <>
         <Slider
             ref={containerRef}
             slideLeft={!isEmpty(currentUser)}
@@ -30,6 +31,7 @@ const SlidingComponent = () => {
             <Dashboard />
             <UserTransactions />
         </Slider>
+        </>
     );
 };
 

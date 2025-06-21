@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ADD_CTA_BG_GRADIENT, EVENTS } from "../../../constants";
+import { ADD_CTA_BG_GRADIENT, EVENTS, TABS } from "../../../constants";
 import eventBus from "../../../utils/eventBus";
 import "./BottomNav.css";
 import cx from "classnames";
@@ -8,12 +8,6 @@ import { provider } from "../../../Context/ContextPovider";
 import { isEmpty } from "../../../utils/helpers";
 import { FaHome, FaPlus, FaUser } from "react-icons/fa";
 import styled, { keyframes } from "styled-components";
-
-const TABS = {
-    HOME: "HOME",
-    ADD: "ADD",
-    PROFILE: "PROFILE",
-};
 
 const attentionGrab = keyframes`
   0% {
@@ -81,56 +75,49 @@ const AnimatedPlusButton = styled.div`
 `;
 
 const BottomNav = () => {
-    const [active, setActive] = useState(TABS.HOME);
-    const { setCurrentUser, currentUser } = useContext(provider);
+    const { setCurrentUser, currentUser, activeTab, setActiveTab } = useContext(provider);
     const path = useLocation();
-    const navigate = useNavigate();
 
     const handleRoute = useCallback(
         (tab) => {
-            setActive(tab);
-            if (tab === TABS.HOME) {
+            
+            if (tab === TABS.HOME || tab === TABS.PROFILE) {
                 setCurrentUser({});
-                if (path.pathname === "/profile") {
-                    navigate("/");
-                }
-            } else if (tab === TABS.PROFILE) {
-                navigate("/profile");
-                setCurrentUser({});
-            } else if (path.pathname === "/" && isEmpty(currentUser)) {
+                setActiveTab(tab);
+            } else if (path.pathname === "/dashboard" && activeTab === TABS.HOME && isEmpty(currentUser)) {
                 eventBus.dispatch(EVENTS.ADD_NEW_USER, "");
             } else {
-                if (path.pathname === "/profile") {
-                    navigate("/");
+                if (activeTab === TABS.PROFILE) {
+                    setActiveTab(TABS.HOME);
                 } else {
                     eventBus.dispatch(EVENTS.ADD_NEW_TRANSACTION, true);
                 }
             }
         },
-        [currentUser, navigate, path.pathname, setCurrentUser]
+        [setActiveTab, path.pathname, activeTab, currentUser, setCurrentUser]
     );
 
     const getClassName = useCallback(
         (tab) => {
             return cx("nav-item", {
-                active: active === tab,
+                active: activeTab === tab,
                 "user-icon": tab === TABS.PROFILE,
             });
         },
-        [active]
+        [activeTab]
     );
 
     useEffect(() => {
-        if (path.pathname === "/profile") {
-            setActive(TABS.PROFILE);
+        if (activeTab === TABS.PROFILE) {
+            setActiveTab(TABS.PROFILE);
         }
-    }, [path.pathname]);
+    }, [activeTab, path.pathname, setActiveTab]);
 
     return (
         <>
             <div className="bottom-nav">
                 <div
-                    style={{ left: active === TABS.PROFILE ? "75%" : "25%" }}
+                    style={{ left: activeTab === TABS.PROFILE ? "75%" : "25%" }}
                     className="active-dot"
                 ></div>
                 <div

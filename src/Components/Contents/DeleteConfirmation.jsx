@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useContext } from "react";
-import { Button, DialogActions } from "@material-ui/core";
 import useMakeApiCalls from "../../hooks/useMakeApiCalls";
 import { provider } from "../../Context/ContextPovider";
+import "./DeleteConfirmation.css";
 
 const DeleteConfirmation = ({
     handleClose,

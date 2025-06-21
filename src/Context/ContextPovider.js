@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { calculateTotal, isEmpty } from "../utils/helpers";
 import { useLocation } from "react-router";
+import { TABS } from "../constants";
 
 export const provider = createContext();
 
@@ -35,6 +36,7 @@ const ContextPovider = ({ children }) => {
     const [totalGivenByAdmin, setTotalGivenByAdmin] = useState(0);
     const [totalTakenByAdmin, setTotalTakenByAdmin] = useState(0);
     const [balancesByUser, setBalancesByUser] = useState([]);
+    const [activeTab, setActiveTab] = useState(TABS.HOME);
     const path = useLocation();
 
     // Calculate total balance (for admin or current user)
@@ -148,7 +150,7 @@ const ContextPovider = ({ children }) => {
             totalGivenByAdmin,
             totalTakenByAdmin,
             balancesByUser,
-            setBalancesByUser,
+            setBalancesByUser,activeTab, setActiveTab
         }),
         [
             state,
@@ -172,6 +174,8 @@ const ContextPovider = ({ children }) => {
             totalGivenByAdmin,
             totalTakenByAdmin,
             balancesByUser,
+            activeTab,
+            setActiveTab,
         ]
     );
 

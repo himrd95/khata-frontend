@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { provider } from "./Context/ContextPovider";
 import "./App.css";
+import Routing from "./Route/Routes";
 
 // Lazy load components
 const Home = lazy(() => import("./Components/Home"));
@@ -44,7 +45,7 @@ function App() {
     return (
         <div className="App">
             <Suspense fallback={<LoadingFallback />}>
-                {adminPannel.token !== "" ? <Home /> : <Registration />}
+                <Routing />
             </Suspense>
         </div>
     );

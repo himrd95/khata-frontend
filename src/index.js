@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -20,15 +20,17 @@ if ("serviceWorker" in navigator) {
     });
 }
 
-ReactDOM.render(
-    // <React.StrictMode>
-    <BrowserRouter>
-        <ContextPovider>
-            <App />
-        </ContextPovider>
-    </BrowserRouter>,
-    /* </React.StrictMode>, */
-    document.getElementById("root")
+const container = document.getElementById("root");
+const root = createRoot(container);
+
+root.render(
+    <React.StrictMode>
+        <BrowserRouter>
+            <ContextPovider>
+                <App />
+            </ContextPovider>
+        </BrowserRouter>
+    </React.StrictMode>
 );
 
 // Report web vitals in production

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import Styled from "styled-components";
 import { provider } from "../../Context/ContextPovider";
 import { CircularProgress } from "@mui/material";
@@ -209,8 +209,6 @@ const RegistrationContent = ({ handleClose, handleAddUser }) => {
     const [payload, setPayLoad] = React.useState({ email: "" });
     const [confirm, setConfirm] = React.useState("");
     const { isLoading, error, setError } = useContext(provider);
-    const passwordRef = useRef(false);
-    const [, setE] = useState(false);
     const [previewUrl, setPreviewUrl] = useState(null);
     const [formErrors, setFormErrors] = useState({
         name: "",

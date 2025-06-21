@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Dialog } from "@material-ui/core";
+import { Dialog } from "@mui/material";
 
 export default function SimpleDialog({ isOpen, handleClose, content }) {
     return (

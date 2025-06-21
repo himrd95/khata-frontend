@@ -4,6 +4,7 @@ import React, {
     useCallback,
     useState,
     memo,
+    useRef,
 } from "react";
 
 import "./Dashboard.css";
@@ -21,8 +22,9 @@ import { capitalize, isEmpty } from "../../utils/helpers";
 const Dashboard = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [dialogContent, setDialogContent] = useState("");
+    const hasInitialized = useRef(false);
 
-    const { getRequest, postRequest, putRequest, patchRequest } =
+    const { getRequest, postRequest, putRequest, patchRequest, cancelAllRequests } =
         useMakeApiCalls();
 
     const {
@@ -37,8 +39,20 @@ const Dashboard = () => {
     } = useContext(provider);
 
     useEffect(() => {
-        if (!users.length) getRequest();
-    }, [getRequest, getUsers, users.length]);
+        if (!users.length && !hasInitialized.current) {
+            console.log("Dashboard: Initializing users fetch");
+            hasInitialized.current = true;
+            getRequest();
+        }
+    }, [getRequest, users.length]);
+
+    // Cleanup effect to cancel all pending requests on unmount
+    useEffect(() => {
+        return () => {
+            console.log("Dashboard: Cleaning up requests");
+            cancelAllRequests();
+        };
+    }, [cancelAllRequests]);
 
     const handleClose = useCallback(() => {
         setIsDialogOpen(false);
